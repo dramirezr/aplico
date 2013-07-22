@@ -43,9 +43,38 @@ $(document).ready(function() {
     });
     
     $('#agent-confirmation').click(function(e){
-    	//TODO: Confirmar al agente que ha sido aceptado
+        $.ajax({
+            type : "GET",
+            url : lang + '/api/agent_accept',           
+            dataType : "json",
+            data : {
+            	queryId : queryId
+            }
+        }).done(function(response){
+        	reset_modal();
+        });
+        
     });
     
+    $('#call-cancelation, #query-cancelation').click(function (e){
+    	
+    	if(!queryId)
+    		return false;
+
+    	$.mobile.loading("hide");
+    	clearInterval(demonId);
+
+        $.ajax({
+            type : "GET",
+            url : lang + '/api/request_cancel',           
+            dataType : "json",
+            data : {
+            	queryId : queryId
+            }
+        }).done(function(response){
+        	reset_modal();
+        });
+    });
     
     $('#call-confirmation').click(function(e){
     	
@@ -78,6 +107,15 @@ $(document).ready(function() {
 
 var demonId;
 var queryId;
+
+function reset_modal(){
+	$('#confirm-wrapper').show();
+	$('#waiting-msg').hide();
+	$('#call-confirmation').show();
+	$('#confirmation-msg').show();
+	$('#agent-wrapper').hide();
+
+}
 
 function verifyCall(){
     $.ajax({

@@ -49,10 +49,21 @@ class Api extends CI_Controller {
 			$data['nombre'] = $agente->nombre;
 			$data['codigo'] = $agente->codigo;
 			$data['telefono'] = $agente->telefono;
-			die(json_encode(array('state' => 1, 'agent' => $data)) );
+			die(json_encode(array('state' => 1, 'queryId' => $queryId, 'agent' => $data)) );
 		}
 		
 		die(json_encode(array('state' => 0, 'queryId' => $queryId)) );
 	}
 	
+	function agent_accept(){
+		$this->load->model('solicitud');
+		$queryId = $this->input->get('queryId');
+		$this->solicitud->update($queryId, array('estado' => 'A'));
+	}
+
+	function request_cancel(){
+		$this->load->model('solicitud');
+		$queryId = $this->input->get('queryId');
+		$this->solicitud->update($queryId, array('estado' => 'C'));
+	}
 }

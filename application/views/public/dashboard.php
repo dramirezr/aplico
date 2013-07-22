@@ -75,7 +75,7 @@
 		</div><!-- /content -->
 		
 		<p>
-			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="call-cancelation"><?=lang('dashboard.cancel')?></a>
+			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="query-cancelation"><?=lang('dashboard.cancel')?></a>
 		    <a href="#" data-role="button" data-mini="true" data-inline="true" data-icon="check" data-theme="b" id="agent-confirmation"><?=lang('dashboard.confirm')?></a>
 		</p>
 	</div>
