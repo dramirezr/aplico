@@ -360,7 +360,7 @@ $config['proxy_ips'] = '';
  //Custom config
  
 $config['app_name'] = 'Aplico::Dev';
-$config['max_verification_attemps'] = 3;
+$config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 2000; //In milliseconds
  
  

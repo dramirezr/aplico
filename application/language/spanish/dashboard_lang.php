@@ -10,4 +10,12 @@ $lang['dashboard.cancel'] = 'Cancelar';
 $lang['dashboard.confirm'] = 'Aceptar';
 
 $lang['dashboard.error.attempts'] = 'No hay servicios disponibles en la zona, intenta en unos minutos';
+$lang['dashboard.searching'] = 'Buscando....';
+$lang['dashboard.assinged'] = 'Asignado!';
+$lang['dashboard.agentid'] = 'Identificación';
+$lang['dashboard.agentphone'] = 'Tel';
+$lang['dashboard.call'] = 'Llamar';
+
+
+
 

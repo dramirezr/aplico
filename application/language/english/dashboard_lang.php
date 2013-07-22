@@ -10,3 +10,8 @@ $lang['dashboard.cancel'] = 'Cancel';
 $lang['dashboard.confirm'] = 'Confirm';
 
 $lang['dashboard.error.attempts'] = 'There is not available services at the moment, please, try again few minutes latter';
+$lang['dashboard.searching'] = 'Searching....';
+$lang['dashboard.assinged'] = 'Assigned!';
+$lang['dashboard.agentid'] = 'Id';
+$lang['dashboard.agentphone'] = 'Phone';
+$lang['dashboard.call'] = 'Call';

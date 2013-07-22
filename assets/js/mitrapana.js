@@ -25,7 +25,10 @@ var longitud;
 var geocoder = new google.maps.Geocoder();
 
 $(document).ready(function() {
-    localizame(); /*Cuando cargue la página, cargamos nuestra posición*/ 
+   
+	$('#waiting-msg, #agent-wrapper').hide();
+	
+	localizame(); /*Cuando cargue la página, cargamos nuestra posición*/ 
     
     $('#address').change(function(e){
     	
@@ -33,10 +36,23 @@ $(document).ready(function() {
     
     });
     
+    $('#calling-agent').click(function (e){
+    	e.preventDefault();
+    	
+    	//TODO: LLamar para android
+    });
+    
+    $('#agent-confirmation').click(function(e){
+    	//TODO: Confirmar al agente que ha sido aceptado
+    });
+    
+    
     $('#call-confirmation').click(function(e){
     	
-    	//$.mobile.loading("show");
-    	
+    	$.mobile.loading("show");
+    	$('#call-confirmation, #confirmation-msg').hide();
+    	$('#waiting-msg').show();
+
         $.ajax({
             type : "POST",
             url : $('#call-form').attr('action'),        
@@ -74,12 +90,22 @@ function verifyCall(){
         }
     }).done(function(response){
         if(response.state == 'error'){
-        	alert(response.msg);
+        	$.mobile.loading("hide");
         	clearInterval(demonId);
+        	$('#waiting-msg').html(response.msg);
         }
         
         if(response.state == '1'){
-        	//TODO: Pintar los datos del agente asignado
+        	$('#agent-photo').html('<img src="' + response.agent.foto + '"/>');
+        	$('#agent-name').html(response.agent.nombre);
+        	$('#agent-id').html(response.agent.codigo);
+        	$('#agent-phone').html(response.agent.telefono);
+        	
+        	$('#confirm-wrapper').hide();
+        	$('#agent-wrapper').show();
+        	
+        	$.mobile.loading("hide");
+        	clearInterval(demonId);
         }
     });
 }

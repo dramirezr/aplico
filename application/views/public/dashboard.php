@@ -28,7 +28,7 @@
 <div data-role="page" id="page1">
     <div data-theme="e" data-role="header">
         <h3><?= $this->config->item('app_name') ?></h3>
-        <a data-role="button" class="ui-btn-right" href="#popup" data-rel="dialog" data-transition="pop" id="call-agent"><?=lang('dashboard.calltaxi')?></a>
+        <a data-role="button" class="ui-btn-right" href="#call-modal" data-rel="dialog" data-transition="pop" id="call-agent"><?=lang('dashboard.calltaxi')?></a>
     </div>
     
     <div data-role="content" class="padding-0">
@@ -44,25 +44,41 @@
          <div id="map_canvas"></div>
     </div>
 </div>
-       
-
 
 <!-- Start of third page: #popup -->
-<div data-role="page" id="popup">
-
-	<div data-role="header" data-theme="e">
-		<h1><?=lang('dashboard.callconfirm.title')?></h1>
-	</div><!-- /header -->
-
-	<div data-role="content" data-theme="d">	
-		<p><?=lang('dashboard.callconfirm.content')?>: <span id="show-address"></span></p>		
-	</div><!-- /content -->
-	<p>
-	    <a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back"><?=lang('dashboard.cancel')?></a>
-	    <a href="#" data-role="button" data-mini="true" data-inline="true" data-icon="check" data-theme="b" id="call-confirmation"><?=lang('dashboard.confirm')?></a>
-	</p>
+<div data-role="page" id="call-modal" data-close-btn="none">
+	<div id="confirm-wrapper">
+		<div data-role="header" data-theme="e">
+			<h1><?=lang('dashboard.callconfirm.title')?></h1>
+		</div><!-- /header -->
 	
-
+		<div data-role="content" data-theme="d">	
+			<p id="confirmation-msg"><?=lang('dashboard.callconfirm.content')?>: <span id="show-address"></span></p>	
+			<h1 id="waiting-msg"><?=lang('dashboard.searching')?></h1>
+		</div><!-- /content -->
+		<p>
+			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="call-cancelation"><?=lang('dashboard.cancel')?></a>
+		    <a href="#" data-role="button" data-mini="true" data-inline="true" data-icon="check" data-theme="b" id="call-confirmation"><?=lang('dashboard.confirm')?></a>
+		</p>	
+	</div>
+	
+	<div id="agent-wrapper">
+		<div data-role="header" data-theme="e">
+			<h1><?=lang('dashboard.assinged')?></h1>
+		</div><!-- /header -->
+	
+		<div data-role="content" data-theme="d">	
+			<p id="agent-photo"></p>
+			<p id="agent-name"></p>
+			<p><?=lang('dashboard.agentid')?>: <span id="agent-id"><span></p>
+			<p><?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span> <a href="#" data-icon="forward" data-role="button" data-mini="true" data-inline="true" id="calling-agent"><?=lang('dashboard.call')?></a></p>
+		</div><!-- /content -->
+		
+		<p>
+			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="call-cancelation"><?=lang('dashboard.cancel')?></a>
+		    <a href="#" data-role="button" data-mini="true" data-inline="true" data-icon="check" data-theme="b" id="agent-confirmation"><?=lang('dashboard.confirm')?></a>
+		</p>
+	</div>
 </div><!-- /page popup -->
 
 

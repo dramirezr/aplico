@@ -25,7 +25,6 @@ class Solicitud extends CI_Model {
 	}
 
 	function update($id, $data){
-		
 		return $this->db->update('solicitud', $data, array('id' => $id));
 	}
 		
