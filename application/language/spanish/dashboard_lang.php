@@ -16,6 +16,8 @@ $lang['dashboard.agentid'] = 'Identificación';
 $lang['dashboard.agentphone'] = 'Tel';
 $lang['dashboard.call'] = 'Llamar';
 
-
-
-
+$lang['login.userlogin'] = 'Ingreso';
+$lang['login.usercode'] = 'Código';
+$lang['login.password'] = 'Clave';
+$lang['login.start'] = 'Iniciar';
+$lang['login.error.noauth'] = 'Código o clave no autorizados';

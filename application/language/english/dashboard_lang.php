@@ -15,3 +15,9 @@ $lang['dashboard.assinged'] = 'Assigned!';
 $lang['dashboard.agentid'] = 'Id';
 $lang['dashboard.agentphone'] = 'Phone';
 $lang['dashboard.call'] = 'Call';
+
+$lang['login.userlogin'] = 'Get in';
+$lang['login.usercode'] = 'Code';
+$lang['login.password'] = 'Password';
+$lang['login.start'] = 'Start';
+$lang['login.error.noauth'] = 'Code or password not authorized';

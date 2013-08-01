@@ -154,7 +154,6 @@ function localizame() {
     }else{
         alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
     }
-
 }
 
 function coordenadas(position) {

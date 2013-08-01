@@ -11,7 +11,7 @@ class Api extends CI_Controller {
 		$data['ubicacion'] = $this->input->post('address', TRUE);
 		$data['latitud'] = $this->input->post('lat', TRUE);
 		$data['longitud'] = $this->input->post('lng', TRUE);
-		$data['idagente'] = 1;
+		//$data['idagente'] = 1;
 		
 		$queryId = $this->solicitud->create($data);
 		
@@ -66,4 +66,5 @@ class Api extends CI_Controller {
 		$queryId = $this->input->get('queryId');
 		$this->solicitud->update($queryId, array('estado' => 'C'));
 	}
+	
 }
