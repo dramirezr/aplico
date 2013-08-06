@@ -67,4 +67,33 @@ class Api extends CI_Controller {
 		$this->solicitud->update($queryId, array('estado' => 'C'));
 	}
 	
+	function scode(){
+		if($this->input->is_ajax_request())
+			die(json_encode(array('state' => 'ok', 'code' => $this->security->get_csrf_hash())));
+		else
+			die(json_encode(array('state' => 'error')));
+	}
+	
+	function login(){
+		
+		$username = $this->input->post('username', TRUE); 
+		$password = $this->input->post('password', TRUE);
+		 
+		$this->load->model('agente');
+		$this->lang->load('dashboard');
+		
+		if(!$agente = $this->agente->get_for_login($username, $password)){
+			die(json_encode(array('state' => 'error', 'msg' => lang('login.error.noauth'))));
+		}
+		
+		//Create the session
+		$agente->clave = NULL;
+		$this->session->set_userdata('agente', $agente);
+		
+		$session_data = $this->session->all_userdata();
+		
+		die(json_encode(array('state' => 'ok', 'data' => $agente)));
+		
+	}	
+	
 }

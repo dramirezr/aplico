@@ -34,9 +34,9 @@ class Agent extends CI_Controller {
 	}
 	
 	function update_location(){
-		$lat = $this->input->get('lat');
-		$lng = $this->input->get('lng');
-		$id = $this->input->get('id');
+		$lat = $this->input->get_post('lat');
+		$lng = $this->input->get_post('lng');
+		$id = $this->input->get_post('id');
 		
 		$id = $id ? $id : $this->agent->id;
 		
@@ -45,7 +45,7 @@ class Agent extends CI_Controller {
 	}
 	
 	function switch_to_busy(){
-		$id = $this->input->get('id');
+		$id = $this->input->get_post('id');
 		
 		$id = $id ? $id : $this->agent->id;
 		
@@ -55,7 +55,7 @@ class Agent extends CI_Controller {
 	}
 
 	function switch_to_free(){
-		$id = $this->input->get('id');	
+		$id = $this->input->get_post('id');	
 		$id = $id ? $id : $this->agent->id;
 		
 		$this->agente->update($id, array('estado_servicio' => 'LIBRE'));
@@ -64,7 +64,7 @@ class Agent extends CI_Controller {
 	}
 	
 	function delivered_service(){
-		$request_id = $this->input->get('request_id');
+		$request_id = $this->input->get_post('request_id');
 		
 		$this->load->model('solicitud');
 		
@@ -75,7 +75,7 @@ class Agent extends CI_Controller {
 	
 	function get_service(){
 		
-		$id = $this->input->get('id');	
+		$id = $this->input->get_post('id');	
 		$id = $id ? $id : $this->agent->id;
 
 		$request = $this->agente->get_nearest_request($id);
@@ -87,6 +87,7 @@ class Agent extends CI_Controller {
 		$response = array(
 			'state' => 'ok',
 			'ubicacion' => $request->ubicacion,
+			'ubicacion_corta' => $request->ubicacion,
 			'latitud' => $request->latitud,
 			'longitud' => $request->longitud,
 			'request' => $request->id
@@ -99,8 +100,8 @@ class Agent extends CI_Controller {
 	
 	function confirm(){
 		
-		$request_id = $this->input->get('request_id');		
-		$id = $this->input->get('id');	
+		$request_id = $this->input->get_post('request_id');		
+		$id = $this->input->get_post('id');	
 		$id = $id ? $id : $this->agent->id;
 		
 		if($this->agente->confirm_request($id, $request_id)){

@@ -11,7 +11,7 @@ function localizame() {
     if (navigator.geolocation) { /* Si el navegador tiene geolocalizacion */
         navigator.geolocation.getCurrentPosition(coordenadas, errores);
     }else{
-    	$('#current-position').html('Oops! soporte para la geolocalización.');
+    	$('#current-position').html('Oops! no hay soporte para la geolocalización.');
     }
 }
 
@@ -21,7 +21,6 @@ function coordenadas(position) {
     
     $('#current-position').html('Latitud: ' + lat + ' Longitud: ' + lng);
     
-	//codeLatLng(lat, lng);
 }
 
 function errores(err) {
