@@ -26,7 +26,7 @@ var geocoder = new google.maps.Geocoder();
 
 $(document).ready(function() {
    
-	$('#waiting-msg, #agent-wrapper').hide();
+	//$('#waiting-msg, #agent-wrapper').hide();
 	
 	localizame(); /*Cuando cargue la página, cargamos nuestra posición*/ 
     
@@ -58,16 +58,12 @@ $(document).ready(function() {
     
     $('#call-cancelation, #query-cancelation').click(function (e){
     	
-    	if(!queryId){
-    		reset_modal();
-    		return true;
-    	}
-    		
+    	if(!queryId)
+    		return false;
+
     	$.mobile.loading("hide");
     	clearInterval(demonId);
-    	
-    	reset_modal();
-    	
+
         $.ajax({
             type : "GET",
             url : lang + '/api/request_cancel',           
@@ -75,7 +71,9 @@ $(document).ready(function() {
             data : {
             	queryId : queryId
             }
-        }).done(function(response){});
+        }).done(function(response){
+        	reset_modal();
+        });
     });
     
     $('#call-confirmation').click(function(e){
@@ -100,13 +98,14 @@ $(document).ready(function() {
             	demonId = setInterval(verifyCall, verification_interval);
             }
         });
+        
+    	
     });
     
     $('#btn-localizame').click(function(e){
     	e.preventDefault();
     	localizame();
-    });    
-    
+    });
 });
 
 
@@ -115,10 +114,8 @@ var queryId;
 
 function reset_modal(){
 	$('#confirm-wrapper').show();
-	$('#waiting-msg').html(searching_msg);
 	$('#waiting-msg').hide();
 	$('#call-confirmation').show();
-	
 	$('#confirmation-msg').show();
 	$('#agent-wrapper').hide();
 
@@ -145,8 +142,6 @@ function verifyCall(){
         	$('#agent-name').html(response.agent.nombre);
         	$('#agent-id').html(response.agent.codigo);
         	$('#agent-phone').html(response.agent.telefono);
-        	$('#confirmation-code').html('<span style="color: red; font-weight:bold;">' + queryId + '</span>');
-        	$('#agent-code2').html(response.agent.codigo2);
         	
         	$('#confirm-wrapper').hide();
         	$('#agent-wrapper').show();
@@ -161,7 +156,7 @@ function localizame() {
     if (navigator.geolocation) { /* Si el navegador tiene geolocalizacion */
         navigator.geolocation.getCurrentPosition(coordenadas, errores);
     }else{
-        alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
+        alert('No hay soporte para geolocalización.');
     }
 }
 
@@ -215,9 +210,7 @@ function cargarMapa() {
         position: coorMarcador, /*Lo situamos en nuestro punto */
         map: map, /* Lo vinculamos a nuestro mapa */
 		animation: google.maps.Animation.DROP, 
-		draggable: true, 
-
-		title: "Usted Está Aquí Pirrucito.... "
+		draggable: true
     });
 
 
@@ -246,7 +239,6 @@ var sector = null;
 var ciudad = null;
 var pais = null;
 var depto = null; 
-var formatted_addr = null;
 
 function codeLatLng(lat, lng) {
 
@@ -261,15 +253,14 @@ function codeLatLng(lat, lng) {
 				ciudad = (tam == 5) ? results[0].address_components[2] : results[0].address_components[3] ;
 				pais = (tam == 5) ? results[0].address_components[3] : results[0].address_components[4] ;
 				depto = (tam == 5) ? results[0].address_components[4] : results[0].address_components[2] ;
-				formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
+								
+				//var addrPart = results[0].address_components[0].long_name.split('-');				
+				//$('#address').val(results[0].address_components[1].long_name + ' # ' +addrPart[0]+'-');
 				
-				$('#address').val(formatted_addr);
-				$('#show-address').html(formatted_addr);
-	
+				$('#address').val(sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name);
 			} else {
 				$('#address').val('No encontró una dirección asociada a las coordenadas.');
 			}
-			
 		} else {
 			$('#address').val("Fallo en las Appis de Google : "+ status);
 		}

@@ -1,7 +1,10 @@
 <?php
 
 $lang['dashboard.footer'] = 'La forma más fácil de pedir un taxi - www.pidetutaxi.com';
-$lang['dashboard.calltaxi'] = 'LLAMAR TAXI';
+$lang['dashboard.calltaxi'] = 'Pida Taxi';
+$lang['dashboard.localizame'] = 'Localizame';
+$lang['dashboard.confimationcode'] = 'Codigo de confirmación';
+$lang['dashboard.agentcode2'] = 'Placa';
 
 $lang['dashboard.callconfirm.title'] = 'Confirmar llamada';
 $lang['dashboard.callconfirm.content'] = 'Seguro desea llamar un servicio a esta ubicación';

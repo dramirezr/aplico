@@ -104,6 +104,12 @@ class Agent extends CI_Controller {
 		$id = $this->input->get_post('id');	
 		$id = $id ? $id : $this->agent->id;
 		
+		$this->load->model('solicitud');
+		$solicitud = $this->solicitud->get_by_id($request_id);
+		if($solicitud->estado == 'C'){
+			die(json_encode(array('state' => '')));
+		}
+		
 		if($this->agente->confirm_request($id, $request_id)){
 			die(json_encode(array('state' => 'ok')));
 		}else{

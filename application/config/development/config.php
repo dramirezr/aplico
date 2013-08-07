@@ -359,7 +359,7 @@ $config['proxy_ips'] = '';
 
  //Custom config
  
-$config['app_name'] = 'Aplico::Dev';
+$config['app_name'] = 'PidaTaxi.com';
 $config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 2000; //In milliseconds
  

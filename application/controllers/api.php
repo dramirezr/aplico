@@ -41,7 +41,7 @@ class Api extends CI_Controller {
 			die(json_encode(array('state' => 'error', 'msg' => lang('dashboard.error.attempts'))) );	
 		}
 		
-		//TODO: Validar si ya ha sido asinado el agente
+		//TODO: Validar si ya ha sido asignado el agente
 		$inquiry = $this->solicitud->get_by_id($queryId);
 		if($inquiry->idagente && $inquiry->estado == 'P'){
 			$agente = $this->agente->get_by_id($inquiry->idagente);
@@ -49,6 +49,10 @@ class Api extends CI_Controller {
 			$data['nombre'] = $agente->nombre;
 			$data['codigo'] = $agente->codigo;
 			$data['telefono'] = $agente->telefono;
+			$data['codigo2'] = $agente->codigo2;
+			
+			$this->agent_accept();
+			
 			die(json_encode(array('state' => 1, 'queryId' => $queryId, 'agent' => $data)) );
 		}
 		

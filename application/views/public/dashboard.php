@@ -19,6 +19,7 @@
  	<script>
  		var lang = '<?=current_lang()?>';
  		var verification_interval = <?=ci_config('verification_interval')?>;
+ 		var searching_msg = '<h1><?=lang('dashboard.searching')?></h1>';
  	</script>
 </head>
  
@@ -27,22 +28,28 @@
 
 <div data-role="page" id="page1">
     <div data-theme="e" data-role="header">
+    	<a data-role="button" data-theme="a" href="#page1" class="ui-btn-left" id="btn-localizame"><?=lang('dashboard.localizame')?></a>
         <h3><?= $this->config->item('app_name') ?></h3>
-        <a data-role="button" class="ui-btn-right" href="#call-modal" data-rel="dialog" data-transition="pop" id="call-agent"><?=lang('dashboard.calltaxi')?></a>
-    </div>
-    
-    <div data-role="content" class="padding-0">
-    
+        <a data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop"><?=lang('dashboard.calltaxi')?></a>
        	<?= form_open('api/call', array('id' => 'call-form', 'class' => '')) ?>
 			<input id="lat" name="lat" type="hidden" value="">
 			<input id="lng" name="lng" type="hidden" value="">
-            <div data-role="fieldcontain" class="black-bar margin-0 ">
+            <div data-role="fieldcontain">
                 <input name="address" id="address" value="" type="text" data-mini="true" >
-            </div>
-    		
-    	 </form>
+            </div>    		
+    	 </form>        
+    </div>
+    
+    <div data-role="content" class="padding-0">
          <div id="map_canvas"></div>
     </div>
+
+    <div data-theme="e" data-role="footer" data-position="fixed">
+        <h3>
+            © 2013 <?= $this->config->item('app_name') ?>
+        </h3>
+    </div>
+        
 </div>
 
 <!-- Start of third page: #popup -->
@@ -53,9 +60,10 @@
 		</div><!-- /header -->
 	
 		<div data-role="content" data-theme="d">	
-			<p id="confirmation-msg"><?=lang('dashboard.callconfirm.content')?>: <span id="show-address"></span></p>	
-			<h1 id="waiting-msg"><?=lang('dashboard.searching')?></h1>
+			<div id="confirmation-msg"><p><?=lang('dashboard.callconfirm.content')?>: <span id="show-address"></span></p></div>	
+			<div id="waiting-msg"><h1><?=lang('dashboard.searching')?></h1></div>
 		</div><!-- /content -->
+		
 		<p>
 			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="call-cancelation"><?=lang('dashboard.cancel')?></a>
 		    <a href="#" data-role="button" data-mini="true" data-inline="true" data-icon="check" data-theme="b" id="call-confirmation"><?=lang('dashboard.confirm')?></a>
@@ -68,15 +76,17 @@
 		</div><!-- /header -->
 	
 		<div data-role="content" data-theme="d">	
+			<p><?=lang('dashboard.confimationcode')?>: <span id="confirmation-code"><span></p>
 			<p id="agent-photo"></p>
 			<p id="agent-name"></p>
 			<p><?=lang('dashboard.agentid')?>: <span id="agent-id"><span></p>
-			<p><?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span> <a href="#" data-icon="forward" data-role="button" data-mini="true" data-inline="true" id="calling-agent"><?=lang('dashboard.call')?></a></p>
+			<p><?=lang('dashboard.agentcode2')?>: <span id="agent-code2"><span></p>
+			<p><?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span></p>
+		
 		</div><!-- /content -->
 		
 		<p>
 			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="query-cancelation"><?=lang('dashboard.cancel')?></a>
-		    <a href="#" data-role="button" data-mini="true" data-inline="true" data-icon="check" data-theme="b" id="agent-confirmation"><?=lang('dashboard.confirm')?></a>
 		</p>
 	</div>
 </div><!-- /page popup -->
