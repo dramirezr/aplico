@@ -15,6 +15,7 @@
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
     
     <script src="<?=base_url()?>assets/js/mitrapana.js"></script>
+    <script src="<?=base_url()?>assets/js/jquery.playSound.js"></script>
  	
  	<script>
  		var lang = '<?=current_lang()?>';
@@ -30,7 +31,7 @@
     <div data-theme="e" data-role="header">
     	<a data-role="button" data-theme="a" href="#page1" class="ui-btn-left" id="btn-localizame"><?=lang('dashboard.localizame')?></a>
         <h3><?= $this->config->item('app_name') ?></h3>
-        <a data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop"><?=lang('dashboard.calltaxi')?></a>
+        <a data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" id="agent-call"><?=lang('dashboard.calltaxi')?></a>
        	<?= form_open('api/call', array('id' => 'call-form', 'class' => '')) ?>
 			<input id="lat" name="lat" type="hidden" value="">
 			<input id="lng" name="lng" type="hidden" value="">
@@ -86,6 +87,7 @@
 		</div><!-- /content -->
 		
 		<p>
+			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="show-taxi"><?=lang('dashboard.showtaxi')?></a>
 			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="query-cancelation"><?=lang('dashboard.cancel')?></a>
 		</p>
 	</div>

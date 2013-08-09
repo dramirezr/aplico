@@ -40,7 +40,7 @@ class Agent extends CI_Controller {
 		
 		$id = $id ? $id : $this->agent->id;
 		
-		$this->agente->update($id, array('latitud' => $lat, 'longitud' => $lng));
+		$this->agente->update($id, array('latitud' => $lat, 'longitud' => $lng, 'fecha_localizacion' => date('Y-m-d H:i:s')));
 		die(json_encode(array('state' => 'ok')));
 	}
 	
@@ -65,10 +65,12 @@ class Agent extends CI_Controller {
 	
 	function delivered_service(){
 		$request_id = $this->input->get_post('request_id');
+		$lat = $this->input->get_post('lat');
+		$lng = $this->input->get_post('lng');
 		
 		$this->load->model('solicitud');
 		
-		$this->solicitud->update($request_id, array('estado' => 'E'));
+		$this->solicitud->update($request_id, array('estado' => 'E', 'lat_entrega' => $lat, 'lng_entrega' => $lng));
 		
 		die(json_encode(array('state' => 'ok')));
 	}
@@ -115,6 +117,32 @@ class Agent extends CI_Controller {
 		}else{
 			die(json_encode(array('state' => '')));
 		}
+	}
+	
+	function cancel_service(){
+		$request_id = $this->input->get_post('request_id');		
+		$id = $this->input->get_post('id');	
+		$id = $id ? $id : $this->agent->id;
+
+		$this->load->model('solicitud');
+		$solicitud = $this->solicitud->get_by_id($request_id);
+		
+		if($solicitud->idagente == $id){
+			$this->solicitud->update($request_id, array('estado' => 'C'));
+			$this->agente->update($id, array('estado_servicio' => 'LIBRE'));	
+		}
+
+		die(json_encode(array('state' => 'ok')));
+
+	}
+	
+	function arrival_confirmation(){
+		$request_id = $this->input->get_post('request_id');
+		$this->load->model('solicitud');
+		$solicitud = $this->solicitud->get_by_id($request_id);
+		$this->solicitud->update($request_id, array('agente_arribo' => 1));
+		
+		die(json_encode(array('state' => 'ok')));
 	}
 	
 } 

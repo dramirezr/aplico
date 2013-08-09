@@ -65,8 +65,15 @@ $(document).ready(function() {
     		
     	$.mobile.loading("hide");
     	clearInterval(demonId);
+    	clearInterval(verifyServiceStatus);
     	
     	reset_modal();
+    	
+    	if(taxiMarker){
+    		taxiMarker.setMap(null);
+    		taxiMarker = null;
+    	}
+    	
     	
         $.ajax({
             type : "GET",
@@ -107,11 +114,55 @@ $(document).ready(function() {
     	localizame();
     });    
     
+    $('#agent-call').click(function(e){
+    	clearInterval(taxiLocationDemonId);
+    });
+    
+    $('#show-taxi').click(function(e){
+    	taxiLocationDemonId = setInterval(getTaxiLocation, verification_interval);
+    });
+    
 });
 
 
 var demonId;
 var queryId;
+var verifyServiceStatus;
+var taxiLocationDemonId;
+var agentId;
+var taxiMarker;
+
+function getTaxiLocation(){
+	   $.ajax({
+	        type : "GET",
+	        url : lang + '/api/get_taxi_location',        
+	        dataType : "json",
+	        data : {
+	        	agent_id : agentId
+	        }
+	    }).done(function(response){
+	        if(response.state == 'ok'){
+	        	setTaxiIcon(response.lat, response.lng);
+	        }
+	    });
+	   
+}
+
+function setTaxiIcon(lat, lng){
+	
+	
+	if(taxiMarker){
+		taxiMarker.setPosition( new google.maps.LatLng( lat, lng ) );
+	}else{
+		taxiMarker = new google.maps.Marker({
+	        position: new google.maps.LatLng( lat, lng ),
+	        map: map,
+	        icon : 'assets/images/taxi.png'
+	    });
+	}
+		
+	
+}
 
 function reset_modal(){
 	$('#confirm-wrapper').show();
@@ -143,6 +194,7 @@ function verifyCall(){
         if(response.state == '1'){
         	$('#agent-photo').html('<img src="' + response.agent.foto + '"/>');
         	$('#agent-name').html(response.agent.nombre);
+        	agentId = response.agent.id
         	$('#agent-id').html(response.agent.codigo);
         	$('#agent-phone').html(response.agent.telefono);
         	$('#confirmation-code').html('<span style="color: red; font-weight:bold;">' + queryId + '</span>');
@@ -153,15 +205,40 @@ function verifyCall(){
         	
         	$.mobile.loading("hide");
         	clearInterval(demonId);
+        	verifyServiceStatus = setInterval(verifyServiceState, verification_interval);
         }
     });
 }
 
+function verifyServiceState(){
+    $.ajax({
+        type : "GET",
+        url : lang + '/api/verify_service_status',        
+        dataType : "json",
+        data : {
+        	queryId : queryId,
+        	demonId : verifyServiceStatus
+        }
+    }).done(function(response){
+        if(response.state == 'error'){
+        	clearInterval(verifyServiceStatus);
+        	alert(response.msg);
+        	reset_modal();
+        	$("#call-modal").dialog('close');
+        }
+        
+        if(response.state == 'agent_arrival'){
+        	
+        }
+    });	
+}
+
+//2421453852
 function localizame() {
     if (navigator.geolocation) { /* Si el navegador tiene geolocalizacion */
         navigator.geolocation.getCurrentPosition(coordenadas, errores);
     }else{
-        alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
+        alert('Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
     }
 }
 
@@ -181,16 +258,16 @@ function coordenadas(position) {
 function errores(err) {
     /*Controlamos los posibles errores */
     if (err.code == 0) {
-      alert("Oops! Algo ha salido mal");
+      alert("Algo ha salido mal");
     }
     if (err.code == 1) {
-      alert("Oops! No has aceptado compartir tu posición");
+      alert("No has aceptado compartir tu posición");
     }
     if (err.code == 2) {
-      alert("Oops! No se puede obtener la posición actual");
+      alert("No se puede obtener la posición actual");
     }
     if (err.code == 3) {
-      alert("Oops! Hemos superado el tiempo de espera");
+      alert("Hemos superado el tiempo de espera");
     }
 }
  
@@ -215,9 +292,8 @@ function cargarMapa() {
         position: coorMarcador, /*Lo situamos en nuestro punto */
         map: map, /* Lo vinculamos a nuestro mapa */
 		animation: google.maps.Animation.DROP, 
-		draggable: true, 
-
-		title: "Usted Está Aquí Pirrucito.... "
+		draggable: true,
+		icon : 'assets/images/male.png',
     });
 
 

@@ -7,6 +7,7 @@ var localizationDemonId;
 var updateLocationDemonId;
 var verification_interval = 5000;
 var verifyServiceDemonId;
+var verifyServiceStateDemonId;
 var geoOptions = { timeout: verification_interval };
 var ubicacionServicio = null;
 var request_id = null;
@@ -15,7 +16,7 @@ $(document).ready(function() {
 	
 	$.mobile.loading( "show" );
 	
-	$("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap").hide();
+	$("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
 	
 	get_sec_code();
 	
@@ -69,8 +70,24 @@ $(document).ready(function() {
 		service_delivered();
 	});
 	
+	$('#btn-llego').click(function(e){
+		e.preventDefault();
+		arrival_confirmation();
+	});
 });
 
+function arrival_confirmation(){
+    $.ajax({
+        type : "POST",
+        url : server + 'agent/arrival_confirmation',        
+        dataType : "json",
+        data : {
+        	request_id : request_id,
+        	hms1: scode
+        }
+    }).done(function(response){});	
+	
+}
 
 function verifyService(){
     $.ajax({
@@ -99,8 +116,7 @@ function verifyService(){
     });
 }
 
-function cancel_service(){
-	
+function switchToFree(){
 	request_id = null;
 	
 	$('#service-addr').html('');
@@ -117,7 +133,29 @@ function cancel_service(){
         data : {
         	hms1: scode
         }
-    }).done(function(response){});	
+    }).done(function(response){});		
+}
+
+function cancel_service(){ 
+	
+	$('#service-addr').html('');
+	$('#verificacion-cod').html('');
+	
+	$("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap").hide();
+		
+	verifyServiceDemonId = setInterval(verifyService, verification_interval);
+	
+    $.ajax({
+        type : "POST",
+        url : server + 'agent/cancel_service',        
+        dataType : "json",
+        data : {
+        	hms1: scode,
+        	request_id: request_id
+        }
+    }).done(function(response){
+    	request_id = null;
+    });	
 	
 }
 
@@ -129,11 +167,13 @@ function service_delivered(){
         dataType : "json",
         data : {
         	request_id : request_id,
+        	lat : lat,
+        	lng : lng,
         	hms1: scode
         }
     }).done(function(response){});	
 
-	cancel_service();
+    switchToFree();
 }
 
 function confirm_service(){
@@ -153,11 +193,35 @@ function confirm_service(){
     		//assigned
     		$('#btn-aplico-wrap').hide();
     		$('#btn-entregado-wrap').show();
+    		$('#btn-llego-wrap').show();
     		$('#verificacion-cod').html('Servicio en curso, Codigo Verificación: ' + request_id);
+    		
+    		verifyServiceStateDemonId = setInterval(verifyServiceState, verification_interval);
+    		$.playSound('assets/audio/yes.mp3');
     	} else {
     		//taken by other one
-    		cancel_service();
+    		$.playSound('assets/audio/not.mp3');
+    		switchToFree();
     	}
+    });	
+}
+
+function verifyServiceState(){
+    $.ajax({
+        type : "GET",
+        url : server + '/api/verify_service_status',        
+        dataType : "json",
+        data : {
+        	queryId : request_id,
+        	demonId : verifyServiceStateDemonId
+        }
+    }).done(function(response){
+        if(response.state == 'error'){
+        	clearInterval(verifyServiceStateDemonId);
+        	$.playSound('assets/audio/not.mp3');
+        	alert(response.msg);
+        	switchToFree();
+        }        
     });	
 }
 
@@ -182,7 +246,7 @@ function localizame() {
     if (navigator.geolocation) { 
         navigator.geolocation.getCurrentPosition(coords, errores);
     }else{
-    	$('#current-position').val('Oops! no hay soporte para la geolocalización.');
+    	$('#current-position').val('No hay soporte para la geolocalización.');
     }
 }
 

@@ -19,6 +19,25 @@ class Api extends CI_Controller {
 		die(json_encode(array('state' => 'ok', 'queryId' => $queryId)) );
 	}
 	
+	function verify_service_status(){
+		$this->load->model('solicitud');
+		$this->lang->load('dashboard');
+
+		$queryId = $this->input->get('queryId');
+
+		$inquiry = $this->solicitud->get_by_id($queryId);
+		
+		if($inquiry->estado == 'C'){
+			die(json_encode(array('state' => 'error', 'msg' => lang('dashboard.error.canceled_service'))));
+		}
+		
+		if($inquiry->agente_arribo == 1){
+			die(json_encode(array('state' => 'arrival')));
+		}
+		
+		die(json_encode(array('state' => 1)));
+	}
+	
 	function verify_call(){
 		$this->load->model('solicitud');
 		$this->load->model('agente');
@@ -50,6 +69,7 @@ class Api extends CI_Controller {
 			$data['codigo'] = $agente->codigo;
 			$data['telefono'] = $agente->telefono;
 			$data['codigo2'] = $agente->codigo2;
+			$data['id'] = $inquiry->idagente;			
 			
 			$this->agent_accept();
 			
@@ -98,6 +118,15 @@ class Api extends CI_Controller {
 		
 		die(json_encode(array('state' => 'ok', 'data' => $agente)));
 		
-	}	
+	}
+	
+	function get_taxi_location(){
+		$this->load->model('agente');
+		
+		$agent_id = $this->input->get_post('agent_id');
+		$agente = $this->agente->get_by_id($agent_id);
+		
+		die(json_encode(array('state' => 'ok', 'lat' => $agente->latitud, 'lng' => $agente->longitud)));
+	}
 	
 }

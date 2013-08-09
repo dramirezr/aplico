@@ -18,6 +18,8 @@ $lang['dashboard.assinged'] = 'Asignado!';
 $lang['dashboard.agentid'] = 'Identificación';
 $lang['dashboard.agentphone'] = 'Tel';
 $lang['dashboard.call'] = 'Llamar';
+$lang['dashboard.error.canceled_service'] = 'El servicio fue cancelado';
+$lang['dashboard.showtaxi'] = 'Ver taxi';
 
 $lang['login.userlogin'] = 'Ingreso';
 $lang['login.usercode'] = 'Código';
