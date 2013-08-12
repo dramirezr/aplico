@@ -1,4 +1,4 @@
-var server = 'http://aplico.dev/es/';
+var server = 'http://localhost/aplico/es/';
 
 var lat = lng = deslat = destlng = 0;
 var scode = null;
@@ -39,6 +39,10 @@ $(document).ready(function() {
 	    	if(response.state=='ok'){
 	    		$("#show-dashboard").trigger('click');
 	    		user = response.data
+               $('#agent-name').html(user['nombre']);
+                
+               //$('#agent-photo').src = "../assets/images/agents/" + user['foto'] ;
+                document.getElementById("agent-photo").src = "../assets/images/agents/" + user['foto'] ;
 	    		
 	    		localizame();
 	    		localizationDemonId = setInterval(localizame, verification_interval);
@@ -209,7 +213,7 @@ function confirm_service(){
 function verifyServiceState(){
     $.ajax({
         type : "GET",
-        url : server + '/api/verify_service_status',        
+        url : server + 'api/verify_service_status',        
         dataType : "json",
         data : {
         	queryId : request_id,
@@ -233,12 +237,12 @@ function updateLocation(){
         data : {
         	lat : lat,
         	lng : lng
-        },
-        success: function(response){},
-        error: function (e, state, msg){
-        	$('#current-position').val("Sin datos");
-        }
-    });
+        } 
+    } ).done(function(response){
+            if(response.state != 'ok'){
+                $('#current-position').val('Si actualizar coordenadas');
+            }
+        }); 
 }
 
 
@@ -259,16 +263,16 @@ function coords(position) {
 function errores(err) {
     /*Controlamos los posibles errores */
     if (err.code == 0) {
-    	$('#current-position').val("Oops! Algo ha salido mal");
+    	$('#current-position').val("Error en la geolocalización");
     }
     if (err.code == 1) {
-    	$('#current-position').val("Oops! No has aceptado compartir tu posición");
+    	$('#current-position').val("Para utilizar esta aplicación por favor aceptar compartir tu posición gegrafica.");
     }
     if (err.code == 2) {
-    	$('#current-position').val("Oops! No se puede obtener la posición actual");
+    	$('#current-position').val("No se puede obtener la posición actual desde tu dispositivo");
     }
     if (err.code == 3) {
-    	$('#current-position').val("Oops! Hemos superado el tiempo de espera");
+    	$('#current-position').val("Hemos superado el tiempo de espera. Vuelve a intentarlo");
     }
 }
 

@@ -41,6 +41,7 @@ class Agent extends CI_Controller {
 		$id = $id ? $id : $this->agent->id;
 		
 		$this->agente->update($id, array('latitud' => $lat, 'longitud' => $lng, 'fecha_localizacion' => date('Y-m-d H:i:s')));
+		
 		die(json_encode(array('state' => 'ok')));
 	}
 	
