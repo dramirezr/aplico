@@ -1,4 +1,4 @@
-var server = 'http://localhost/aplico/es/';
+var server = 'http://aplico.dev/es/';
 
 var lat = lng = deslat = destlng = 0;
 var scode = null;
@@ -39,10 +39,8 @@ $(document).ready(function() {
 	    	if(response.state=='ok'){
 	    		$("#show-dashboard").trigger('click');
 	    		user = response.data
-               $('#agent-name').html(user['nombre']);
-                
-               //$('#agent-photo').src = "../assets/images/agents/" + user['foto'] ;
-                document.getElementById("agent-photo").src = "../assets/images/agents/" + user['foto'] ;
+	    		$('#agent-name').html(user.nombre);
+	    		$('#agent-photo').attr('src', "/assets/images/agents/" + user.foto) ;
 	    		
 	    		localizame();
 	    		localizationDemonId = setInterval(localizame, verification_interval);
@@ -78,6 +76,16 @@ $(document).ready(function() {
 		e.preventDefault();
 		arrival_confirmation();
 	});
+	
+	$('#btn-salir').click(function(e){
+		clearInterval(localizationDemonId);
+		clearInterval(updateLocationDemonId);
+		clearInterval(verifyServiceDemonId);
+		
+		
+	
+	});
+	
 });
 
 function arrival_confirmation(){
@@ -116,6 +124,8 @@ function verifyService(){
         	$('#btn-cancelar-wrap').show();
         	
         	clearInterval(verifyServiceDemonId);
+        	
+        	$.playSound('/assets/audio/ring.mp3');
         }
     });
 }
@@ -126,9 +136,10 @@ function switchToFree(){
 	$('#service-addr').html('');
 	$('#verificacion-cod').html('');
 	
-	$("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap").hide();
+	$("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
 		
 	verifyServiceDemonId = setInterval(verifyService, verification_interval);
+	clearInterval(verifyServiceStateDemonId);
 	
     $.ajax({
         type : "POST",
@@ -145,9 +156,10 @@ function cancel_service(){
 	$('#service-addr').html('');
 	$('#verificacion-cod').html('');
 	
-	$("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap").hide();
+	$("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
 		
 	verifyServiceDemonId = setInterval(verifyService, verification_interval);
+	clearInterval(verifyServiceStateDemonId);
 	
     $.ajax({
         type : "POST",

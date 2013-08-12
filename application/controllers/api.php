@@ -27,11 +27,16 @@ class Api extends CI_Controller {
 
 		$inquiry = $this->solicitud->get_by_id($queryId);
 		
+		if($inquiry->estado == 'E'){
+			die(json_encode(array('state' => 'delivered')));
+		}
+
 		if($inquiry->estado == 'C'){
 			die(json_encode(array('state' => 'error', 'msg' => lang('dashboard.error.canceled_service'))));
 		}
 		
 		if($inquiry->agente_arribo == 1){
+			$this->solicitud->update($queryId, array('agente_arribo' => 0));
 			die(json_encode(array('state' => 'arrival')));
 		}
 		

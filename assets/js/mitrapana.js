@@ -227,9 +227,16 @@ function verifyServiceState(){
         	$("#call-modal").dialog('close');
         }
         
-        if(response.state == 'agent_arrival'){
-        	
+        if(response.state == 'arrival'){
+           	$.playSound('/assets/audio/ring.mp3');
         }
+
+        if(response.state == 'delivered'){
+           	clearInterval(verifyServiceStatus);
+           	reset_modal();
+           	$("#call-modal").dialog('close');
+        }
+
     });	
 }
 
@@ -274,7 +281,7 @@ function errores(err) {
 function cargarMapa() {
     var latlon = new google.maps.LatLng(latitud,longitud); /* Creamos un punto con nuestras coordenadas */
     var myOptions = {
-        zoom: 16,
+        zoom: 18,
         center: latlon, /* Definimos la posicion del mapa con el punto */
 		navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, 
 		mapTypeControl: true, 
