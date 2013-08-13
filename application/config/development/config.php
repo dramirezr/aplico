@@ -279,7 +279,7 @@ $config['cookie_secure']	= FALSE;
 | COOKIE data is encountered
 |
 */
-$config['global_xss_filtering'] = TRUE;
+$config['global_xss_filtering'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -293,7 +293,7 @@ $config['global_xss_filtering'] = TRUE;
 | 'csrf_cookie_name' = The cookie name
 | 'csrf_expire' = The number in seconds the token should expire.
 */
-$config['csrf_protection'] = TRUE;
+$config['csrf_protection'] = FALSE;
 $config['csrf_token_name'] = 'hms1';
 $config['csrf_cookie_name'] = 'hms1';
 $config['csrf_expire'] = 7200;
@@ -361,7 +361,7 @@ $config['proxy_ips'] = '';
  
 $config['app_name'] = 'PidaTaxi.com';
 $config['max_verification_attemps'] = 10;
-$config['verification_interval'] = 2000; //In milliseconds
+$config['verification_interval'] = 5000; //In milliseconds
  
  
 /* End of file config.php */

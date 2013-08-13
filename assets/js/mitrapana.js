@@ -73,8 +73,7 @@ $(document).ready(function() {
     		taxiMarker.setMap(null);
     		taxiMarker = null;
     	}
-    	
-    	
+    	    	
         $.ajax({
             type : "GET",
             url : lang + '/api/request_cancel',           
@@ -92,7 +91,7 @@ $(document).ready(function() {
     	$('#waiting-msg').show();
 
         $.ajax({
-            type : "POST",
+            type : "GET",
             url : $('#call-form').attr('action'),        
             dataType : "json",
             data : {
@@ -235,12 +234,15 @@ function verifyServiceState(){
            	clearInterval(verifyServiceStatus);
            	reset_modal();
            	$("#call-modal").dialog('close');
+        	if(taxiMarker){
+        		taxiMarker.setMap(null);
+        		taxiMarker = null;
+        	}           	
         }
 
     });	
 }
 
-//2421453852
 function localizame() {
     if (navigator.geolocation) { /* Si el navegador tiene geolocalizacion */
         navigator.geolocation.getCurrentPosition(coordenadas, errores);

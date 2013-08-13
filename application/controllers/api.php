@@ -8,9 +8,9 @@ class Api extends CI_Controller {
 		$this->load->model('solicitud');
 		
 		
-		$data['ubicacion'] = $this->input->post('address', TRUE);
-		$data['latitud'] = $this->input->post('lat', TRUE);
-		$data['longitud'] = $this->input->post('lng', TRUE);
+		$data['ubicacion'] = $this->input->get_post('address');
+		$data['latitud'] = $this->input->get_post('lat');
+		$data['longitud'] = $this->input->get_post('lng');
 		//$data['idagente'] = 1;
 		
 		$queryId = $this->solicitud->create($data);
@@ -23,7 +23,7 @@ class Api extends CI_Controller {
 		$this->load->model('solicitud');
 		$this->lang->load('dashboard');
 
-		$queryId = $this->input->get('queryId');
+		$queryId = $this->input->get_post('queryId');
 
 		$inquiry = $this->solicitud->get_by_id($queryId);
 		
@@ -97,16 +97,20 @@ class Api extends CI_Controller {
 	}
 	
 	function scode(){
-		if($this->input->is_ajax_request())
-			die(json_encode(array('state' => 'ok', 'code' => $this->security->get_csrf_hash())));
-		else
-			die(json_encode(array('state' => 'error')));
+		if($this->input->is_ajax_request()){
+			$scode = md5(uniqid());
+			$this->session->set_userdata('scode', $scode);
+			die(json_encode(array('state' => 'ok', 'code' => $scode)));
+//			die(json_encode(array('state' => 'ok', 'code' => $this->security->get_csrf_hash())));
+		}else{
+			die(json_encode(array('state' => 'error')));	
+		}
 	}
 	
 	function login(){
 		
-		$username = $this->input->post('username', TRUE); 
-		$password = $this->input->post('password', TRUE);
+		$username = $this->input->get_post('username'); 
+		$password = $this->input->get_post('password');
 		 
 		$this->load->model('agente');
 		$this->lang->load('dashboard');

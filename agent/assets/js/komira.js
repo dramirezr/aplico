@@ -5,7 +5,7 @@ var scode = null;
 var user = null;
 var localizationDemonId;
 var updateLocationDemonId;
-var verification_interval = 5000;
+var verification_interval = 15000;
 var verifyServiceDemonId;
 var verifyServiceStateDemonId;
 var geoOptions = { timeout: verification_interval };
@@ -26,7 +26,7 @@ $(document).ready(function() {
 		var password = $('#password').val();
 		
 	    $.ajax({
-	        type : "POST",
+	        type : "GET",
 	        url : server + 'api/login',        
 	        dataType : "json",
 	        data : {
@@ -90,7 +90,7 @@ $(document).ready(function() {
 
 function arrival_confirmation(){
     $.ajax({
-        type : "POST",
+        type : "GET",
         url : server + 'agent/arrival_confirmation',        
         dataType : "json",
         data : {
@@ -103,7 +103,7 @@ function arrival_confirmation(){
 
 function verifyService(){
     $.ajax({
-        type : "POST",
+        type : "GET",
         url : server + 'agent/get_service',        
         dataType : "json",
         data : {
@@ -142,7 +142,7 @@ function switchToFree(){
 	clearInterval(verifyServiceStateDemonId);
 	
     $.ajax({
-        type : "POST",
+        type : "GET",
         url : server + 'agent/switch_to_free',        
         dataType : "json",
         data : {
@@ -162,7 +162,7 @@ function cancel_service(){
 	clearInterval(verifyServiceStateDemonId);
 	
     $.ajax({
-        type : "POST",
+        type : "GET",
         url : server + 'agent/cancel_service',        
         dataType : "json",
         data : {
@@ -178,7 +178,7 @@ function cancel_service(){
 function service_delivered(){
 
     $.ajax({
-        type : "POST",
+        type : "GET",
         url : server + 'agent/delivered_service',        
         dataType : "json",
         data : {
@@ -197,7 +197,7 @@ function confirm_service(){
 	$('#confirm-service').hide();
 	
     $.ajax({
-        type : "POST",
+        type : "GET",
         url : server + 'agent/confirm',        
         dataType : "json",
         data : {
@@ -237,7 +237,7 @@ function verifyServiceState(){
         	$.playSound('assets/audio/not.mp3');
         	alert(response.msg);
         	switchToFree();
-        }        
+        }
     });	
 }
 
