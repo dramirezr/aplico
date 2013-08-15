@@ -68,10 +68,13 @@ class Agent extends CI_Controller {
 		$request_id = $this->input->get_post('request_id');
 		$lat = $this->input->get_post('lat');
 		$lng = $this->input->get_post('lng');
+		$id = $this->input->get_post('id');
+		$id = $id ? $id : $this->agent->id;
 		
 		$this->load->model('solicitud');
 		
 		$this->solicitud->update($request_id, array('estado' => 'E', 'lat_entrega' => $lat, 'lng_entrega' => $lng));
+		$this->agente->update($id, array('estado_servicio' => 'LIBRE'));
 		
 		die(json_encode(array('state' => 'ok')));
 	}
@@ -90,7 +93,7 @@ class Agent extends CI_Controller {
 		$response = array(
 			'state' => 'ok',
 			'ubicacion' => $request->ubicacion,
-			'ubicacion_corta' => $request->ubicacion,
+			'sector' => $request->sector,
 			'latitud' => $request->latitud,
 			'longitud' => $request->longitud,
 			'request' => $request->id

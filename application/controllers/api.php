@@ -11,6 +11,11 @@ class Api extends CI_Controller {
 		$data['ubicacion'] = $this->input->get_post('address');
 		$data['latitud'] = $this->input->get_post('lat');
 		$data['longitud'] = $this->input->get_post('lng');
+		$data['sector'] = $this->input->get_post('zone');
+		$data['ciudad'] = $this->input->get_post('city');
+		$data['pais'] = $this->input->get_post('country');
+		$data['departamento'] = $this->input->get_post('state_c');
+				
 		//$data['idagente'] = 1;
 		
 		$queryId = $this->solicitud->create($data);
@@ -28,7 +33,7 @@ class Api extends CI_Controller {
 		$inquiry = $this->solicitud->get_by_id($queryId);
 		
 		if($inquiry->estado == 'E'){
-			die(json_encode(array('state' => 'delivered')));
+			die(json_encode(array('state' => 'delivered',  'msg' => lang('dashboard.error.canceled_service'))));
 		}
 
 		if($inquiry->estado == 'C'){
@@ -118,7 +123,11 @@ class Api extends CI_Controller {
 		if(!$agente = $this->agente->get_for_login($username, $password)){
 			die(json_encode(array('state' => 'error', 'msg' => lang('login.error.noauth'))));
 		}
-		
+		 
+		//arranca el agente en estado del servicio libre y estado pendiente
+		$idagente = $agente->id;
+		$this->agente->update($idagente, array('estado_servicio' => 'LIBRE','estado' => 'P'));
+
 		//Create the session
 		$agente->clave = NULL;
 		$this->session->set_userdata('agente', $agente);
@@ -131,7 +140,6 @@ class Api extends CI_Controller {
 	
 	function get_taxi_location(){
 		$this->load->model('agente');
-		
 		$agent_id = $this->input->get_post('agent_id');
 		$agente = $this->agente->get_by_id($agent_id);
 		

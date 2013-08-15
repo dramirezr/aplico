@@ -35,6 +35,10 @@
        	<?= form_open('api/call', array('id' => 'call-form', 'class' => '')) ?>
 			<input id="lat" name="lat" type="hidden" value="">
 			<input id="lng" name="lng" type="hidden" value="">
+			<input id="zone" name="zone" type="hidden" value="">
+			<input id="city" name="city" type="hidden" value="">
+			<input id="state_c" name="state_c" type="hidden" value="">
+			<input id="country" name="country" type="hidden" value="">
             <div data-role="fieldcontain">
                 <input name="address" id="address" value="" type="text" data-mini="true" >
             </div>    		
@@ -47,7 +51,7 @@
 
     <div data-theme="e" data-role="footer" data-position="fixed">
         <h3>
-            © 2013 <?= $this->config->item('app_name') ?>
+            Â© 2013 <?= $this->config->item('app_name') ?>
         </h3>
     </div>
         
@@ -80,7 +84,7 @@
 			<p><?=lang('dashboard.confimationcode')?>: <span id="confirmation-code"><span></p>
 			<p id="agent-photo"></p>
 			<p id="agent-name"></p>
-			<p><?=lang('dashboard.agentid')?>: <span id="agent-id"><span></p>
+			<!--<p><?=lang('dashboard.agentid')?>: <span id="agent-id"><span></p>-->
 			<p><?=lang('dashboard.agentcode2')?>: <span id="agent-code2"><span></p>
 			<p><?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span></p>
 		
