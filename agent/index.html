@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>PidaTaxi</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
 
 <link rel="stylesheet" href="assets/css/jquery.mobile-1.3.2.min.css" />
@@ -62,32 +62,54 @@
 <!-- Home -->
 <div data-role="page" id="dashboard">
     <div data-theme="e" data-role="header">
-        <h3>
-            PidaTaxi.com
-        </h3>
+         <table border=0 width="100%"><tbody>
+        <tr>
+            <td align="center" width="25%">
+               <img id="agent-photo" style="width: 50px; height: 50px" src="" >
+            </td>
+            <td align="left" width="50%">
+                <p id="agent-name"></p>
+            </td>
+            <td  align="right" width="25%">
+                <a href="#login-page" data-role="button" id="btn-salir" data-theme="e" data-icon="dalete" data-iconpos="left" data-inline="true">SALIR</a>
+            </td>
+        </tr>
+        </tbody></table>
     </div>
-    <div data-role="content">
-        <div>
-            <img id="agent-photo" style="width: 60px; height: 60px" src="" >
-            <p id="agent-name"></p>
-            <a href="#login-page" data-role="button" id="btn-salir" data-theme="e" data-icon="dalete" data-iconpos="left" data-inline="true">SALIR</a>
-        </div>
-        
-        <div data-role="content"><h3><span id="verificacion-cod"></span></h3></div>
-        
+    
+ <div data-role=="nav"> 
         <div data-role="fieldcontain">
-            <input name="current-position" id="current-position" placeholder="" value="" type="text" disabled="disabled">
+         <input name="current-position" id="current-position" placeholder="" value="" type="text" readonly> 
         </div>
-        <div data-role="fieldcontain">
-            <textarea name="service-addr" id="service-addr" placeholder="Dirección"></textarea>
-        </div>
-        
-        <div id="btn-aplico-wrap"><input type="button" id="btn-aplico" value="APLICO" data-theme="e" data-icon="plus" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
-        <div id="btn-entregado-wrap"><input type="button" id="btn-entregado" value="ENTREGADO" data-theme="e" data-icon="check" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
-        <div id="btn-llego-wrap"><input type="button" id="btn-llego" value="ARRIBO" data-theme="e" data-icon="check" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
-        <div id="btn-cancelar-wrap"><input type="button" id="btn-cancelar" value="CANCELAR" data-icon="delete" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
-        
     </div>
+
+    <div data-role="article">
+        <div data-role="section">
+            <h3><span id="verificacion-cod"></span></h3>
+            <div data-role="fieldcontain">
+                <textarea name="service-addr" id="service-addr" placeholder="Dirección"></textarea>
+            </div>
+        </div>
+      
+        <div data-role="section">
+            <div id="btn-aplico-wrap"><input type="button" id="btn-aplico" value="APLICO" data-theme="e" data-icon="plus" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>  
+        </div>
+        
+        <div data-role="section">
+            <div id="btn-entregado-wrap"><input type="button" id="btn-entregado" value="ENTREGADO" data-theme="e" data-icon="check" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
+        </div>
+        
+        <div data-role="section">
+            <div id="btn-llego-wrap"><input type="button" id="btn-llego" value="ARRIBO" data-theme="e" data-icon="check" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
+        </div>
+        
+        <div data-role="section">
+            <div id="btn-cancelar-wrap"><input type="button" id="btn-cancelar" value="CANCELAR" data-icon="delete" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
+        </div>
+
+    </div>
+
+   
     <div data-theme="e" data-role="footer" data-position="fixed">
         <h3>
             © 2013 PidaTaxi.com

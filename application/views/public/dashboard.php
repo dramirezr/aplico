@@ -40,7 +40,13 @@
 			<input id="state_c" name="state_c" type="hidden" value="">
 			<input id="country" name="country" type="hidden" value="">
             <div data-role="fieldcontain">
-                <input name="address" id="address" value="" type="text" data-mini="true" >
+            	<table border=0 width="100%"><tbody>
+        		<tr><td >
+                	<input name="address" id="address" value="" type="text" data-mini="true" >
+            	</td><td >
+                	<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="c" data-inline="true">Search</a>
+                </td></tr>
+                </tbody></table>
             </div>    		
     	 </form>        
     </div>
@@ -51,7 +57,7 @@
 
     <div data-theme="e" data-role="footer" data-position="fixed">
         <h3>
-            Â© 2013 <?= $this->config->item('app_name') ?>
+            © 2013 <?= $this->config->item('app_name') ?>
         </h3>
     </div>
         

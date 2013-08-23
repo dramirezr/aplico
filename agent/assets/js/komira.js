@@ -1,18 +1,21 @@
 //var server = 'http://aplico.dev/es/';
-//var server = 'http://app.pidataxi.com/es/';
-var server = 'http://localhost/aplico/es/';
+var server = 'http://app.pidataxi.com/es/';
+//var server = 'http://localhost/aplico/es/';
 
 var lat = lng = deslat = destlng = 0;
 var scode = null;
 var user = null;
 var localizationDemonId;
 var updateLocationDemonId;
-var verification_interval = 10000;
+var verification_interval = 15000;
 var verifyServiceDemonId;
 var verifyServiceStateDemonId;
 var geoOptions = { timeout: verification_interval };
 var ubicacionServicio = null;
 var request_id = null;
+var username = null;
+var password = null;
+var switchBgDemon = null;
 
 $(document).ready(function() {
     
@@ -24,37 +27,9 @@ $(document).ready(function() {
     
     $('#do-login').click(function(e){
         
-        var username = $('#username').val();
-        var password = $('#password').val();
-        
-        $.ajax({
-            type : "GET",
-            url : server + 'api/login',        
-            dataType : "json",
-            data : {
-                username : username,
-                password : password,
-                hms1: scode
-            }
-        }).done(function(response){
-            
-            if(response.state=='ok'){
-                $("#show-dashboard").trigger('click');
-                user = response.data
-                $('#agent-name').html(user.nombre);
-                $('#agent-photo').attr('src', "../assets/images/agents/" + user.foto) ;
-                
-                localizame();
-                localizationDemonId = setInterval(localizame, verification_interval);
-                updateLocationDemonId = setInterval(updateLocation, verification_interval);
-                verifyServiceDemonId = setInterval(verifyService, verification_interval);
-                
-            }else{
-                alert(response.msg);
-                //$('#popupBasic').html();
-                //$('#popupBasic').popup();             
-            }
-        }); 
+        username = $('#username').val();
+        password = $('#password').val();
+        login(username, password);
 
     });
 
@@ -83,12 +58,46 @@ $(document).ready(function() {
         clearInterval(localizationDemonId);
         clearInterval(updateLocationDemonId);
         clearInterval(verifyServiceDemonId);
-        
-        
-    
     });
     
 });
+
+function login(id, key){
+
+    clearInterval(localizationDemonId);
+    clearInterval(updateLocationDemonId);
+    clearInterval(verifyServiceDemonId);
+    
+        $.ajax({
+            type : "GET",
+            url : server + 'api/login',        
+            dataType : "json",
+            data : {
+                username : id,
+                password : key,
+                hms1: scode
+            }
+        }).done(function(response){
+            
+            if(response.state=='ok'){
+                $("#show-dashboard").trigger('click');
+                user = response.data
+                $('#agent-name').html(user.nombre);
+                $('#agent-photo').attr('src', "../assets/images/agents/" + user.foto) ;
+                
+                localizame();
+                localizationDemonId = setInterval(localizame, verification_interval);
+                updateLocationDemonId = setInterval(updateLocation, verification_interval);
+                verifyServiceDemonId = setInterval(verifyService, verification_interval);
+                
+                $('#service-addr').val('');
+            }else{
+                alert(response.msg);
+                //$('#popupBasic').html();
+                //$('#popupBasic').popup();             
+            }
+        });     
+}
 
 function arrival_confirmation(){
     $.ajax({
@@ -113,23 +122,44 @@ function verifyService(){
             lat : lat,
             lng : lng,
             hms1: scode
-        }
-    }).done(function(response){        
-        if(response.state == 'ok'){
-            request_id = response.request;
-            destlat = response.latitud;
-            destlng = response.longitud;
-            ubicacionServicio = response.ubicacion;
+        },
+        success: function(response){        
+        	if(response.state == 'ok'){
+            	request_id = response.request;
+            	destlat = response.latitud;
+            	destlng = response.longitud;
+            	ubicacionServicio = response.ubicacion;
             
-            $('#service-addr').html(response.sector);
-            $('#btn-aplico-wrap').show();
-            $('#btn-cancelar-wrap').show();
+            	$('#service-addr').val(response.sector);
+            	$('#btn-aplico-wrap').show();
+            	$('#btn-cancelar-wrap').show();
             
-            clearInterval(verifyServiceDemonId);
+            	clearInterval(verifyServiceDemonId);
             
-            $.playSound('/assets/audio/ring.mp3');
-        }
+            	$.playSound('/assets/audio/ring.mp3');
+            	switchBgDemon = setInterval(switchServiceAddrBg, 1000);
+            	$('#service-addr').css('background-color', 'red');
+            	
+        	}
+    	},
+    	error: function (xhr, ajaxOptions, thrownError) {
+        	//console.log(xhr);
+        	login(username, password);
+      }
     });
+}
+
+var bgColor = null;
+function switchServiceAddrBg(){
+	if(bgColor != 'red'){
+		bgColor = 'red';
+		$('#service-addr').css('background-color', 'red');
+		$('#service-addr').css('color', 'white');
+	}else{
+		bgColor = 'white';
+		$('#service-addr').css('background-color', 'white');
+		$('#service-addr').css('color', 'black');		
+	}
 }
 
 function switchToFree(){
@@ -162,7 +192,8 @@ function cancel_service(){
         
     verifyServiceDemonId = setInterval(verifyService, verification_interval);
     clearInterval(verifyServiceStateDemonId);
-    
+    resetSrvAddrBg();
+     
     $.ajax({
         type : "GET",
         url : server + 'agent/cancel_service',        
@@ -194,9 +225,18 @@ function service_delivered(){
     switchToFree();
 }
 
+function resetSrvAddrBg(){
+    clearInterval(switchBgDemon);
+	bgColor = 'white';
+	$('#service-addr').css('background-color', 'white');
+	$('#service-addr').css('color', 'black');
+	$('#service-addr').val('');
+}
+
 function confirm_service(){
     
     $('#confirm-service').hide();
+    resetSrvAddrBg();
     
     $.ajax({
         type : "GET",
@@ -212,8 +252,8 @@ function confirm_service(){
             $('#btn-aplico-wrap').hide();
             $('#btn-entregado-wrap').show();
             $('#btn-llego-wrap').show();
-            $('#verificacion-cod').html('Servicio en curso, Codigo VerificaciÃ³n: ' + request_id);
-            $('#service-addr').html(ubicacionServicio);
+            $('#verificacion-cod').html('Su Código de Verificación: ' + request_id);
+            $('#service-addr').val(ubicacionServicio);
 
             verifyServiceStateDemonId = setInterval(verifyServiceState, verification_interval);
             $.playSound('assets/audio/yes.mp3');
@@ -245,6 +285,9 @@ function verifyServiceState(){
 }
 
 function updateLocation(){
+	
+	$('#current-position').parent().css('background-color', 'yellow');
+	
     $.ajax({
         type : "GET",
         url : server + 'agent/update_location',        
@@ -252,11 +295,16 @@ function updateLocation(){
         data : {
             lat : lat,
             lng : lng
-        } 
+        },
+        
     } ).done(function(response){
+    		$('#position-state').attr('src','assets/images/green_dot.png');
+    		$('#current-position').parent().css('background-color', '#FFFFFF');
+    		
             if(response.state != 'ok'){
-                $('#current-position').val('Si actualizar coordenadas');
+                $('#current-position').val('-------------------------'); 
             }
+            
         }); 
 }
 
@@ -265,7 +313,7 @@ function localizame() {
     if (navigator.geolocation) { 
         navigator.geolocation.getCurrentPosition(coords, errores);
     }else{
-        $('#current-position').val('No hay soporte para la geolocalizaciÃ³n.');
+        $('#current-position').val('No hay soporte para la geolocalización.');
     }
 }
 
@@ -278,16 +326,16 @@ function coords(position) {
 function errores(err) {
     /*Controlamos los posibles errores */
     if (err.code == 0) {
-        $('#current-position').val("Error en la geolocalizaciÃ³n");
+        $('#current-position').val("Error en la geolocalización.");
     }
     if (err.code == 1) {
-        $('#current-position').val("Para utilizar esta aplicaciÃ³n por favor aceptar compartir tu posiciÃ³n gegrafica.");
+        $('#current-position').val("Para utilizar esta aplicación por favor aceptar compartir tu posición gegrafica.");
     }
     if (err.code == 2) {
-        $('#current-position').val("No se puede obtener la posiciÃ³n actual desde tu dispositivo");
+        $('#current-position').val("No se puede obtener la posición actual desde tu dispositivo.");
     }
     if (err.code == 3) {
-        $('#current-position').val("Hemos superado el tiempo de espera. Vuelve a intentarlo");
+        $('#current-position').val("Hemos superado el tiempo de espera. Vuelve a intentarlo.");
     }
 }
 
@@ -303,7 +351,7 @@ function get_sec_code(){
         if(response.state == 'ok'){
             scode = response.code;
         }else{
-            $('#popupBasic').html('No hay conexiÃ³n al servidor, intente de nuevo mas tarde.');
+            $('#popupBasic').html('No hay conexión al servidor, intente de nuevo mas tarde.');
             $('#popupBasic').popup();
         }
     }); 

@@ -124,6 +124,12 @@ $(document).ready(function() {
     $('#show-taxi').click(function(e){
         taxiLocationDemonId = setInterval(getTaxiLocation, verification_interval);
     });
+
+    $('#btn-address-search').click(function(e){
+         e.preventDefault();
+         address_search();
+    });
+    
     
 });
 
@@ -249,11 +255,16 @@ function verifyServiceState(){
     }); 
 }
 
+
+
+
+
+
 function localizame() {
     if (navigator.geolocation) { /* Si el navegador tiene geolocalizacion */
         navigator.geolocation.getCurrentPosition(coordenadas, errores);
     }else{
-        alert('Tu navegador no soporta geolocalizaciÃ³n. BÃ¡jate Chrome, que es gratis!');
+        alert('No hay soporte para la geolocalización.');
     }
 }
 
@@ -270,22 +281,50 @@ function coordenadas(position) {
     cargarMapa();
 }
 
+
+
 function errores(err) {
     /*Controlamos los posibles errores */
     if (err.code == 0) {
-      alert("Algo ha salido mal");
+      alert("Error en la geolocalización.");
     }
     if (err.code == 1) {
-      alert("No has aceptado compartir tu posiciÃ³n");
+      alert("No has aceptado compartir tu posición.");
     }
     if (err.code == 2) {
-      alert("No se puede obtener la posiciÃ³n actual");
+      alert("No se puede obtener la posición actual.");
     }
     if (err.code == 3) {
-      alert("Hemos superado el tiempo de espera");
+      alert("Hemos superado el tiempo de espera. Vuelve a intentarlo.");
     }
 }
  
+
+function address_search() {
+ var address = document.getElementById("address").value;
+ 
+ geocoder.geocode( { 'address': address}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+        
+        //coordenadas(results[0].geometry.location);
+          
+        latitud=results[0].geometry.location.mb;
+        longitud=results[0].geometry.location.nb;
+        
+        codeLatLng(latitud, longitud);
+       
+        $('#lat').val(latitud);
+        $('#lng').val(longitud);
+        
+        cargarMapa();
+        
+
+    } else {
+        alert('No hay soporte para la geolocalización.');
+    }
+ });
+}
+
 function cargarMapa() {
     var latlon = new google.maps.LatLng(latitud,longitud); /* Creamos un punto con nuestras coordenadas */
     var myOptions = {
@@ -353,7 +392,16 @@ function codeLatLng(lat, lng) {
                 pais = (tam == 5) ? results[0].address_components[3] : results[0].address_components[4] ;
                 depto = (tam == 5) ? results[0].address_components[4] : results[0].address_components[2] ;
                 
-                formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
+                //console.log(results[0]);  
+                formatted_addr = sector.long_name + ', ' + results[0].formatted_address;
+                var guion = formatted_addr.indexOf("-");
+                if (guion>0) {
+                    formatted_addr = formatted_addr.substring(0, guion) + ' - ';
+                } else{
+                    formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
+                }
+                
+                    
                 
                 $('#address').val(formatted_addr);
                 $('#show-address').html(formatted_addr);
@@ -364,7 +412,7 @@ function codeLatLng(lat, lng) {
                 
     
             } else {
-                $('#address').val('No encontrÃ³ una direcciÃ³n asociada a las coordenadas.');
+                $('#address').val('No encontró una dirección asociada a las coordenadas.');
             }
             
         } else {
