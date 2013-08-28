@@ -363,6 +363,9 @@ $config['app_name'] = 'PidaTaxi.com';
 $config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 5000; //In milliseconds
  
+$config['agent_verification_interval'] = 5000; //In milliseconds
+$config['agent_updatelocation_interval'] = 5000; //In milliseconds
+ 
  
 /* End of file config.php */
 /* Location: ./application/config/config.php */

@@ -101,11 +101,18 @@ class Api extends CI_Controller {
 		$this->solicitud->update($queryId, array('estado' => 'C'));
 	}
 	
-	function scode(){
+	function agent_init(){
 		if($this->input->is_ajax_request()){
 			$scode = md5(uniqid());
 			$this->session->set_userdata('scode', $scode);
-			die(json_encode(array('state' => 'ok', 'code' => $scode)));
+			$data = array(
+				'state' => 'ok',
+				'code' => $scode,
+				'verification_interval' => ci_config('agent_verification_interval'),
+				'updatelocation_interval' => ci_config('agent_updatelocation_interval')
+			);
+			
+			die(json_encode($data));
 //			die(json_encode(array('state' => 'ok', 'code' => $this->security->get_csrf_hash())));
 		}else{
 			die(json_encode(array('state' => 'error')));	

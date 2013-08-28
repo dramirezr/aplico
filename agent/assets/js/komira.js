@@ -1,13 +1,14 @@
-//var server = 'http://aplico.dev/es/';
-var server = 'http://app.pidataxi.com/es/';
-//var server = 'http://localhost/aplico/es/';
+var http = location.protocol;
+var slashes = http.concat("//");
+var server = slashes.concat(window.location.hostname) + '/es/';
 
 var lat = lng = deslat = destlng = 0;
 var scode = null;
 var user = null;
 var localizationDemonId;
 var updateLocationDemonId;
-var verification_interval = 15000;
+var verification_interval = null;
+var updatelocation_interval = null;
 var verifyServiceDemonId;
 var verifyServiceStateDemonId;
 var geoOptions = { timeout: verification_interval };
@@ -23,7 +24,7 @@ $(document).ready(function() {
     
     $("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
     
-    get_sec_code();
+    init();
     
     $('#do-login').click(function(e){
         
@@ -292,20 +293,25 @@ function updateLocation(){
         type : "GET",
         url : server + 'agent/update_location',        
         dataType : "json",
+        timeout : 5000,
         data : {
             lat : lat,
             lng : lng
         },
         
-    } ).done(function(response){
+    }).done(function(response){
     		$('#position-state').attr('src','assets/images/green_dot.png');
     		$('#current-position').parent().css('background-color', '#FFFFFF');
     		
             if(response.state != 'ok'){
-                $('#current-position').val('-------------------------'); 
+                $('#current-position').val('-------------------------');
+            }else{
+            	$('#current-position').val('Latitud: ' + lat + ' Longitud: ' + lng);
             }
             
-        }); 
+     }).fail(function(jqXHR, textStatus, errorThrown){
+    	 $('#current-position').val('======= Error de conexión =======');
+     }); 
 }
 
 
@@ -319,8 +325,7 @@ function localizame() {
 
 function coords(position) {
     lat = position.coords.latitude;
-    lng = position.coords.longitude;   
-    $('#current-position').val('Latitud: ' + lat + ' Longitud: ' + lng);
+    lng = position.coords.longitude;
 }
 
 function errores(err) {
@@ -340,16 +345,19 @@ function errores(err) {
 }
 
 
-function get_sec_code(){
+function init(){
     $.ajax({
         type : "GET",
-        url : server + 'api/scode',        
+        url : server + 'api/agent_init',        
         dataType : "json",
         data : {}
     }).done(function(response){
         $.mobile.loading( "hide" );
         if(response.state == 'ok'){
             scode = response.code;
+            verification_interval = response.verification_interval;
+            updatelocation_interval = response.updatelocation_interval;
+
         }else{
             $('#popupBasic').html('No hay conexión al servidor, intente de nuevo mas tarde.');
             $('#popupBasic').popup();
