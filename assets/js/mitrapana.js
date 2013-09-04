@@ -126,8 +126,8 @@ $(document).ready(function() {
     });
 
     $('#btn-address-search').click(function(e){
-         e.preventDefault();
-         address_search();
+        e.preventDefault();
+        address_search();
     });
     
     
@@ -140,6 +140,20 @@ var verifyServiceStatus;
 var taxiLocationDemonId;
 var agentId;
 var taxiMarker;
+
+
+function validarEnter(e) {
+    if (window.event) {
+        keyval=e.keyCode
+    } else 
+        if (e.which) {
+            keyval=e.which
+        } 
+    if (keyval=="13") {
+        e.preventDefault();
+        address_search();
+    } 
+}
 
 function getTaxiLocation(){
        $.ajax({
@@ -301,16 +315,15 @@ function errores(err) {
  
 
 function address_search() {
- var address = document.getElementById("address").value;
- 
+ var address = 'colombia,'+document.getElementById("address").value;
  geocoder.geocode( { 'address': address}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
-        
-        //coordenadas(results[0].geometry.location);
-          
-        latitud=results[0].geometry.location.mb;
-        longitud=results[0].geometry.location.nb;
-        
+   
+        latitud=results[0].geometry.location.ob;
+        longitud=results[0].geometry.location.pb;
+        //console.log(results[0]);
+        //console.log('latitud:'+results[0].geometry.location.lat);
+        //console.log('longitud:'+results[0].geometry.location.lng);
         codeLatLng(latitud, longitud);
        
         $('#lat').val(latitud);
@@ -328,7 +341,7 @@ function address_search() {
 function cargarMapa() {
     var latlon = new google.maps.LatLng(latitud,longitud); /* Creamos un punto con nuestras coordenadas */
     var myOptions = {
-        zoom: 18,
+        zoom: 16,
         center: latlon, /* Definimos la posicion del mapa con el punto */
         navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, 
         mapTypeControl: true, 
@@ -350,24 +363,29 @@ function cargarMapa() {
         icon : 'assets/images/male.png',
     });
 
+   google.maps.event.addListener(map, "center_changed", function() {
+        var posicion = map.getCenter();
+        console.log(posicion.lng());
+        marcador.setPosition(posicion);
+        codeLatLng(posicion.lat(), posicion.lng());
+       
+       // console.log(coorMarcador);
+        $('#lat').val(posicion.lat());
+        $('#lng').val(posicion.lng());
+    });
 
     google.maps.event.addListener(marcador, "dragend", function(evento) {
-        //Obtengo las coordenadas separadas
+       
         var latitud = evento.latLng.lat();
         var longitud = evento.latLng.lng();
-            
-        //Puedo unirlas en una unica variable si asi lo prefiero
         var coordenadas = evento.latLng.lat() + ", " + evento.latLng.lng();
             
-        //Las muestro con un popup
-        //alert(coordenadas);
-
-        codeLatLng(evento.latLng.lat(), evento.latLng.lng());
-        
+       codeLatLng(evento.latLng.lat(), evento.latLng.lng());
+       
+       // console.log(coorMarcador);
         $('#lat').val(evento.latLng.lat());
         $('#lng').val(evento.latLng.lng());
-
-    }); //Fin del evento
+    }); 
 
 
 }
@@ -416,7 +434,7 @@ function codeLatLng(lat, lng) {
             }
             
         } else {
-            $('#address').val("Fallo en las Appis de Google : "+ status);
+            //$('#address').val("Fallo en las Appis de Google : "+ status);
         }
     });
 }

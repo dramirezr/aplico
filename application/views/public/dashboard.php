@@ -42,7 +42,7 @@
             <div data-role="fieldcontain">
             	<table border=0 width="100%"><tbody>
         		<tr><td >
-                	<input name="address" id="address" value="" type="text" data-mini="true" >
+                	<input name="address" id="address" value="" type="text" data-mini="true" onkeydown="return validarEnter(event)">
             	</td><td >
                 	<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="c" data-inline="true">Search</a>
                 </td></tr>

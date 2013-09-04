@@ -8,10 +8,11 @@
 
 
 <link rel="stylesheet" href="assets/css/jquery.mobile-1.3.2.min.css" />
+<link rel="stylesheet" href="assets/css/app.css" /> 
 <script src="assets/js/jquery-1.10.2.min.js"></script>
 <script src="assets/js/jquery.mobile-1.3.2.min.js"></script>
 <script src="assets/js/jquery.playSound.js"></script>
-
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
 <script src="assets/js/komira.js"></script>
 
 </head>
@@ -85,6 +86,10 @@
 
     <div data-role="article">
         <div data-role="section">
+            <a data-role="button" data-theme="a" href="#maps-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" id="btn-vermapa">Ver mapa</a>
+        </div>
+        
+        <div data-role="section">
             <h3><span id="verificacion-cod"></span></h3>
             <div data-role="fieldcontain">
                 <textarea name="service-addr" id="service-addr" placeholder="Dirección"></textarea>
@@ -92,15 +97,15 @@
         </div>
       
         <div data-role="section">
-            <div id="btn-aplico-wrap"><input type="button" id="btn-aplico" value="APLICO" data-theme="e" data-icon="plus" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>  
-        </div>
-        
-        <div data-role="section">
-            <div id="btn-entregado-wrap"><input type="button" id="btn-entregado" value="ENTREGADO" data-theme="e" data-icon="check" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
+            <div id="btn-aplico-wrap"><input type="button" id="btn-aplico" value="ACEPTAR" data-theme="e" data-icon="plus" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>  
         </div>
         
         <div data-role="section">
             <div id="btn-llego-wrap"><input type="button" id="btn-llego" value="ARRIBO" data-theme="e" data-icon="check" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
+        </div>
+
+        <div data-role="section">
+            <div id="btn-entregado-wrap"><input type="button" id="btn-entregado" value="ENTREGADO" data-theme="e" data-icon="check" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
         </div>
         
         <div data-role="section">
@@ -117,6 +122,24 @@
     </div>
 </div>
 <!-- Home -->
+
+<!-- Start of third page: #popup -->
+<div data-role="page" id="maps-modal" data-close-btn="none">
+    
+        <div data-role="header" data-theme="e">
+            <a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn-regresar">Regresar</a>
+            <h1>Mapa del servicio</h1>
+        </div><!-- /header -->
+        <div data-role="article" height="320" >
+            <div data-role="section">
+                <div id="map_canvas" width="480" height="320"> </div>
+            </div>
+        </div>
+        
+        
+   
+</div><!-- /page popup -->
+
 
 </body>
 </html>

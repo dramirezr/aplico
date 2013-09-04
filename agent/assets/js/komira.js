@@ -1,6 +1,6 @@
 var http = location.protocol;
 var slashes = http.concat("//");
-var server = slashes.concat(window.location.hostname) + '/es/';
+var server = slashes.concat(window.location.hostname) + '/aplico/es/';
 
 var lat = lng = deslat = destlng = 0;
 var scode = null;
@@ -17,6 +17,33 @@ var request_id = null;
 var username = null;
 var password = null;
 var switchBgDemon = null;
+var lat_user = null;
+var lng_user = null;
+
+var styles = [
+                  {
+                        "featureType": "poi",
+                        "stylers": [
+                          { "visibility": "off" }
+                        ]
+                      },{
+                        "featureType": "transit",
+                        "stylers": [
+                          { "visibility": "off" }
+                        ]
+                      },{
+                        "featureType": "landscape.man_made",
+                        "stylers": [
+                          { "visibility": "off" }
+                        ]
+                      }
+                    ];
+    
+var map;
+//var latitud;
+//var longitud;
+//var geocoder = new google.maps.Geocoder();
+
 
 $(document).ready(function() {
     
@@ -33,7 +60,7 @@ $(document).ready(function() {
         login(username, password);
 
     });
-
+    
     
     $('#btn-cancelar').click(function(e){
         e.preventDefault();
@@ -60,8 +87,15 @@ $(document).ready(function() {
         clearInterval(updateLocationDemonId);
         clearInterval(verifyServiceDemonId);
     });
+
     
 });
+
+
+$(document).on('pagebeforeshow', '#maps-modal', function(){ 
+    console.log('cargando mapa');
+    cargarMapa();
+ });
 
 function login(id, key){
 
@@ -127,8 +161,10 @@ function verifyService(){
         success: function(response){        
         	if(response.state == 'ok'){
             	request_id = response.request;
-            	destlat = response.latitud;
-            	destlng = response.longitud;
+            	//destlat = response.latitud;
+            	//destlng = response.longitud;
+                lat_user = response.latitud;
+                lng_user = response.longitud;
             	ubicacionServicio = response.ubicacion;
             
             	$('#service-addr').val(response.sector);
@@ -255,7 +291,7 @@ function confirm_service(){
             $('#btn-llego-wrap').show();
             $('#verificacion-cod').html('Su Código de Verificación: ' + request_id);
             $('#service-addr').val(ubicacionServicio);
-
+            
             verifyServiceStateDemonId = setInterval(verifyServiceState, verification_interval);
             $.playSound('assets/audio/yes.mp3');
         } else {
@@ -327,6 +363,35 @@ function coords(position) {
     lat = position.coords.latitude;
     lng = position.coords.longitude;
 }
+
+function cargarMapa() {
+    var latlon = new google.maps.LatLng(lat,lng); /* Creamos un punto con nuestras coordenadas */
+    var myOptions = {
+        zoom: 15,
+        center: latlon, /* Definimos la posicion del mapa con el punto */
+        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, 
+        mapTypeControl: true, 
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles : styles
+
+    };/* HYBRID  Configuramos una serie de opciones como el zoom del mapa y el tipo.*/
+    map = new google.maps.Map($("#map_canvas").get(0), myOptions); /*Creamos el mapa y lo situamos en su capa */
+    
+    /*Creamos un marcador AGENTE*/   
+    agentMarker = new google.maps.Marker({
+            position: new google.maps.LatLng( lat, lng ),
+            map: map,
+            icon : 'assets/images/taxi.png'
+    });
+    /*Creamos un marcador USUARIO*/   
+    userMarker = new google.maps.Marker({
+            position: new google.maps.LatLng( lat_user, lng_user ),
+            map: map,
+            icon : 'assets/images/male.png'
+    });
+}
+
+
 
 function errores(err) {
     /*Controlamos los posibles errores */

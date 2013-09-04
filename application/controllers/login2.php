@@ -5,15 +5,13 @@ class Login extends CI_Controller {
 	var $title = 'Login';
 	var $error = NULL;
 	var $enterprise = NULL;
-	var $userconfig = NULL;
-	
 	
 	function __construct(){
 		parent::__construct();
 		
-		if($userconfig = $this->session->userdata('userconfig')){
-			$this->lang->switch_uri($userconfig->lang);		
-			redirect($user->lang.'admin'); 
+		if($agent = $this->session->userdata('agent')){
+			$this->lang->switch_uri($agent->lang);		
+			redirect($user->lang.'agent'); 
 		}
 		
 		// load language file
@@ -30,20 +28,20 @@ class Login extends CI_Controller {
 		$username = $this->input->post('username', TRUE); 
 		$password = $this->input->post('password', TRUE);
 		 
-		$this->load->model('usuarios');
+		$this->load->model('agente');
 		
-		if(!$usuarios = $this->usuarios->get_for_login($username, $password)){
+		if(!$agente = $this->agente->get_for_login($username, $password)){
 			$this->error = lang('login.error.noauth');
 			$this->index();
 			return false;
 		}
 		
 		//Create the session
-		$usuarios->clave = NULL;
-		$this->session->set_userdata('userconfig', $usuarios);
+		$agente->clave = NULL;
+		$this->session->set_userdata('agente', $agente);
 				
 		$this->lang->switch_uri($user->lang);		
-		redirect($user->lang.'admin'); 
+		redirect($user->lang.'agent'); 
 	}
 	
 	private function load_view(){

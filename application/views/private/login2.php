@@ -72,7 +72,22 @@
 		</div>
 	</div>
 
-	
+	<div class="row">
+	  <div class="large-6 large-centered columns">
+       	<?
+       		if($this->lang->lang() == 'en'){
+       			$other_lang = 'es';
+       			$other_lang_txt = 'Español';            			
+       		}else{
+       			$other_lang = 'en';
+       			$other_lang_txt = 'English';            			
+       		}
+       	?>
+       	<a href="<?=base_url($other_lang)?>/login" class="button secondary tiny"><?=$other_lang_txt?></a>
+	  
+	  </div>
+	</div>
+
   <!-- END body content here -->
 
 
