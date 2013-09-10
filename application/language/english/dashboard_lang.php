@@ -9,7 +9,7 @@ $lang['dashboard.agentcode2'] = 'Plate';
 $lang['dashboard.callconfirm.title'] = 'Call Confirmation';
 $lang['dashboard.callconfirm.content'] = 'Are you sure call a service at this location';
 
-$lang['dashboard.cancel'] = 'Cancel';
+$lang['dashboard.cancel'] = 'Cancel service';
 $lang['dashboard.confirm'] = 'Confirm';
 
 $lang['dashboard.error.attempts'] = 'There is not available services at the moment, please, try again few minutes latter';
@@ -19,6 +19,7 @@ $lang['dashboard.agentid'] = 'Id';
 $lang['dashboard.agentphone'] = 'Phone';
 $lang['dashboard.call'] = 'Call';
 $lang['dashboard.error.canceled_service'] = 'Service canceled';
+$lang['dashboard.error.arrival_service'] = 'The taxi service has arrived.!!!';
 $lang['dashboard.showtaxi'] = 'Show taxi';
 
 $lang['login.userlogin'] = 'Get in';

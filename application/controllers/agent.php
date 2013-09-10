@@ -143,10 +143,10 @@ class Agent extends CI_Controller {
 	function arrival_confirmation(){
 		$request_id = $this->input->get_post('request_id');
 		$this->load->model('solicitud');
-		$solicitud = $this->solicitud->get_by_id($request_id);
-		$this->solicitud->update($request_id, array('agente_arribo' => 1));
+		//$solicitud = $this->solicitud->get_by_id($request_id);
+		$update = $this->solicitud->update($request_id, array('agente_arribo' => 1));
 		
-		die(json_encode(array('state' => 'ok')));
+		die(json_encode(array('state' => 'ok', 'update' => $update)));
 	}
 	
 } 

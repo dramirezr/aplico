@@ -72,7 +72,7 @@
                 <p id="agent-name"></p>
             </td>
             <td  align="right" width="25%">
-                <a href="#login-page" data-role="button" id="btn-salir" data-theme="e" data-icon="dalete" data-iconpos="left" data-inline="true">SALIR</a>
+                <a data-role="button" data-theme="a" href="#maps-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" id="btn-vermapa">Ver mapa</a>
             </td>
         </tr>
         </tbody></table>
@@ -85,10 +85,7 @@
     </div>
 
     <div data-role="article">
-        <div data-role="section">
-            <a data-role="button" data-theme="a" href="#maps-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" id="btn-vermapa">Ver mapa</a>
-        </div>
-        
+              
         <div data-role="section">
             <h3><span id="verificacion-cod"></span></h3>
             <div data-role="fieldcontain">
@@ -101,7 +98,10 @@
         </div>
         
         <div data-role="section">
-            <div id="btn-llego-wrap"><input type="button" id="btn-llego" value="ARRIBO" data-theme="e" data-icon="check" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false"></div>
+            <div id="btn-llego-wrap">
+			<input type="button" data-theme="e" data-icon="arrow-r" data-iconpos="right"
+            value="ARRIBO" id="btn-llego">
+			</div>
         </div>
 
         <div data-role="section">
@@ -130,16 +130,18 @@
             <a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn-regresar">Regresar</a>
             <h1>Mapa del servicio</h1>
         </div><!-- /header -->
-        <div data-role="article" height="320" >
-            <div data-role="section">
-                <div id="map_canvas" width="480" height="320"> </div>
+        <div data-role="content" id="map_content" data-theme="a">
+            <div id="map_content">
+                <div id="map_canvas"></div>
             </div>
         </div>
-        
-        
    
 </div><!-- /page popup -->
 
+<audio id="yes" src="assets/audio/yes.mp3" preload="auto"></audio>
+<audio id="not" src="assets/audio/not.mp3" preload="auto"></audio>
+<audio id="ring" src="assets/audio/ring.mp3" preload="auto"></audio>
+<audio id="pito" src="assets/audio/pito.mp3" preload="auto"></audio>
 
 </body>
 </html>

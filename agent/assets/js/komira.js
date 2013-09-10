@@ -1,6 +1,7 @@
 var http = location.protocol;
 var slashes = http.concat("//");
 var server = slashes.concat(window.location.hostname) + '/aplico/es/';
+//var server = slashes.concat(window.location.hostname) + '/es/';
 
 var lat = lng = deslat = destlng = 0;
 var scode = null;
@@ -82,20 +83,26 @@ $(document).ready(function() {
         arrival_confirmation();
     });
     
-    $('#btn-salir').click(function(e){
-        clearInterval(localizationDemonId);
-        clearInterval(updateLocationDemonId);
-        clearInterval(verifyServiceDemonId);
-    });
-
+    
     
 });
 
 
+$( document ).bind( "pageshow", function( event, data ){
+google.maps.event.trigger(map_canvas, 'resize');
+});
+
 $(document).on('pagebeforeshow', '#maps-modal', function(){ 
-    console.log('cargando mapa');
+    $('#map_canvas').css('width', '100%');
+    $('#map_canvas').css('height', '300px');
+    //console.log('cargando mapa');
     cargarMapa();
  });
+
+
+function play_sound(element) {
+        document.getElementById(element).play();
+}
 
 function login(id, key){
 
@@ -121,6 +128,8 @@ function login(id, key){
                 $('#agent-photo').attr('src', "../assets/images/agents/" + user.foto) ;
                 
                 localizame();
+				updateLocation();
+				verifyService();
                 localizationDemonId = setInterval(localizame, verification_interval);
                 updateLocationDemonId = setInterval(updateLocation, verification_interval);
                 verifyServiceDemonId = setInterval(verifyService, verification_interval);
@@ -143,7 +152,9 @@ function arrival_confirmation(){
             request_id : request_id,
             hms1: scode
         }
-    }).done(function(response){});  
+    }).done(function(response){
+        play_sound('pito');
+    });  
     
 }
 
@@ -173,7 +184,8 @@ function verifyService(){
             
             	clearInterval(verifyServiceDemonId);
             
-            	$.playSound('/assets/audio/ring.mp3');
+            	//$.playSound('/assets/audio/ring.mp3');
+                play_sound('ring'); 
             	switchBgDemon = setInterval(switchServiceAddrBg, 1000);
             	$('#service-addr').css('background-color', 'red');
             	
@@ -293,10 +305,12 @@ function confirm_service(){
             $('#service-addr').val(ubicacionServicio);
             
             verifyServiceStateDemonId = setInterval(verifyServiceState, verification_interval);
-            $.playSound('assets/audio/yes.mp3');
+            //$.playSound('assets/audio/yes.mp3');
+             play_sound('yes'); 
         } else {
             //taken by other one
-            $.playSound('assets/audio/not.mp3');
+            //$.playSound('assets/audio/not.mp3');
+             play_sound('not'); 
             switchToFree();
         }
     }); 
@@ -314,7 +328,8 @@ function verifyServiceState(){
     }).done(function(response){
         if(response.state == 'error'){
             clearInterval(verifyServiceStateDemonId);
-            $.playSound('assets/audio/not.mp3');
+            //$.playSound('assets/audio/not.mp3');
+            play_sound('not'); 
             alert(response.msg);
             switchToFree();
         }
@@ -365,6 +380,8 @@ function coords(position) {
 }
 
 function cargarMapa() {
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    var directionsService = new google.maps.DirectionsService();
     var latlon = new google.maps.LatLng(lat,lng); /* Creamos un punto con nuestras coordenadas */
     var myOptions = {
         zoom: 15,
@@ -389,6 +406,26 @@ function cargarMapa() {
             map: map,
             icon : 'assets/images/male.png'
     });
+
+    var rendererOptions = {
+      map: map,
+      suppressMarkers : true
+    }
+    directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions)
+
+    var request = {
+      origin:  new google.maps.LatLng( lat, lng ),
+      destination:new google.maps.LatLng( lat_user, lng_user),
+      
+      travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+
+    directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        }
+    });
+    
 }
 
 

@@ -9,7 +9,7 @@ $lang['dashboard.agentcode2'] = 'Placa';
 $lang['dashboard.callconfirm.title'] = 'Confirmar llamada';
 $lang['dashboard.callconfirm.content'] = 'Seguro desea llamar un servicio a esta ubicación';
 
-$lang['dashboard.cancel'] = 'Cancelar';
+$lang['dashboard.cancel'] = 'Cancelar servicio';
 $lang['dashboard.confirm'] = 'Aceptar';
 
 $lang['dashboard.error.attempts'] = 'No hay servicios disponibles en la zona, intenta en unos minutos';
@@ -19,6 +19,7 @@ $lang['dashboard.agentid'] = 'Identificación';
 $lang['dashboard.agentphone'] = 'Tel';
 $lang['dashboard.call'] = 'Llamar';
 $lang['dashboard.error.canceled_service'] = 'El servicio fue cancelado';
+$lang['dashboard.error.arrival_service'] = 'El servicio de taxi ha llegado.!!!';
 $lang['dashboard.showtaxi'] = 'Ver taxi';
 
 $lang['login.userlogin'] = 'Ingreso';

@@ -122,6 +122,7 @@ $(document).ready(function() {
     });
     
     $('#show-taxi').click(function(e){
+        getTaxiLocation();
         taxiLocationDemonId = setInterval(getTaxiLocation, verification_interval);
     });
 
@@ -129,11 +130,13 @@ $(document).ready(function() {
         e.preventDefault();
         address_search();
     });
-    
-    
+
+  
 });
 
 
+
+    
 var demonId;
 var queryId;
 var verifyServiceStatus;
@@ -141,7 +144,10 @@ var taxiLocationDemonId;
 var agentId;
 var taxiMarker;
 
-
+function play_sound(element) {
+        document.getElementById(element).play();
+}
+   
 function validarEnter(e) {
     if (window.event) {
         keyval=e.keyCode
@@ -252,7 +258,10 @@ function verifyServiceState(){
         }
         
         if(response.state == 'arrival'){
-            $.playSound('/assets/audio/ring.mp3');
+            //$.playSound('/assets/audio/ring.mp3');
+            play_sound('pito'); 
+			updateStatusArribo();
+            alert(response.msg);
         }
 
         if(response.state == 'delivered'){
@@ -269,7 +278,19 @@ function verifyServiceState(){
     }); 
 }
 
-
+function updateStatusArribo(){
+    $.ajax({
+        type : "GET",
+        url : lang + '/api/updateStatusArribo',        
+        dataType : "json",
+        data : {
+            queryId : queryId,
+            demonId : verifyServiceStatus
+        }
+    }).done(function(response){
+      
+    }); 
+}
 
 
 
@@ -404,11 +425,11 @@ function codeLatLng(lat, lng) {
             if (results[1]) {
                 //formatted address
                 var tam = results[0].address_components.length;
-                
+                console.log(results[0]);
                 sector = results[0].address_components[2] ;
-                ciudad = (tam == 5) ? results[0].address_components[2] : results[0].address_components[3] ;
-                pais = (tam == 5) ? results[0].address_components[3] : results[0].address_components[4] ;
-                depto = (tam == 5) ? results[0].address_components[4] : results[0].address_components[2] ;
+                ciudad = (tam == 6) ? results[0].address_components[3] : results[0].address_components[2] ;
+                depto = (tam == 6) ? results[0].address_components[4] : results[0].address_components[3] ;
+                pais = (tam == 6) ? results[0].address_components[5] : results[0].address_components[4] ;
                 
                 //console.log(results[0]);  
                 formatted_addr = sector.long_name + ', ' + results[0].formatted_address;

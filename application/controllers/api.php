@@ -42,10 +42,17 @@ class Api extends CI_Controller {
 		
 		if($inquiry->agente_arribo == 1){
 			$this->solicitud->update($queryId, array('agente_arribo' => 0));
-			die(json_encode(array('state' => 'arrival')));
+			die(json_encode(array('state' => 'arrival', 'msg' => lang('dashboard.error.arrival_service'))));
 		}
 		
-		die(json_encode(array('state' => 1)));
+		die(json_encode(array('state' => 1,  'arribo' =>$inquiry->id)));
+	}
+
+	function updateStatusArribo(){
+		$this->load->model('solicitud');
+		$queryId = $this->input->get_post('queryId');
+		$this->solicitud->update($queryId, array('agente_arribo' => 0));
+		die(json_encode(array('state' => 'ok')));
 	}
 	
 	function verify_call(){
