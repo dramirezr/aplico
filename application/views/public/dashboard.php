@@ -29,7 +29,7 @@
 
 <div data-role="page" id="page1">
     <div data-theme="e" data-role="header">
-    	<a data-role="button" data-theme="a" href="#page1" class="ui-btn-left" id="btn-localizame"><?=lang('dashboard.localizame')?></a>
+    	<a data-role="button"  data-theme="a" class="ui-btn-left" id="btn-localizame" ><?=lang('dashboard.localizame')?></a>
     	<h3><?= $this->config->item('app_name') ?></h3>
         <a data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" id="agent-call"><?=lang('dashboard.calltaxi')?></a>
        	<?= form_open('api/call', array('id' => 'call-form', 'class' => '')) ?>
@@ -109,5 +109,6 @@
 <audio id="ring" src="assets/audio/ring.mp3" preload="auto"></audio>
  -->
 <audio id="pito" src="assets/audio/pito.mp3" preload="auto"></audio>
+<audio id="yes" src="assets/audio/yes.mp3" preload="auto"></audio>
 </body>
 </html>

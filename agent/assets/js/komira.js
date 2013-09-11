@@ -1,7 +1,7 @@
 var http = location.protocol;
 var slashes = http.concat("//");
-var server = slashes.concat(window.location.hostname) + '/aplico/es/';
-//var server = slashes.concat(window.location.hostname) + '/es/';
+//var server = slashes.concat(window.location.hostname) + '/aplico/es/';
+var server = slashes.concat(window.location.hostname) + '/es/';
 
 var lat = lng = deslat = destlng = 0;
 var scode = null;

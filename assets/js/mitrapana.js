@@ -22,6 +22,8 @@ var styles = [
 var map;
 var latitud;
 var longitud;
+var latitudOriginal;
+var longitudOriginal;
 var geocoder = new google.maps.Geocoder();
 
 $(document).ready(function() {
@@ -114,7 +116,7 @@ $(document).ready(function() {
     
     $('#btn-localizame').click(function(e){
         e.preventDefault();
-        localizame();
+        setUserIcon(latitudOriginal, longitudOriginal);
     });    
     
     $('#agent-call').click(function(e){
@@ -143,6 +145,7 @@ var verifyServiceStatus;
 var taxiLocationDemonId;
 var agentId;
 var taxiMarker;
+var userMarker;
 
 function play_sound(element) {
         document.getElementById(element).play();
@@ -179,8 +182,6 @@ function getTaxiLocation(){
 }
 
 function setTaxiIcon(lat, lng){
-    
-    
     if(taxiMarker){
         taxiMarker.setPosition( new google.maps.LatLng( lat, lng ) );
     }else{
@@ -190,8 +191,11 @@ function setTaxiIcon(lat, lng){
             icon : 'assets/images/taxi.png'
         });
     }
-        
-    
+}
+
+
+function setUserIcon(lat, lng){
+    userMarker.setPosition( new google.maps.LatLng( lat, lng ) );
 }
 
 function reset_modal(){
@@ -234,6 +238,9 @@ function verifyCall(){
             $('#agent-wrapper').show();
             
             $.mobile.loading("hide");
+            
+            play_sound('yes'); 
+
             clearInterval(demonId);
             verifyServiceStatus = setInterval(verifyServiceState, verification_interval);
         }
@@ -306,6 +313,8 @@ function localizame() {
 function coordenadas(position) {
     latitud = position.coords.latitude; /*Guardamos nuestra latitud*/
     longitud = position.coords.longitude; /*Guardamos nuestra longitud*/
+    latitudOriginal  = latitud;
+    longitudOriginal = longitud;
     //document.getElementById("direccion").value = "Estoy en : ( latitud: "+latitud+", longitud: "+longitud+" ) ";
     
     codeLatLng(latitud, longitud);
@@ -370,13 +379,14 @@ function cargarMapa() {
         styles : styles
 
     };/* HYBRID  Configuramos una serie de opciones como el zoom del mapa y el tipo.*/
+
     map = new google.maps.Map($("#map_canvas").get(0), myOptions); /*Creamos el mapa y lo situamos en su capa */
     
 
-     var coorMarcador = new google.maps.LatLng(latitud,longitud); /*Un nuevo punto con nuestras coordenadas para el marcador (flecha) */
+    var coorMarcador = new google.maps.LatLng(latitud,longitud); /*Un nuevo punto con nuestras coordenadas para el marcador (flecha) */
 
     /*Creamos un marcador*/             
-    var marcador = new google.maps.Marker({
+    userMarker = new google.maps.Marker({
         position: coorMarcador, /*Lo situamos en nuestro punto */
         map: map, /* Lo vinculamos a nuestro mapa */
         animation: google.maps.Animation.DROP, 
@@ -387,7 +397,7 @@ function cargarMapa() {
    google.maps.event.addListener(map, "center_changed", function() {
         var posicion = map.getCenter();
         console.log(posicion.lng());
-        marcador.setPosition(posicion);
+        userMarker.setPosition(posicion);
         codeLatLng(posicion.lat(), posicion.lng());
        
        // console.log(coorMarcador);
@@ -395,7 +405,7 @@ function cargarMapa() {
         $('#lng').val(posicion.lng());
     });
 
-    google.maps.event.addListener(marcador, "dragend", function(evento) {
+    google.maps.event.addListener(userMarker, "dragend", function(evento) {
        
         var latitud = evento.latLng.lat();
         var longitud = evento.latLng.lng();
