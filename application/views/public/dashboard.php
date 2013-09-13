@@ -29,9 +29,9 @@
 
 <div data-role="page" id="page1">
     <div data-theme="e" data-role="header">
-    	<a data-role="button"  data-theme="a" class="ui-btn-left" id="btn-localizame" ><?=lang('dashboard.localizame')?></a>
+    	<a id="btn-localizame" data-role="button"  data-theme="a" class="ui-btn-left"  ><?=lang('dashboard.localizame')?></a>
     	<h3><?= $this->config->item('app_name') ?></h3>
-        <a data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" id="agent-call"><?=lang('dashboard.calltaxi')?></a>
+        <a id="agent-call" data-role="button" data-theme="a" id="btn-localizame" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.calltaxi')?></a>
        	<?= form_open('api/call', array('id' => 'call-form', 'class' => '')) ?>
 			<input id="lat" name="lat" type="hidden" value="">
 			<input id="lng" name="lng" type="hidden" value="">

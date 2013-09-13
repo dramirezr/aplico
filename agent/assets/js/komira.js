@@ -411,7 +411,7 @@ function cargarMapa() {
       map: map,
       suppressMarkers : true
     }
-    directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions)
+    directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 
     var request = {
       origin:  new google.maps.LatLng( lat, lng ),

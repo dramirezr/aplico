@@ -25,6 +25,8 @@ var longitud;
 var latitudOriginal;
 var longitudOriginal;
 var geocoder = new google.maps.Geocoder();
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
 
 $(document).ready(function() {
    
@@ -124,6 +126,10 @@ $(document).ready(function() {
     });
     
     $('#show-taxi').click(function(e){
+        if(directionsDisplay != null) { 
+            directionsDisplay.setMap(null);
+            directionsDisplay = null; 
+        }
         getTaxiLocation();
         taxiLocationDemonId = setInterval(getTaxiLocation, verification_interval);
     });
@@ -190,7 +196,31 @@ function setTaxiIcon(lat, lng){
             map: map,
             icon : 'assets/images/taxi.png'
         });
+        
+        //para el calculo de la ruta
+        var rendererOptions = {
+              map: map,
+              suppressMarkers : true
+            }
+        
+        directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+        directionsDisplay.setMap(map);
+     
+        var request = {
+          origin:  new google.maps.LatLng( latitud, longitud ),
+          destination:new google.maps.LatLng( lat, lng),
+          
+          travelMode: google.maps.DirectionsTravelMode.DRIVING
+        };
+
+        directionsService.route(request, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }
+        });
     }
+    
+
 }
 
 
@@ -279,7 +309,11 @@ function verifyServiceState(){
             if(taxiMarker){
                 taxiMarker.setMap(null);
                 taxiMarker = null;
-            }               
+            }      
+            if(directionsDisplay != null) { 
+                directionsDisplay.setMap(null);
+                directionsDisplay = null; 
+            }         
         }
 
     }); 
@@ -300,8 +334,6 @@ function updateStatusArribo(){
 }
 
 
-
-
 function localizame() {
     if (navigator.geolocation) { /* Si el navegador tiene geolocalizacion */
         navigator.geolocation.getCurrentPosition(coordenadas, errores);
@@ -315,7 +347,6 @@ function coordenadas(position) {
     longitud = position.coords.longitude; /*Guardamos nuestra longitud*/
     latitudOriginal  = latitud;
     longitudOriginal = longitud;
-    //document.getElementById("direccion").value = "Estoy en : ( latitud: "+latitud+", longitud: "+longitud+" ) ";
     
     codeLatLng(latitud, longitud);
 
@@ -348,19 +379,16 @@ function address_search() {
  var address = 'colombia,'+document.getElementById("address").value;
  geocoder.geocode( { 'address': address}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
-   
-        latitud=results[0].geometry.location.ob;
-        longitud=results[0].geometry.location.pb;
-        //console.log(results[0]);
-        //console.log('latitud:'+results[0].geometry.location.lat);
-        //console.log('longitud:'+results[0].geometry.location.lng);
+                
+        latitud=results[0].geometry.location.lat();
+        longitud=results[0].geometry.location.lng();
+        
         codeLatLng(latitud, longitud);
        
         $('#lat').val(latitud);
         $('#lng').val(longitud);
         
         cargarMapa();
-        
 
     } else {
         alert('No hay soporte para la geolocalización.');
@@ -381,8 +409,8 @@ function cargarMapa() {
     };/* HYBRID  Configuramos una serie de opciones como el zoom del mapa y el tipo.*/
 
     map = new google.maps.Map($("#map_canvas").get(0), myOptions); /*Creamos el mapa y lo situamos en su capa */
-    
 
+    
     var coorMarcador = new google.maps.LatLng(latitud,longitud); /*Un nuevo punto con nuestras coordenadas para el marcador (flecha) */
 
     /*Creamos un marcador*/             
@@ -394,6 +422,7 @@ function cargarMapa() {
         icon : 'assets/images/male.png',
     });
 
+   /*
    google.maps.event.addListener(map, "center_changed", function() {
         var posicion = map.getCenter();
         console.log(posicion.lng());
@@ -404,12 +433,11 @@ function cargarMapa() {
         $('#lat').val(posicion.lat());
         $('#lng').val(posicion.lng());
     });
-
+*/
     google.maps.event.addListener(userMarker, "dragend", function(evento) {
        
-        var latitud = evento.latLng.lat();
-        var longitud = evento.latLng.lng();
-        var coordenadas = evento.latLng.lat() + ", " + evento.latLng.lng();
+        latitud = evento.latLng.lat();
+        longitud = evento.latLng.lng();
             
        codeLatLng(evento.latLng.lat(), evento.latLng.lng());
        
@@ -418,6 +446,11 @@ function cargarMapa() {
         $('#lng').val(evento.latLng.lng());
     }); 
 
+    /* 
+    google.maps.event.addListener(taxiMarker, 'click', function() {
+        console.log('entrooooo..');
+    });
+    */
 
 }
 
@@ -435,7 +468,7 @@ function codeLatLng(lat, lng) {
             if (results[1]) {
                 //formatted address
                 var tam = results[0].address_components.length;
-                console.log(results[0]);
+                //console.log(results[0]);
                 sector = results[0].address_components[2] ;
                 ciudad = (tam == 6) ? results[0].address_components[3] : results[0].address_components[2] ;
                 depto = (tam == 6) ? results[0].address_components[4] : results[0].address_components[3] ;
