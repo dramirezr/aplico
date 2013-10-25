@@ -95,6 +95,7 @@
   <script src="<?=base_url()?>assets/foundation/js/foundation/foundation.section.js"></script>
   <script src="<?=base_url()?>assets/foundation/js/foundation/foundation.tooltips.js"></script>
   <script src="<?=base_url()?>assets/foundation/js/foundation/foundation.topbar.js"></script>
+  
   <script>
   $(document).foundation();
   

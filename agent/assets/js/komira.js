@@ -1,7 +1,8 @@
 var http = location.protocol;
 var slashes = http.concat("//");
-//var server = slashes.concat(window.location.hostname) + '/aplico/es/';
-var server = slashes.concat(window.location.hostname) + '/es/';
+
+var server = slashes.concat(window.location.hostname) + '/aplico/es/';
+//var server = slashes.concat(window.location.hostname) + '/es/';
 
 var lat = lng = deslat = destlng = 0;
 var scode = null;
@@ -20,6 +21,8 @@ var password = null;
 var switchBgDemon = null;
 var lat_user = null;
 var lng_user = null;
+var placa = null;
+var fecha_sos = null;
 
 var styles = [
                   {
@@ -50,12 +53,12 @@ $(document).ready(function() {
     
     $.mobile.loading( "show" );
     
-    $("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
+    $("#audio-wrap, #btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
     
     init();
     
     $('#do-login').click(function(e){
-        
+		play_sound('click'); 
         username = $('#username').val();
         password = $('#password').val();
         login(username, password);
@@ -64,26 +67,46 @@ $(document).ready(function() {
     
     
     $('#btn-cancelar').click(function(e){
-        e.preventDefault();
-        cancel_service();
+		e.preventDefault();
+   		play_sound('click'); 
+ 		cancel_service();
     });
     
     $('#btn-aplico').click(function(e){
-        e.preventDefault();
-        confirm_service();
+	    e.preventDefault();
+   		play_sound('click'); 
+ 		confirm_service();
     });
 
     $('#btn-entregado').click(function(e){
-        e.preventDefault();
+		e.preventDefault();
+		play_sound('click'); 
         service_delivered();
     });
     
     $('#btn-llego').click(function(e){
-        e.preventDefault();
-        arrival_confirmation();
+		e.preventDefault();
+		play_sound('click'); 
+ 		arrival_confirmation();
     });
     
+    $('#btn-sos').click(function(e){
+		e.preventDefault();
+		play_sound('click'); 
+ 		help_me();
+    });
     
+    $( "#btn-address" ).click(function(e){
+		e.preventDefault();
+		play_sound('click'); 
+        get_address(lat,lng);
+    });
+    $( "#sonido" ).click(function(e){
+ 		e.preventDefault();
+		play_sound('click'); 
+		play_sound('pito');
+        //checkAudioCompat();
+    });
     
 });
 
@@ -94,10 +117,32 @@ google.maps.event.trigger(map_canvas, 'resize');
 
 $(document).on('pagebeforeshow', '#maps-modal', function(){ 
     $('#map_canvas').css('width', '100%');
-    $('#map_canvas').css('height', '300px');
+    $('#map_canvas').css('height', '500px');
     //console.log('cargando mapa');
     cargarMapa();
+
  });
+
+
+
+ function checkAudioCompat() {
+       var myAudio = document.createElement('audio');
+      if (myAudio.canPlayType) {
+          // CanPlayType returns maybe, probably, or an empty string.
+          if ( "" != myAudio.canPlayType('audio/mpeg')) {
+              alert("mp3 supported");
+          }
+          if ( "" != myAudio.canPlayType('audio/ogg; codecs="vorbis"')) {
+              alert("ogg supported");
+          }
+         if ( "" != myAudio.canPlayType('audio/mp4; codecs="mp4a.40.5"')) {
+              alert("aac supported");
+          }
+      }
+      else {
+         alert("no audio support");
+      }
+  }
 
 
 function play_sound(element) {
@@ -105,46 +150,47 @@ function play_sound(element) {
 }
 
 function login(id, key){
-
     clearInterval(localizationDemonId);
-    clearInterval(updateLocationDemonId);
-    clearInterval(verifyServiceDemonId);
     
-        $.ajax({
-            type : "GET",
-            url : server + 'api/login',        
-            dataType : "json",
-            data : {
-                username : id,
-                password : key,
-                hms1: scode
-            }
-        }).done(function(response){
+    clearInterval(verifyServiceDemonId);
+
+    $.ajax({
+        type : "GET",
+        url : server + 'api/login',        
+        dataType : "json",
+        data : {
+            username : id,
+            password : key,
+            hms1: scode
+        }
+    }).done(function(response){
+        
+        if(response.state=='ok'){
+            $("#show-dashboard").trigger('click');
+            user = response.data
+            $('#agent-name').html(user.nombre);
+            $('#agent-photo').attr('src', "../assets/images/agents/" + user.foto) ;
             
-            if(response.state=='ok'){
-                $("#show-dashboard").trigger('click');
-                user = response.data
-                $('#agent-name').html(user.nombre);
-                $('#agent-photo').attr('src', "../assets/images/agents/" + user.foto) ;
-                
-                localizame();
-				updateLocation();
-				verifyService();
-                localizationDemonId = setInterval(localizame, verification_interval);
-                updateLocationDemonId = setInterval(updateLocation, verification_interval);
-                verifyServiceDemonId = setInterval(verifyService, verification_interval);
-                
-                $('#service-addr').val('');
-            }else{
-                alert(response.msg);
-                //$('#popupBasic').html();
-                //$('#popupBasic').popup();             
-            }
-        });     
+            clearInterval(updateLocationDemonId);    
+            localizame();
+			updateLocation();
+			verifyService();
+            localizationDemonId = setInterval(localizame, verification_interval);
+            updateLocationDemonId = setInterval(updateLocation, verification_interval);
+            verifyServiceDemonId = setInterval(verifyService, verification_interval);
+            placa = user.placa;
+            $('#text-sos').html('El vehiculo '+user.placa+' solicita ayuda en : ');
+            //$('#service-addr').val('');
+            
+        }else{
+            alert(response.msg);
+        }
+    });     
 }
 
 function arrival_confirmation(){
-    $.ajax({
+    play_sound('pito');
+	$.ajax({
         type : "GET",
         url : server + 'agent/arrival_confirmation',        
         dataType : "json",
@@ -153,7 +199,7 @@ function arrival_confirmation(){
             hms1: scode
         }
     }).done(function(response){
-        play_sound('pito');
+        
     });  
     
 }
@@ -171,9 +217,9 @@ function verifyService(){
         },
         success: function(response){        
         	if(response.state == 'ok'){
-            	request_id = response.request;
-            	//destlat = response.latitud;
-            	//destlng = response.longitud;
+            	play_sound('pito'); 
+				request_id = response.request;
+            	
                 lat_user = response.latitud;
                 lng_user = response.longitud;
             	ubicacionServicio = response.ubicacion;
@@ -184,8 +230,6 @@ function verifyService(){
             
             	clearInterval(verifyServiceDemonId);
             
-            	//$.playSound('/assets/audio/ring.mp3');
-                play_sound('ring'); 
             	switchBgDemon = setInterval(switchServiceAddrBg, 1000);
             	$('#service-addr').css('background-color', 'red');
             	
@@ -193,8 +237,8 @@ function verifyService(){
     	},
     	error: function (xhr, ajaxOptions, thrownError) {
         	//console.log(xhr);
-        	login(username, password);
-      }
+        	//login(username, password);
+        }
     });
 }
 
@@ -319,21 +363,22 @@ function confirm_service(){
 function verifyServiceState(){
     $.ajax({
         type : "GET",
-        url : server + 'api/verify_service_status',        
+        url : server + 'agent/verify_service_status',        
         dataType : "json",
         data : {
             queryId : request_id,
             demonId : verifyServiceStateDemonId
         }
     }).done(function(response){
-        if(response.state == 'error'){
+        //si el servicio es cancelado por el usuario
+        if(response.state == 'cancel'){
             clearInterval(verifyServiceStateDemonId);
             //$.playSound('assets/audio/not.mp3');
             play_sound('not'); 
             alert(response.msg);
             switchToFree();
         }
-    }); 
+    });  
 }
 
 function updateLocation(){
@@ -362,9 +407,62 @@ function updateLocation(){
             
      }).fail(function(jqXHR, textStatus, errorThrown){
     	 $('#current-position').val('======= Error de conexión =======');
-     }); 
+         login(username, password);
+      }); 
+     //verificar mensaje de ayuda de otros agentes.
+     get_sos();
 }
 
+
+
+function help_me(){
+    
+    $.ajax({
+        type : "GET",
+        url : server + 'agent/help_me',        
+        dataType : "json",
+        timeout : 5000,
+        data : {
+            lat :  lat,
+            lng :  lng,
+            addr : $('#text-sos').val(),
+        },
+        
+    }).done(function(response){
+       if(response.state == 'ok'){
+            alert('Su solicitud de ayuda fue enviada con exito.');
+        }else{
+            alert('ERROR al enviar la solicitud, vuelve a intentarlo.');
+        }
+     }).fail(function(jqXHR, textStatus, errorThrown){
+        alert('ERROR al enviar la solicitud, vuelve a intentarlo.');
+      }); 
+}
+
+function get_sos(){
+    
+    $.ajax({
+        type : "GET",
+        url : server + 'agent/get_sos',        
+        dataType : "json",
+        timeout : 5000,
+        data : {
+            lat :  lat,
+            lng :  lng
+        },
+        
+    }).done(function(response){
+       if(response.state == 'ok'){
+            if((response.fecha_sos!=fecha_sos)){
+                fecha_sos = response.fecha_sos;
+                play_sound('yes'); 
+                alert(response.direccion_sos);
+            }
+        }
+     }); 
+
+
+}
 
 function localizame() {
     if (navigator.geolocation) { 
@@ -446,6 +544,42 @@ function errores(err) {
     }
 }
 
+
+var sector = null;
+var formatted_addr = null;
+var geocoder = new google.maps.Geocoder();
+
+function get_address(lat, lng) {
+
+    var latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({'latLng': latlng}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+                var tam = results[0].address_components.length;
+                sector = results[0].address_components[2] ;
+                
+                formatted_addr = sector.long_name + ', ' + results[0].formatted_address;
+                var guion = formatted_addr.indexOf("-");
+                if (guion>0) {
+                    formatted_addr = formatted_addr.substring(0, guion) + ' - ';
+                } else{
+                    formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
+                }
+                
+            
+//                $('#address').val(formatted_addr);
+                $('#text-sos').html('El vehiculo '+placa+' solicita ayuda en '+formatted_addr);
+                
+    
+            } else {
+                $('#text-sos').val('No encontró una dirección asociada a las coordenadas.');
+            }
+            
+        } else {
+            //$('#address').val("Fallo en las Appis de Google : "+ status);
+        }
+    });
+}
 
 function init(){
     $.ajax({

@@ -11,15 +11,20 @@
 <link rel="stylesheet" href="assets/css/app.css" /> 
 <script src="assets/js/jquery-1.10.2.min.js"></script>
 <script src="assets/js/jquery.mobile-1.3.2.min.js"></script>
-<script src="assets/js/jquery.playSound.js"></script>
+<!-- <script src="assets/js/jquery.playSound.js"></script>-->
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
 <script src="assets/js/komira.js"></script>
 
+
 </head>
 <body>
-
 <div data-role="popup" id="popupBasic"></div>
-
+<div id="audio-wrap">
+<audio id="pito" src="assets/audio/pito.mp3" type="audio/mpeg"  autobuffer controls></audio>
+<audio id="click" src="assets/audio/click.mp3"  type="audio/mpeg"  autobuffer controls></audio>
+<audio id="yes"  src="assets/audio/yes.mp3"  type="audio/mpeg"  autobuffer controls></audio>
+<audio id="not"  src="assets/audio/not.mp3"  type="audio/mpeg"  autobuffer controls></audio>
+</div>
 <!-- Login -->
 <div data-role="page" id="login-page">
     <div data-theme="e" data-role="header">
@@ -53,6 +58,7 @@
     </div>
     <div data-theme="e" data-role="footer" data-position="fixed">
         <h3>
+		<!--<input type="button" id="sonido" value="sonido" data-theme="e"> </audio>-->
             © 2013 PidaTaxi.com
         </h3>
     </div>
@@ -65,14 +71,17 @@
     <div data-theme="e" data-role="header">
          <table border=0 width="100%"><tbody>
         <tr>
-            <td align="center" width="25%">
+            <td  align="right" width="20%">
+                <a data-role="button" data-theme="a" href="#sos-modal" data-rel="dialog" data-transition="pop" id="sos-modal">s.o.s</a>
+            </td>
+            <td align="center" width="20%">
                <img id="agent-photo" style="width: 50px; height: 50px" src="" >
             </td>
-            <td align="left" width="50%">
+            <td align="left" width="40%">
                 <p id="agent-name"></p>
             </td>
-            <td  align="right" width="25%">
-                <a data-role="button" data-theme="a" href="#maps-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" id="btn-vermapa">Ver mapa</a>
+            <td  align="right" width="20%">
+                <a data-role="button" data-theme="a" href="#maps-modal" data-rel="dialog" data-transition="pop" id="btn-vermapa">Ver mapa</a>
             </td>
         </tr>
         </tbody></table>
@@ -92,28 +101,26 @@
                 <textarea name="service-addr" id="service-addr" placeholder="Dirección"></textarea>
             </div>
         </div>
-      
+        
         <div data-role="section">
             <div id="btn-aplico-wrap">
-                <input type="button" id="btn-aplico" value="ACEPTAR" data-theme="e" data-icon="plus" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false">
+                <input type="button" id="btn-aplico" value="ACEPTAR" data-theme="e" data-icon="plus"  data-iconpos="top" class="ui-btn-hidden" aria-disabled="false">
             </div>  
         </div>
-        
         <div data-role="section">
             <div id="btn-llego-wrap">
-			     <input type="button" data-theme="a" data-icon="arrow-r" data-iconpos="right"value="ARRIBO" id="btn-llego">
+			     <input type="button" data-theme="a" data-icon="arrow-r" data-iconpos="top" value="ARRIBO" id="btn-llego">
 			</div>
         </div>
-
         <div data-role="section">
             <div id="btn-entregado-wrap">
-                <input type="button" id="btn-entregado" value="ENTREGADO" data-theme="e" data-icon="check" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false">
+                <input type="button" id="btn-entregado" value="ENTREGADO" data-theme="e" data-icon="check" data-iconpos="top" class="ui-btn-hidden" aria-disabled="false">
             </div>
         </div>
-        
+      
         <div data-role="section">
             <div id="btn-cancelar-wrap">
-                <input type="button" id="btn-cancelar" value="CANCELAR" data-icon="delete" data-iconpos="left" class="ui-btn-hidden" aria-disabled="false">
+                <input type="button" id="btn-cancelar" value="CANCELAR" data-icon="delete" data-iconpos="top" class="ui-btn-hidden" aria-disabled="false">
             </div>
         </div>
 
@@ -143,10 +150,24 @@
    
 </div><!-- /page popup -->
 
-<audio id="yes" src="assets/audio/yes.mp3" preload="auto"></audio>
-<audio id="not" src="assets/audio/not.mp3" preload="auto"></audio>
-<audio id="ring" src="assets/audio/ring.mp3" preload="auto"></audio>
-<audio id="pito" src="assets/audio/pito.mp3" preload="auto"></audio>
+<!-- Start of third page: #popup -->
+<div data-role="page" id="sos-modal" data-close-btn="none">
+    
+        <div data-role="header" data-theme="e">
+            <h1>Solicitar ayuda</h1>
+            <a id="btn-address" data-role="button"  data-theme="a" class="ui-btn-right"  >Mi localización</a>
+        </div><!-- /header -->
+        <div data-role="content" id="sos_content" data-theme="a">
+            <textarea name="text-sos" id="text-sos" ></textarea>
+        </div>
+        
+        <p>
+            <a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn-sos">Pedir ayuda</a>
+            <a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn-cancelation">Regresar</a>
+        </p>
+</div><!-- /page popup -->
+
+
 
 </body>
 </html>

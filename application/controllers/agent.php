@@ -39,10 +39,29 @@ class Agent extends CI_Controller {
 		$id = $this->input->get_post('id');
 		
 		$id = $id ? $id : $this->agent->id;
+		if(($lat<>0) and ($lat<>0) ){ 
+			$this->agente->update($id, array('latitud' => $lat, 'longitud' => $lng, 'fecha_localizacion' => date('Y-m-d H:i:s')));
+			die(json_encode(array('state' => 'ok')));
+		}else{
+			die(json_encode(array('state' => 'error')));
+		}
+	}
+
+	function help_me(){
+		$lat = $this->input->get_post('lat');
+		$lng = $this->input->get_post('lng');
+		$id = $this->input->get_post('id');
+		$addr = $this->input->get_post('addr');
+
 		
-		$this->agente->update($id, array('latitud' => $lat, 'longitud' => $lng, 'fecha_localizacion' => date('Y-m-d H:i:s')));
-		
-		die(json_encode(array('state' => 'ok')));
+		$id = $id ? $id : $this->agent->id;
+		if(($lat<>0) and ($lat<>0) ){ 
+			$this->agente->update($id, array('direccion_sos' => $addr, 'fecha_sos' => date('Y-m-d H:i:s')  ));
+			
+			die(json_encode(array('state' => 'ok')));
+		}else{
+			die(json_encode(array('state' => 'error')));
+		}
 	}
 	
 	function switch_to_busy(){
@@ -83,8 +102,10 @@ class Agent extends CI_Controller {
 		
 		$id = $this->input->get_post('id');	
 		$id = $id ? $id : $this->agent->id;
+		$lat = $this->input->get_post('lat');
+		$lng = $this->input->get_post('lng');
 
-		$request = $this->agente->get_nearest_request($id);
+		$request = $this->agente->get_nearest_request($id,$lat,$lng);
 		
 		if(!$request){
 			die(json_encode(array('state' => '')));
@@ -101,6 +122,28 @@ class Agent extends CI_Controller {
 		
 		$this->agente->update($id, array('estado_servicio' => 'OCUPADO'));
 		
+		die(json_encode($response));
+	}
+
+	function get_sos(){
+		$id = $this->input->get_post('id');	
+		$id = $id ? $id : $this->agent->id;
+		$lat = $this->input->get_post('lat');
+		$lng = $this->input->get_post('lng');
+
+		$request = $this->agente->get_sos($id,$lat,$lng);
+		
+		if(!$request){
+			die(json_encode(array('state' => '','agenteid' => $id)));
+		}
+		
+		$response = array(
+			'state' => 'ok',
+			'agente' => $request->id,
+			'fecha_sos' => $request->fecha_sos,
+			'direccion_sos' => $request->direccion_sos
+		);
+
 		die(json_encode($response));
 	}
 	
@@ -149,6 +192,22 @@ class Agent extends CI_Controller {
 		die(json_encode(array('state' => 'ok', 'update' => $update)));
 	}
 	
+
+function verify_service_status(){
+		$this->load->model('solicitud');
+		$this->lang->load('dashboard');
+
+		$queryId = $this->input->get_post('queryId');
+
+		$inquiry = $this->solicitud->get_by_id($queryId);
+		
+		if($inquiry->estado == 'C'){
+			die(json_encode(array('state' => 'cancel', 'msg' => lang('dashboard.error.canceled_service'))));
+		}
+		
+		die(json_encode(array('state' => 1,  'arribo' =>$inquiry->id)));
+	}
+
 } 
  
 /* End of file welcome.php */

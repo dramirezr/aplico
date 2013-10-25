@@ -30,7 +30,7 @@ var directionsService = new google.maps.DirectionsService();
 
 $(document).ready(function() {
    
-    $('#waiting-msg, #agent-wrapper').hide();
+    $('#waiting-msg, #agent-wrapper, #agent-call2-wrapper').hide();
     
     localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
     
@@ -89,7 +89,8 @@ $(document).ready(function() {
     });
     
     $('#call-confirmation').click(function(e){
-        
+       
+       if ($('input[name="address"]').val()!=''){   
         $.mobile.loading("show");
         $('#call-confirmation, #confirmation-msg').hide();
         $('#waiting-msg').show();
@@ -114,6 +115,10 @@ $(document).ready(function() {
                 demonId = setInterval(verifyCall, verification_interval);
             }
         });
+
+      }else{
+        alert('La direccón no debe ser vacia. Por favor escriba su ubicación.');
+      }
     });
     
     $('#btn-localizame').click(function(e){
@@ -130,6 +135,9 @@ $(document).ready(function() {
             directionsDisplay.setMap(null);
             directionsDisplay = null; 
         }
+        $('#agent-call-wrapper').hide();
+        $('#agent-call2-wrapper').show();
+        console.log('Ver Taxi');
         getTaxiLocation();
         taxiLocationDemonId = setInterval(getTaxiLocation, verification_interval);
     });
@@ -194,32 +202,37 @@ function setTaxiIcon(lat, lng){
         taxiMarker = new google.maps.Marker({
             position: new google.maps.LatLng( lat, lng ),
             map: map,
-            icon : 'assets/images/taxi.png'
+            icon : 'http://app.pidataxi.com/assets/images/taxi.png'
         });
         
-        //para el calculo de la ruta
-        var rendererOptions = {
-              map: map,
-              suppressMarkers : true
-            }
-        
-        directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-        directionsDisplay.setMap(map);
-     
-        var request = {
-          origin:  new google.maps.LatLng( latitud, longitud ),
-          destination:new google.maps.LatLng( lat, lng),
-          
-          travelMode: google.maps.DirectionsTravelMode.DRIVING
-        };
-
-        directionsService.route(request, function(response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(response);
-            }
-        });
+        tracerRoute(lat, lng, latitud, longitud);
     }
     
+
+}
+
+function tracerRoute(lat, lng, lat2, lng2){
+    //para el calculo de la ruta
+    var rendererOptions = {
+          map: map,
+          suppressMarkers : true
+        }
+    
+    directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+    directionsDisplay.setMap(map);
+ 
+    var request = {
+      origin:  new google.maps.LatLng(lat2, lng2),
+      destination:new google.maps.LatLng(lat, lng),
+      
+      travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+
+    directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        }
+    });
 
 }
 
@@ -236,6 +249,9 @@ function reset_modal(){
     
     $('#confirmation-msg').show();
     $('#agent-wrapper').hide();
+
+    $('#agent-call2-wrapper').hide();
+    $('#agent-call-wrapper').show();
 
 }
 
@@ -256,14 +272,28 @@ function verifyCall(){
         }
         
         if(response.state == '1'){
+            
             $('#agent-photo').html('<img height="150" width="150" src="' + response.agent.foto + '"/>');
             $('#agent-name').html(response.agent.nombre);
             agentId = response.agent.id
             $('#agent-id').html(response.agent.codigo);
             $('#agent-phone').html(response.agent.telefono);
             $('#confirmation-code').html('<span style="color: red; font-weight:bold;">' + queryId + '</span>');
-            $('#agent-code2').html(response.agent.codigo2);
-            
+            $('#agent-placa').html(response.agent.placa);
+            addr = response.agent.direccion;
+            addr=addr.replace("#","Num.");
+            coment = 'Viajo en el taxi con placa '+response.agent.placa+' saliendo de '+addr; 
+            //tw = '<a href="http://twitter.com/share?url=http://www.pidataxi.com/&text='+coment+'&via=pidataxi&related=hptxt"  rel="nofollow" target="_parent" ><img src="assets/images/social/twitter.png"/  height="32" width="32" alt="Twitter" ></img></a>';
+            //fc = '<a href="http://www.facebook.com/sharer.php?s=100&p[url]=http://www.pidataxi.com&p[title]=Servicio de taxi por dispositivo móvil PidaTaxi.com&p[summary]='+coment+'&&p[images][0]=http://www.pidataxi.com/icon.png" rel="nofollow" target="_parent" ><img src="assets/images/social/facebook.png"/  height="32" width="32" alt="Facebook" ></img></a>';
+            url = 'http://twitter.com/share?url=http://www.pidataxi.com/&text='+coment+'&via=pidataxi&related=hptxt';
+            tw = '<a href="'+url+'" rel="nofollow" target="_parent" data-rel="dialog" data-transition="slideup"><img src="assets/images/social/twitter.png" /></a>';
+            url = 'http://www.facebook.com/sharer.php?s=100&p[url]=http://www.pidataxi.com&p[title]=Servicio de taxi por dispositivo móvil PidaTaxi.com&p[summary]='+coment+'&&p[images][0]=http://www.pidataxi.com/icon.png';
+            fc = '<a href="'+url+'" target="_blank" data-rel="dialog" data-transition="slideup"><img src="assets/images/social/facebook.png" /></a>';
+            $('#share-twitter').html(tw);
+            $('#share-facebook').html(fc);
+
+    
+            //$('#share-info').html(tw+fc);
             $('#confirm-wrapper').hide();
             $('#agent-wrapper').show();
             
@@ -419,7 +449,7 @@ function cargarMapa() {
         map: map, /* Lo vinculamos a nuestro mapa */
         animation: google.maps.Animation.DROP, 
         draggable: true,
-        icon : 'assets/images/male.png',
+        icon : 'http://app.pidataxi.com/assets/images/male.png',
     });
 
    /*
@@ -433,7 +463,7 @@ function cargarMapa() {
         $('#lat').val(posicion.lat());
         $('#lng').val(posicion.lng());
     });
-*/
+    */
     google.maps.event.addListener(userMarker, "dragend", function(evento) {
        
         latitud = evento.latLng.lat();

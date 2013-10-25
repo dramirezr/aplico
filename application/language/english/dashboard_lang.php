@@ -21,6 +21,7 @@ $lang['dashboard.call'] = 'Call';
 $lang['dashboard.error.canceled_service'] = 'Service canceled';
 $lang['dashboard.error.arrival_service'] = 'The taxi service has arrived.!!!';
 $lang['dashboard.showtaxi'] = 'Show taxi';
+$lang['dashboard.infoshare'] = 'Share this information';
 
 $lang['login.userlogin'] = 'Get in';
 $lang['login.usercode'] = 'Code';

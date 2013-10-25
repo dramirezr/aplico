@@ -20,3 +20,30 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `fecha_localizacion` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `vehiculos` (
+  
+`id` int(11) NOT NULL AUTO_INCREMENT,
+  
+`placa` char(10) NOT NULL,
+  
+`modelo` char(4) DEFAULT NULL,
+  
+`marca` char(50) DEFAULT NULL,
+  
+`propietario` int(11) NOT NULL,
+  
+PRIMARY KEY (`id`),
+  
+UNIQUE KEY `placa` (`placa`),
+  KEY `placa_2` (`placa`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
+
+alter table agente add sos int(11) default 0;
+
+ALTER TABLE agente ADD fecha_sos datetime;
+
+ALTER TABLE agente ADD direccion_sos char(250) DEFAULT NULL;
+
+

@@ -21,9 +21,11 @@ $lang['dashboard.call'] = 'Llamar';
 $lang['dashboard.error.canceled_service'] = 'El servicio fue cancelado';
 $lang['dashboard.error.arrival_service'] = 'El servicio de taxi ha llegado.!!!';
 $lang['dashboard.showtaxi'] = 'Ver taxi';
+$lang['dashboard.infoshare'] = 'Comparte esta información en';
 
 $lang['login.userlogin'] = 'Ingreso';
 $lang['login.usercode'] = 'Código';
 $lang['login.password'] = 'Clave';
 $lang['login.start'] = 'Iniciar';
 $lang['login.error.noauth'] = 'Código o clave no autorizados';
+

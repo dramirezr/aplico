@@ -42,6 +42,9 @@ a:hover
 <body>
 	<div>
 		<a href='<?php echo site_url('admin/user_management')?>'>Usuarios del sistema</a> |
+		<a href='<?php echo site_url('admin/user_callcenter')?>'>Centro de atención</a> |
+		<a href='<?php echo site_url('admin/user_managervehicle')?>'>Dueños de Taxis</a> |
+		<a href='<?php echo site_url('admin/vehicle_management')?>'>Vehiculos</a> |
 		<a href='<?php echo site_url('admin/agent_management')?>'>Taxitas</a> |
 		<a href='<?php echo site_url('admin/solicitude_management')?>'>Solicitudes</a> |
 		<a href='<?php echo site_url('admin/service_agent')?>'>Servicios X Taxista</a> |

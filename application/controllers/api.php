@@ -4,22 +4,17 @@ class Api extends CI_Controller {
 
 	
 	public function call(){
-		
 		$this->load->model('solicitud');
-		
-		
-		$data['ubicacion'] = $this->input->get_post('address');
-		$data['latitud'] = $this->input->get_post('lat');
-		$data['longitud'] = $this->input->get_post('lng');
-		$data['sector'] = $this->input->get_post('zone');
-		$data['ciudad'] = $this->input->get_post('city');
-		$data['pais'] = $this->input->get_post('country');
-		$data['departamento'] = $this->input->get_post('state_c');
 				
-		//$data['idagente'] = 1;
-		
+		$data['ubicacion'] 		= $this->input->get_post('address');
+		$data['latitud'] 		= $this->input->get_post('lat');
+		$data['longitud'] 		= $this->input->get_post('lng');
+		$data['sector'] 		= $this->input->get_post('zone');
+		$data['ciudad'] 		= $this->input->get_post('city');
+		$data['pais'] 			= $this->input->get_post('country');
+		$data['departamento'] 	= $this->input->get_post('state_c');
+				
 		$queryId = $this->solicitud->create($data);
-		
 		
 		die(json_encode(array('state' => 'ok', 'queryId' => $queryId)) );
 	}
@@ -80,6 +75,7 @@ class Api extends CI_Controller {
 		//TODO: Validar si ya ha sido asignado el agente
 		$inquiry = $this->solicitud->get_by_id($queryId);
 		if($inquiry->idagente && $inquiry->estado == 'P'){
+
 			$agente = $this->agente->get_by_id($inquiry->idagente);
 			$data['foto'] = base_url().'assets/images/agents/'.$agente->foto;
 			$data['nombre'] = $agente->nombre;
@@ -87,7 +83,11 @@ class Api extends CI_Controller {
 			$data['telefono'] = $agente->telefono;
 			$data['codigo2'] = $agente->codigo2;
 			$data['id'] = $inquiry->idagente;			
-			
+			$this->load->model('vehiculos');
+			$vehiculo = $this->vehiculos->get_by_id($agente->vehiculo);
+			$data['placa'] = $vehiculo->placa;
+			$sol = $this->solicitud->get_by_id($queryId);
+			$data['direccion'] = $sol->ubicacion;
 			$this->agent_accept();
 			
 			die(json_encode(array('state' => 1, 'queryId' => $queryId, 'agent' => $data)) );
@@ -132,6 +132,7 @@ class Api extends CI_Controller {
 		$password = $this->input->get_post('password');
 		 
 		$this->load->model('agente');
+		$this->load->model('vehiculos');
 		$this->lang->load('dashboard');
 		
 		if(!$agente = $this->agente->get_for_login($username, $password)){
@@ -143,7 +144,10 @@ class Api extends CI_Controller {
 		$this->agente->update($idagente, array('estado_servicio' => 'LIBRE','estado' => 'P'));
 
 		//Create the session
+		$vehiculo = $this->vehiculos->get_by_id($agente->vehiculo);
 		$agente->clave = NULL;
+		$agente->placa = $vehiculo->placa;
+		
 		$this->session->set_userdata('agente', $agente);
 		
 		$session_data = $this->session->all_userdata();
@@ -159,5 +163,14 @@ class Api extends CI_Controller {
 		
 		die(json_encode(array('state' => 'ok', 'lat' => $agente->latitud, 'lng' => $agente->longitud)));
 	}
-	
+
+	function get_agets_location(){
+		$this->load->model('agente');
+		$userconfig = $this->session->userdata('userconfig');
+		$cust_id = $userconfig->id;
+		$agente = $this->agente->get_by_cust_id($cust_id);
+		
+		die(json_encode(array('state' => 'ok','agent' => $agente)));
+	}
+		
 }
