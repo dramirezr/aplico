@@ -244,7 +244,7 @@ $config['encryption_key'] = 'qazxsw21';
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']		= 'ci_session';
+$config['sess_cookie_name']		= 'cisession';
 $config['sess_expiration']		= 7200;
 $config['sess_expire_on_close']	= FALSE;
 $config['sess_encrypt_cookie']	= FALSE;
@@ -361,10 +361,13 @@ $config['proxy_ips'] = '';
  
 $config['app_name'] = 'PidaTaxi.com';
 $config['max_verification_attemps'] = 10;
-$config['verification_interval'] = 15000; //In milliseconds
+$config['verification_interval'] = 8000; //In milliseconds
  
-$config['agent_verification_interval'] = 15000; //In milliseconds
-$config['agent_updatelocation_interval'] = 15000; //In milliseconds
+$config['agent_verification_interval'] = 8000; //In milliseconds
+$config['agent_updatelocation_interval'] = 8000; //In milliseconds
+$config['distance_call'] = 2; //In kilometros
+$config['distance_call_sos'] = 5; //In kilometros
+
  
 /* End of file config.php */
 /* Location: ./application/config/config.php */

@@ -74,6 +74,8 @@ class Api extends CI_Controller {
 		
 		//TODO: Validar si ya ha sido asignado el agente
 		$inquiry = $this->solicitud->get_by_id($queryId);
+		//$nom=$inquiry->nombre;
+
 		if($inquiry->idagente && $inquiry->estado == 'P'){
 
 			$agente = $this->agente->get_by_id($inquiry->idagente);
@@ -168,7 +170,9 @@ class Api extends CI_Controller {
 		$this->load->model('agente');
 		$userconfig = $this->session->userdata('userconfig');
 		$cust_id = $userconfig->id;
-		$agente = $this->agente->get_by_cust_id($cust_id);
+		$cust_perfil = $userconfig->perfil;
+		$cust_idsucursal = $userconfig->idsucursal;
+		$agente = $this->agente->get_by_cust_id($cust_id,$cust_perfil,$cust_idsucursal);
 		
 		die(json_encode(array('state' => 'ok','agent' => $agente)));
 	}

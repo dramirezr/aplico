@@ -1,9 +1,9 @@
 var http = location.protocol;
 var slashes = http.concat("//");
 
-var server = slashes.concat(window.location.hostname) + '/aplico/es/';
-//var server = slashes.concat(window.location.hostname) + '/es/';
+var server = slashes.concat(window.location.hostname) + '/es/';
 
+//console.log(server);
 var lat = lng = deslat = destlng = 0;
 var scode = null;
 var user = null;
@@ -13,6 +13,7 @@ var verification_interval = null;
 var updatelocation_interval = null;
 var verifyServiceDemonId;
 var verifyServiceStateDemonId;
+var WaitVeryServiceDemonid;
 var geoOptions = { timeout: verification_interval };
 var ubicacionServicio = null;
 var request_id = null;
@@ -58,56 +59,50 @@ $(document).ready(function() {
     init();
     
     $('#do-login').click(function(e){
-		play_sound('click'); 
+        e.preventDefault();
+        play_sound('pito'); 
         username = $('#username').val();
         password = $('#password').val();
         login(username, password);
-
     });
     
-    
     $('#btn-cancelar').click(function(e){
-		e.preventDefault();
-   		play_sound('click'); 
- 		cancel_service();
+        e.preventDefault();
+        //play_sound('alerta'); 
+        cancel_service();
     });
     
     $('#btn-aplico').click(function(e){
-	    e.preventDefault();
-   		play_sound('click'); 
- 		confirm_service();
+        e.preventDefault();
+        //play_sound('alerta'); 
+        confirm_service();
     });
 
     $('#btn-entregado').click(function(e){
-		e.preventDefault();
-		play_sound('click'); 
+        e.preventDefault();
+        //play_sound('alerta'); 
         service_delivered();
     });
     
     $('#btn-llego').click(function(e){
-		e.preventDefault();
-		play_sound('click'); 
- 		arrival_confirmation();
+        e.preventDefault();
+        play_sound('pito'); 
+        arrival_confirmation();
     });
     
     $('#btn-sos').click(function(e){
-		e.preventDefault();
-		play_sound('click'); 
- 		help_me();
+        e.preventDefault();
+        //play_sound('alerta'); 
+        help_me();
     });
     
     $( "#btn-address" ).click(function(e){
-		e.preventDefault();
-		play_sound('click'); 
+        e.preventDefault();
+        //play_sound('alerta'); 
         get_address(lat,lng);
     });
-    $( "#sonido" ).click(function(e){
- 		e.preventDefault();
-		play_sound('click'); 
-		play_sound('pito');
-        //checkAudioCompat();
-    });
-    
+   
+
 });
 
 
@@ -146,13 +141,16 @@ $(document).on('pagebeforeshow', '#maps-modal', function(){
 
 
 function play_sound(element) {
-        document.getElementById(element).play();
+    document.getElementById(element).play();
 }
+
+
 
 function login(id, key){
     clearInterval(localizationDemonId);
-    
     clearInterval(verifyServiceDemonId);
+    
+    resetSrvAddrBg();
 
     $.ajax({
         type : "GET",
@@ -161,7 +159,8 @@ function login(id, key){
         data : {
             username : id,
             password : key,
-            hms1: scode
+            hms1: scode,
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){
         
@@ -170,11 +169,11 @@ function login(id, key){
             user = response.data
             $('#agent-name').html(user.nombre);
             $('#agent-photo').attr('src', "../assets/images/agents/" + user.foto) ;
-            
+            // ojoooo no se puede sacar clearInterval de este lado por que no se reinicia el logueo
             clearInterval(updateLocationDemonId);    
             localizame();
-			updateLocation();
-			verifyService();
+            updateLocation();
+            verifyService();
             localizationDemonId = setInterval(localizame, verification_interval);
             updateLocationDemonId = setInterval(updateLocation, verification_interval);
             verifyServiceDemonId = setInterval(verifyService, verification_interval);
@@ -189,14 +188,14 @@ function login(id, key){
 }
 
 function arrival_confirmation(){
-    play_sound('pito');
-	$.ajax({
+    $.ajax({
         type : "GET",
         url : server + 'agent/arrival_confirmation',        
         dataType : "json",
         data : {
             request_id : request_id,
-            hms1: scode
+            hms1: scode,
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){
         
@@ -213,67 +212,100 @@ function verifyService(){
             demonId : verifyServiceDemonId,
             lat : lat,
             lng : lng,
-            hms1: scode
+            hms1: scode,
+            cachehora : (new Date()).getTime()
         },
         success: function(response){        
-        	if(response.state == 'ok'){
-            	play_sound('pito'); 
-				request_id = response.request;
-            	
+            if(response.state == 'ok'){
+                
+                $("#pito")[0].play();
+                request_id = response.request;
+                
                 lat_user = response.latitud;
                 lng_user = response.longitud;
-            	ubicacionServicio = response.ubicacion;
+                ubicacionServicio = response.ubicacion;
             
-            	$('#service-addr').val(response.sector);
-            	$('#btn-aplico-wrap').show();
-            	$('#btn-cancelar-wrap').show();
+                $('#service-addr').val(response.sector);
+                $('#btn-aplico-wrap').show();
+                $('#btn-cancelar-wrap').show();
             
-            	clearInterval(verifyServiceDemonId);
+                clearInterval(verifyServiceDemonId);
+
+                clearInterval(switchBgDemon);
+                switchBgDemon = setInterval(switchServiceAddrBg, 1000);
             
-            	switchBgDemon = setInterval(switchServiceAddrBg, 1000);
-            	$('#service-addr').css('background-color', 'red');
-            	
-        	}
-    	},
-    	error: function (xhr, ajaxOptions, thrownError) {
-        	//console.log(xhr);
-        	//login(username, password);
+                //da espera de 8*4=32 seg para contestar la solicitud
+                clearInterval(WaitVeryServiceDemonid);
+                WaitVeryServiceDemonid = setInterval(WaitVeryService, verification_interval*4);
+
+
+                $('#service-addr').css('background-color', 'red');
+                
+                
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            //console.log(xhr);
+            //login(username, password);
         }
     });
 }
 
 var bgColor = null;
+var alertService = null;
+
 function switchServiceAddrBg(){
-	if(bgColor != 'red'){
-		bgColor = 'red';
-		$('#service-addr').css('background-color', 'red');
-		$('#service-addr').css('color', 'white');
-	}else{
-		bgColor = 'white';
-		$('#service-addr').css('background-color', 'white');
-		$('#service-addr').css('color', 'black');		
-	}
+    if(bgColor != 'red'){
+        
+        bgColor = 'red';
+        $('#service-addr').css('background-color', 'red');
+        $('#service-addr').css('color', 'white');
+        
+    }else{
+        bgColor = 'white';
+        $('#service-addr').css('background-color', 'white');
+        $('#service-addr').css('color', 'black');
+    }
+
+    alertService = alertService +1;
+    //console.log('alertService:'+alertService);
+    if(alertService == 4){
+        $("#pito")[0].play();
+        //alertService = 0;
+    }
 }
 
 function switchToFree(){
     request_id = null;
     
-    $('#service-addr').html('');
-    $('#verificacion-cod').html('');
+    //$('#service-addr').html('');
+    //$('#verificacion-cod').html('');
     
     $("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
-        
+    
+    clearInterval(verifyServiceDemonId);    
     verifyServiceDemonId = setInterval(verifyService, verification_interval);
+    
     clearInterval(verifyServiceStateDemonId);
     
+    resetSrvAddrBg();
+
     $.ajax({
         type : "GET",
         url : server + 'agent/switch_to_free',        
         dataType : "json",
         data : {
-            hms1: scode
+            hms1: scode,
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){});      
+}
+
+
+
+function WaitVeryService(){
+   switchToFree();
+   clearInterval(WaitVeryServiceDemonid);
 }
 
 function cancel_service(){ 
@@ -282,9 +314,13 @@ function cancel_service(){
     $('#verificacion-cod').html('');
     
     $("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
-        
+    
+    clearInterval(WaitVeryServiceDemonid);
+
+    clearInterval(verifyServiceDemonId);
     verifyServiceDemonId = setInterval(verifyService, verification_interval);
     clearInterval(verifyServiceStateDemonId);
+    clearInterval(switchBgDemon);
     resetSrvAddrBg();
      
     $.ajax({
@@ -293,7 +329,8 @@ function cancel_service(){
         dataType : "json",
         data : {
             hms1: scode,
-            request_id: request_id
+            request_id: request_id,
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){
         request_id = null;
@@ -311,23 +348,31 @@ function service_delivered(){
             request_id : request_id,
             lat : lat,
             lng : lng,
-            hms1: scode
+            hms1: scode,
+            cachehora : (new Date()).getTime()
         }
-    }).done(function(response){});  
+    }).done(function(response){
+        if(response.state=='ok'){  
+            $('#service-addr').html('');
+            $('#verificacion-cod').html('');      
+            switchToFree();
+        }
+    });  
 
-    switchToFree();
+    
 }
 
 function resetSrvAddrBg(){
     clearInterval(switchBgDemon);
-	bgColor = 'white';
-	$('#service-addr').css('background-color', 'white');
-	$('#service-addr').css('color', 'black');
-	$('#service-addr').val('');
+    bgColor = 'white';
+    $('#service-addr').css('background-color', 'white');
+    $('#service-addr').css('color', 'black');
+    //$('#service-addr').val('');
 }
 
 function confirm_service(){
-    
+
+    clearInterval(WaitVeryServiceDemonid);
     $('#confirm-service').hide();
     resetSrvAddrBg();
     
@@ -337,7 +382,8 @@ function confirm_service(){
         dataType : "json",
         data : {
             request_id : request_id,
-            hms1: scode
+            hms1: scode,
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){        
         if(response.state == 'ok'){
@@ -348,13 +394,15 @@ function confirm_service(){
             $('#verificacion-cod').html('Su Código de Verificación: ' + request_id);
             $('#service-addr').val(ubicacionServicio);
             
+            clearInterval(verifyServiceStateDemonId);
             verifyServiceStateDemonId = setInterval(verifyServiceState, verification_interval);
-            //$.playSound('assets/audio/yes.mp3');
-             play_sound('yes'); 
+            
+            //$("#alerta")[0].play();
         } else {
             //taken by other one
             //$.playSound('assets/audio/not.mp3');
-             play_sound('not'); 
+             //play_sound('not'); 
+             //$("#pito")[0].play();
             switchToFree();
         }
     }); 
@@ -367,14 +415,16 @@ function verifyServiceState(){
         dataType : "json",
         data : {
             queryId : request_id,
-            demonId : verifyServiceStateDemonId
+            demonId : verifyServiceStateDemonId,
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){
         //si el servicio es cancelado por el usuario
         if(response.state == 'cancel'){
             clearInterval(verifyServiceStateDemonId);
             //$.playSound('assets/audio/not.mp3');
-            play_sound('not'); 
+            //play_sound('not'); 
+            $("#pito")[0].play();
             alert(response.msg);
             switchToFree();
         }
@@ -382,9 +432,9 @@ function verifyServiceState(){
 }
 
 function updateLocation(){
-	
-	$('#current-position').parent().css('background-color', 'yellow');
-	
+    
+    $('#current-position').parent().css('background-color', 'yellow');
+    
     $.ajax({
         type : "GET",
         url : server + 'agent/update_location',        
@@ -392,21 +442,22 @@ function updateLocation(){
         timeout : 5000,
         data : {
             lat : lat,
-            lng : lng
+            lng : lng,
+            cachehora : (new Date()).getTime()
         },
         
     }).done(function(response){
-    		$('#position-state').attr('src','assets/images/green_dot.png');
-    		$('#current-position').parent().css('background-color', '#FFFFFF');
-    		
+            $('#position-state').attr('src','assets/images/green_dot.png');
+            $('#current-position').parent().css('background-color', '#FFFFFF');
+            
             if(response.state != 'ok'){
                 $('#current-position').val('-------------------------');
             }else{
-            	$('#current-position').val('Latitud: ' + lat + ' Longitud: ' + lng);
+                $('#current-position').val('Latitud: ' + lat + ' Longitud: ' + lng);
             }
             
      }).fail(function(jqXHR, textStatus, errorThrown){
-    	 $('#current-position').val('======= Error de conexión =======');
+         $('#current-position').val('======= Error de conexión =======');
          login(username, password);
       }); 
      //verificar mensaje de ayuda de otros agentes.
@@ -426,6 +477,7 @@ function help_me(){
             lat :  lat,
             lng :  lng,
             addr : $('#text-sos').val(),
+            cachehora : (new Date()).getTime()
         },
         
     }).done(function(response){
@@ -448,14 +500,16 @@ function get_sos(){
         timeout : 5000,
         data : {
             lat :  lat,
-            lng :  lng
+            lng :  lng,
+            cachehora : (new Date()).getTime()
         },
         
     }).done(function(response){
        if(response.state == 'ok'){
             if((response.fecha_sos!=fecha_sos)){
                 fecha_sos = response.fecha_sos;
-                play_sound('yes'); 
+                //play_sound('yes'); 
+                $("#pito")[0].play();
                 alert(response.direccion_sos);
             }
         }
@@ -466,7 +520,8 @@ function get_sos(){
 
 function localizame() {
     if (navigator.geolocation) { 
-        navigator.geolocation.getCurrentPosition(coords, errores);
+        //navigator.geolocation.getCurrentPosition(coords, errores);
+        navigator.geolocation.getCurrentPosition(coords, errores,{'enableHighAccuracy':true,'timeout':20000,'maximumAge':0});
     }else{
         $('#current-position').val('No hay soporte para la geolocalización.');
     }
@@ -586,7 +641,7 @@ function init(){
         type : "GET",
         url : server + 'api/agent_init',        
         dataType : "json",
-        data : {}
+        data : {cachehora : (new Date()).getTime()}
     }).done(function(response){
         $.mobile.loading( "hide" );
         if(response.state == 'ok'){

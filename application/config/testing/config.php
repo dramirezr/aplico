@@ -361,10 +361,13 @@ $config['proxy_ips'] = '';
  
 $config['app_name'] = 'PidaTaxi.com';
 $config['max_verification_attemps'] = 10;
-$config['verification_interval'] = 15000; //In milliseconds
+$config['verification_interval'] = 16000; //In milliseconds
  
-$config['agent_verification_interval'] = 15000; //In milliseconds
-$config['agent_updatelocation_interval'] = 15000; //In milliseconds
+$config['agent_verification_interval'] = 16000; //In milliseconds
+$config['agent_updatelocation_interval'] = 16000; //In milliseconds
+$config['distance_call'] = 1.5; //In kilometros
+$config['distance_call_sos'] = 2; //In kilometros
+
  
 /* End of file config.php */
 /* Location: ./application/config/config.php */

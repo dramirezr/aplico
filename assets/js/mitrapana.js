@@ -29,7 +29,6 @@ var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 
 $(document).ready(function() {
-   
     $('#waiting-msg, #agent-wrapper, #agent-call2-wrapper').hide();
     
     localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
@@ -88,34 +87,54 @@ $(document).ready(function() {
         }).done(function(response){});
     });
     
+    function trim(myString)
+    {
+        return myString.replace(/^\s+/g,'').replace(/\s+$/g,'')
+    }
+    
     $('#call-confirmation').click(function(e){
        
-       if ($('input[name="address"]').val()!=''){   
-        $.mobile.loading("show");
-        $('#call-confirmation, #confirmation-msg').hide();
-        $('#waiting-msg').show();
+        if ($('input[name="address"]').val()!=''){  
+            
+            if (trim($('input[name="address"]').val())!=trim(formatted_addr)) {  
+       
+                if ( ($('input[name="lat"]').val()!='') && ($('input[name="lat"]').val()!='0') ){   
+               
 
-        $.ajax({
-            type : "GET",
-            url : $('#call-form').attr('action'),        
-            dataType : "json",
-            data : {
-                hms1 : $('input[name="hms1"]').val(),
-                address : $('input[name="address"]').val(),
-                lat : $('input[name="lat"]').val(),
-                lng : $('input[name="lng"]').val(),
-                zone : $('input[name="zone"]').val(),
-                city : $('input[name="city"]').val(),
-                country : $('input[name="country"]').val(),
-                state_c : $('input[name="state_c"]').val()
-            }
-        }).done(function(response){
-            if(response.state == 'ok'){
-                queryId = response.queryId;
-                demonId = setInterval(verifyCall, verification_interval);
-            }
-        });
+                    $.mobile.loading("show");
+                    $('#call-confirmation, #confirmation-msg').hide();
+                    $('#waiting-msg').show();
 
+                    $.ajax({
+                        type : "GET",
+                        url : $('#call-form').attr('action'),        
+                        dataType : "json",
+                        data : {
+                            hms1 : $('input[name="hms1"]').val(),
+                            address : $('input[name="address"]').val(),
+                            lat : $('input[name="lat"]').val(),
+                            lng : $('input[name="lng"]').val(),
+                            zone : $('input[name="zone"]').val(),
+                            city : $('input[name="city"]').val(),
+                            country : $('input[name="country"]').val(),
+                            state_c : $('input[name="state_c"]').val()
+                        }
+                    }).done(function(response){
+                        if(response.queryId > 0){
+                            queryId = response.queryId;
+                            demonId = setInterval(verifyCall, verification_interval);
+                        }else
+                            alert('No se pudo hacer la solicitud, por favor intente de nuevo.');
+                    });
+                    
+            }else{
+                alert('Por favor configure su dispositivo para compartir su ubicación geográfica e intente de nuevo.');
+            }
+        }else{
+            alert('Por favor asegurate de completar tu dirección correctamente, puedes adicionar datos de ubicación como apartamento, oficina, urbanización, manzana, casa.'  );
+            reset_modal();
+            $("#call-modal").dialog('close');
+        }
       }else{
         alert('La direccón no debe ser vacia. Por favor escriba su ubicación.');
       }
@@ -137,7 +156,7 @@ $(document).ready(function() {
         }
         $('#agent-call-wrapper').hide();
         $('#agent-call2-wrapper').show();
-        console.log('Ver Taxi');
+        
         getTaxiLocation();
         taxiLocationDemonId = setInterval(getTaxiLocation, verification_interval);
     });
@@ -185,7 +204,8 @@ function getTaxiLocation(){
             dataType : "json",
             data : {
                 agent_id : agentId,
-                queryId  : queryId
+                queryId  : queryId,
+                cachehora : (new Date()).getTime()
             }
         }).done(function(response){
             if(response.state == 'ok'){
@@ -262,15 +282,18 @@ function verifyCall(){
         dataType : "json",
         data : {
             queryId : queryId,
-            demonId : demonId
+            demonId : demonId,
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){
+        
+        
         if(response.state == 'error'){
             $.mobile.loading("hide");
             clearInterval(demonId);
             $('#waiting-msg').html(response.msg);
         }
-        
+         
         if(response.state == '1'){
             
             $('#agent-photo').html('<img height="150" width="150" src="' + response.agent.foto + '"/>');
@@ -314,9 +337,11 @@ function verifyServiceState(){
         dataType : "json",
         data : {
             queryId : queryId,
-            demonId : verifyServiceStatus
+            demonId : verifyServiceStatus,
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){
+        
         if(response.state == 'error'){
             clearInterval(verifyServiceStatus);
             alert(response.msg);
@@ -329,6 +354,7 @@ function verifyServiceState(){
             play_sound('pito'); 
 			updateStatusArribo();
             alert(response.msg);
+            
         }
 
         if(response.state == 'delivered'){
@@ -356,7 +382,8 @@ function updateStatusArribo(){
         dataType : "json",
         data : {
             queryId : queryId,
-            demonId : verifyServiceStatus
+            demonId : verifyServiceStatus,
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){
       
@@ -429,7 +456,7 @@ function address_search() {
 function cargarMapa() {
     var latlon = new google.maps.LatLng(latitud,longitud); /* Creamos un punto con nuestras coordenadas */
     var myOptions = {
-        zoom: 16,
+        zoom: 15,
         center: latlon, /* Definimos la posicion del mapa con el punto */
         navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, 
         mapTypeControl: true, 
@@ -449,7 +476,7 @@ function cargarMapa() {
         map: map, /* Lo vinculamos a nuestro mapa */
         animation: google.maps.Animation.DROP, 
         draggable: true,
-        icon : 'http://app.pidataxi.com/assets/images/male.png',
+        icon : 'http://app.pidataxi.com/assets/images/male.png'
     });
 
    /*
@@ -513,7 +540,6 @@ function codeLatLng(lat, lng) {
                     formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
                 }
                 
-                    
                 
                 $('#address').val(formatted_addr);
                 $('#show-address').html(formatted_addr);

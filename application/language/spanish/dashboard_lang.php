@@ -1,7 +1,7 @@
 <?php
 
 $lang['dashboard.footer'] = 'La forma más fácil de pedir un taxi - www.pidetutaxi.com';
-$lang['dashboard.calltaxi'] = 'Pida Taxi';
+$lang['dashboard.calltaxi'] = 'Pida su Taxi';
 $lang['dashboard.localizame'] = 'Localizame';
 $lang['dashboard.confimationcode'] = 'Codigo de confirmación';
 $lang['dashboard.agentcode2'] = 'Placa';
@@ -18,7 +18,7 @@ $lang['dashboard.assinged'] = 'Asignado!';
 $lang['dashboard.agentid'] = 'Identificación';
 $lang['dashboard.agentphone'] = 'Tel';
 $lang['dashboard.call'] = 'Llamar';
-$lang['dashboard.error.canceled_service'] = 'El servicio fue cancelado';
+$lang['dashboard.error.canceled_service'] = 'Por problema del taxista su servicio ha sido cancelado. Por favor solicite su servicio nuevamente.';
 $lang['dashboard.error.arrival_service'] = 'El servicio de taxi ha llegado.!!!';
 $lang['dashboard.showtaxi'] = 'Ver taxi';
 $lang['dashboard.infoshare'] = 'Comparte esta información en';

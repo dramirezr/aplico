@@ -18,7 +18,9 @@ class Solicitud extends CI_Model {
 	}
 
 	function get_by_id($id){
-		$media = $this->db->get_where('solicitud', array('id' => $id))->result();
+		//$media = $this->db->get_where('solicitud', array('id' => $id))->result();
+		$sql = " select * from solicitud where id=$id ";
+		$media = $this->db->query($sql)->result();
 		if(!count($media))
 			return null;
 		return $media[0];		

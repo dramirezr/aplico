@@ -82,10 +82,13 @@ class Admin extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('usuarios');
 			$crud->set_subject('Usuarios del sistema');
-			$crud->columns('nombre','codigo','pais','departamento','ciudad','direccion','telefono');
-			$crud->fields('nombre','codigo','clave','pais','departamento','ciudad','direccion','telefono');
-			$crud->required_fields('nombre','codigo','pais','departamento','ciudad','direccion','telefono');
+			$crud->columns('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono');
+			$crud->fields('nombre','idsucursal','codigo','clave','pais','departamento','ciudad','direccion','telefono');
+			$crud->required_fields('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono');
 			$crud->display_as('codigo', 'Login');
+
+			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
+			$crud->display_as('idsucursal', 'Sucursal');
 			
 			$crud->change_field_type('clave', 'password');
 			
@@ -106,7 +109,23 @@ class Admin extends CI_Controller {
 			$this->_admin_output($output);
 	}
 
+	function office_management()
+	{
+			$crud = new grocery_CRUD();
 
+			$crud->set_theme('datatables');
+			$crud->set_table('sucursales');
+			$crud->set_subject('Sucursal');
+			$crud->columns('nombre');
+			$crud->fields('nombre');
+			$crud->required_fields('nombre');
+			$crud->display_as('nombre', 'Nombre sucursal');
+			
+			$output = $crud->render();
+			$output -> op = 'office_management';
+		
+			$this->_admin_output($output);
+	}
 
 	function user_callcenter()
 	{
@@ -115,10 +134,13 @@ class Admin extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('usuarios');
 			$crud->set_subject('Centro de atención');
-			$crud->columns('nombre','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
-			$crud->fields('nombre','codigo','clave','pais','departamento','ciudad','direccion','telefono','perfil');
-			$crud->required_fields('nombre','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
+			$crud->columns('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
+			$crud->fields('nombre','idsucursal','codigo','clave','pais','departamento','ciudad','direccion','telefono','perfil');
+			$crud->required_fields('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
 			$crud->display_as('codigo', 'Login');
+			
+			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
+			$crud->display_as('idsucursal', 'Sucursal');
 			
 			$crud->change_field_type('clave', 'password');
 			$crud->change_field_type('perfil', 'hidden');
@@ -149,14 +171,20 @@ class Admin extends CI_Controller {
 		$crud->set_theme('datatables');
 		$crud->set_table('usuarios');
 		$crud->set_subject('Dueños de vehiculos');
-		$crud->columns('nombre','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
-		$crud->fields('nombre','codigo','clave','pais','departamento','ciudad','direccion','telefono','perfil');
-		$crud->required_fields('nombre','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
+		$crud->columns('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
+		$crud->fields('nombre','idsucursal','codigo','clave','pais','departamento','ciudad','direccion','telefono','perfil');
+		$crud->required_fields('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
 		$crud->display_as('codigo', 'Login');
 		
 		$crud->change_field_type('clave', 'password');
 		$crud->change_field_type('perfil', 'hidden');
+		if($this->userconfig->perfil=='ADMIN')
+			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
+		else
+			$crud->set_relation('idsucursal', 'sucursales', 'nombre','id IN ("'.$this->userconfig->idsucursal.'")');			
 		
+		$crud->display_as('idsucursal', 'Sucursal');
+
     	$crud->callback_edit_field('clave',array($this,'set_password_input_to_empty'));
 		$crud->callback_add_field('clave',array($this,'set_password_input_to_empty'));
 			
@@ -167,6 +195,9 @@ class Admin extends CI_Controller {
 		$crud->callback_before_insert(array($this,'encrypt_password_callback'));
 
 		$crud->where('perfil =', 'CUST');
+
+		if($this->userconfig->perfil<>'ADMIN')
+			$crud->where('idsucursal =', $this->userconfig->idsucursal);
 		$output = $crud->render();
 		$output -> op = 'user_management';
 		$this->_admin_output($output);
@@ -178,11 +209,24 @@ class Admin extends CI_Controller {
 
 		$crud->set_theme('datatables');
 		$crud->set_table('vehiculos');
-		$crud->set_subject('Taxis');
-		$crud->columns('placa','modelo','marca','propietario');
-		$crud->fields('placa','modelo','marca','propietario');
-		$crud->required_fields('placa','propietario');
-		$crud->set_relation('propietario', 'usuarios', 'nombre','perfil IN ("CUST")');
+		$crud->set_subject('Vehiculos');
+		$crud->columns('placa','idsucursal','modelo','marca','propietario');
+		$crud->fields('placa','idsucursal','modelo','marca','propietario');
+		$crud->display_as('idsucursal', 'Sucursal');
+		$crud->required_fields('idsucursal','placa','propietario');
+
+		if($this->userconfig->perfil=='ADMIN'){
+			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
+			$crud->set_relation('propietario', 'usuarios', 'nombre','perfil IN ("CUST") ');
+
+		}
+		else{
+			$crud->set_relation('idsucursal', 'sucursales', 'nombre','id IN ("'.$this->userconfig->idsucursal.'")');			
+			$crud->set_relation('propietario', 'usuarios', 'nombre','perfil IN ("CUST") and idsucursal IN ("'.$this->userconfig->idsucursal.'")');
+		}
+
+		if($this->userconfig->perfil<>'ADMIN')
+			$crud->where('vehiculos.idsucursal =', $this->userconfig->idsucursal);
 		
 		$output = $crud->render();
 		$output -> op = 'user_management';
@@ -198,21 +242,41 @@ class Admin extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('agente');
 			$crud->set_subject('Taxistas');
-			$crud->columns('nombre','codigo','vehiculo','pais','departamento','ciudad','direccion','telefono');
-			$crud->fields('nombre','codigo','clave','vehiculo','pais','departamento','ciudad','direccion','telefono','foto');
-			$crud->required_fields('nombre','codigo','vehiculo','pais','departamento','ciudad','direccion','telefono');
+			$crud->columns('nombre','idsucursal','codigo','vehiculo','pais','departamento','ciudad','direccion','telefono','fecha_localizacion');
+			$crud->fields('nombre','idsucursal','codigo','clave','vehiculo','pais','departamento','ciudad','direccion','telefono','foto');
+			$crud->required_fields('nombre','idsucursal','codigo','vehiculo','pais','departamento','ciudad','direccion','telefono');
+			
+			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
+			$crud->display_as('idsucursal', 'Sucursal');
+
 			$crud->display_as('codigo', 'Cedula');
 			$crud->display_as('vehiculo', 'Placa');
+			$crud->display_as('fecha_localizacion', 'Fec. Geolocalizacón');
+			
 			$crud->set_field_upload('foto','assets/images/agents');
 			$crud->change_field_type('clave', 'password');
-			$crud->set_relation('vehiculo', 'vehiculos', 'placa');
 			
+
+			if($this->userconfig->perfil=='ADMIN'){
+				$crud->set_relation('idsucursal', 'sucursales', 'nombre');
+				$crud->set_relation('vehiculo', 'vehiculos', 'placa');
+			}
+			else{
+				$crud->set_relation('idsucursal', 'sucursales', 'nombre','id IN ("'.$this->userconfig->idsucursal.'")');
+				$crud->set_relation('vehiculo', 'vehiculos', 'placa','idsucursal IN ("'.$this->userconfig->idsucursal.'")');
+			}
+	
+
         	$crud->callback_edit_field('clave',array($this,'set_password_input_to_empty'));
     		$crud->callback_add_field('clave',array($this,'set_password_input_to_empty'));
  
     		$crud->callback_before_update(array($this,'encrypt_password_callback'));
     		$crud->callback_before_insert(array($this,'encrypt_password_callback'));
     		
+			if($this->userconfig->perfil<>'ADMIN')
+				$crud->where('agente.idsucursal =', $this->userconfig->idsucursal);
+
+			$crud->order_by('fecha_localizacion','asc');
 					
 			//$crud->where('codigo =', 1);
 			$output = $crud->render();
@@ -233,7 +297,11 @@ class Admin extends CI_Controller {
 			$crud->display_as('idagente', 'Taxista');
 			$crud->display_as('id', 'Código');
 			$crud->set_relation('idagente', 'agente', 'nombre');
+			
+
 			$crud->order_by('id','asc');
+			//$crud->order_by('id');
+
 			
 
 			$crud->unset_add();
@@ -268,30 +336,6 @@ class Admin extends CI_Controller {
 
 	function service_agent()
 	{
-
-		$crud = new grocery_CRUD();
-
-		$this->db
-		->select('codigo,solicitud.idagente,solicitud.departamento,solicitud.ciudad,sum(solicitud.idagente) servicios')
-		->group_by('codigo,idagente,departamento,ciudad')
-		->order_by('codigo,idagente,departamento,ciudad', 'desc');
-		$crud
-		->set_table('solicitud')
-		->columns('codigo','idagente', 'servicios','departamento','ciudad');
-		
-		$crud->set_theme('datatables');
-		$crud->set_subject('Solicitudes');
-		$crud->display_as('idagente', 'Taxista');
-		$crud->set_relation('idagente', 'agente', 'nombre');
-		//$crud->set_relation('idagente', 'agente', 'codigo');
-				
-
-		$crud->unset_add();
-		$crud->unset_delete();
-		$crud->unset_edit();
-		//$crud->where('fecha_solicitud =', 1);
-					
-		
 		$filtro = $this->input->get('fechaini');
 		if ($filtro!=''){
 			$fi = $this->input->get('fechaini');
@@ -301,23 +345,51 @@ class Admin extends CI_Controller {
     		$ultimodia = date("d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
     		$ff = date('Y').'-'.date('m').'-'.$ultimodia.' 23:59:59';
 		}
-	    
-	    $where = array('idagente >' => 0,'fecha_solicitud >=' => $fi, 'fecha_solicitud <=' => $ff);
 
-	 	$crud->where($where);  
-	   
-		$output = $crud->render();
-		$output -> fechaini = $fi;
-		$output -> fechafin = $ff;
-		$output -> op = 'service_agent';
+		$this->load->model('sqlexteded');
+		$service = $this->sqlexteded->getService_agent($fi,$ff);
 
-		$this->_admin_output($output);
+		//echo "<pre>";
+		//print_r($service);
+		//echo "<pre>";
+		$output = '<br><br><table border="0">
+			<tr><th><h3>Listado de solicitudes por taxista</h3></th></tr>
+			<tr><th></th></tr>
+		<tbody>';	  
+		$idsuc 	= 0;
+		$cont 	= 0;
+		//$output = '<table border="1"><tr><th align="center">listado de solicitudes por sucursal</th></tr>';
+		foreach ($service as $row)
+		{
+			if ($row->idsucursal!=$idsuc){
+				if($cont>0)
+					$output .= '<tr><tr><th colspan="2" ></th><th align="right"><hr>'.$cont.'</th></tr>';
+				$output .= '<tr><td><h3>'.$row->sucursal.'</h3></td></tr>';
+				$output .= '<tr><th>Cédula</th><th>Taxista</th><th>Solicitudes</th></tr>';
+
+				$idsuc = $row->idsucursal;
+				$cont 	= 0;
+			}
+			$output .= '<tr>';
+			$output .= '<td>'. $row->cedula.'</td>';
+			$output .= '<td>'. $row->taxista.'</td>';
+			$output .= '<td align="right">'. $row->solicitudes.'</td>';
+			$output .= '</tr>';
+			$cont 	= $cont + $row->solicitudes;
+
+		}
+		if($cont>0)
+			$output .= '<tr><tr><th colspan="2" ></th><th align="right"><hr>'.$cont.'</th></tr>';
+		$output .= '</tbody></table>';	
 		
+	    
+		$this->load->view('private/admin.php',(object)array('output' => $output , 'js_files' => array() , 'css_files' => array() , 'op' => 'service_agent','fechaini' => $fi,'fechafin' => $ff  ));
 	}
 
 	function callService()
 	{
-		$this->load->view('private/callcenter.php',array('op' => ''));
+		//$this->load->view('private/callcenter.php',array('op' => ''));
+		$this->load->view('private/callcenter.php',(object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '' ));
 	}
 
 	
@@ -331,6 +403,19 @@ class Admin extends CI_Controller {
 	{
 		$this->load->view('private/customer.php',array('op' => '/admin/viewAgent'));
 	}
+
+
+	function tabletAdminAgent()
+	{
+		$this->load->view('private/tabletAdminAgent.php',array('op' => '/admin/viewAgent'));
+	}
+
+	function tabletCallAgent()
+	{
+
+		$this->load->view('private/tabletCallAgent.php',array('op' => '/admin/viewAgent'));
+	}
+	
 	
 	function viewAgent()
 	{
@@ -350,5 +435,3 @@ class Admin extends CI_Controller {
     	redirect($user->lang.'/login'); 
 
     }
-	
-}

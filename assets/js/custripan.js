@@ -47,25 +47,30 @@ function validarEnter(e) {
 }
 
 function getTaxiLocation(){
-    
-    
+     
    $.ajax({
         type : "GET",
         url : lang + '../../../api/get_agets_location',        
         dataType : "json"
         
     }).done(function(response){
+
         if(response.state == 'ok'){
             
             var coordenadas;
+            var estadoagent;
 
             deleteOverlays();
 
             for(var i in response.agent){
-                
-                coordenadas =  new google.maps.LatLng( response.agent[i].latitud, response.agent[i].longitud );
+              
+                if(response.agent[i].fecha_localizacion>response.agent[i].datesytem)
+                    estadoagent = 0
+                else
+                    estadoagent = 1
+                coordenadas =  new google.maps.LatLng( response.agent[i].latitud, response.agent[i].longitud);
 
-                setTaxiIcon(coordenadas, response.agent[i]);
+                setTaxiIcon(coordenadas, response.agent[i],estadoagent );
 
                 // limits.extend(coordenadas);
             }
@@ -101,12 +106,19 @@ function deleteOverlays() {
   }
 }
 
-function setTaxiIcon(coordenadas, agent){
+function setTaxiIcon(coordenadas, agent, estadoagent){
     var popup;
+    var icon_taxi
+   
+    if(estadoagent==1)
+        icon_taxi = 'http://app.pidataxi.com/assets/images/taxi2.png';
+    else
+        icon_taxi =  'http://app.pidataxi.com/assets/images/taxi.png';
+
     taxiMarker = new google.maps.Marker({
         position:coordenadas,
         map: map,
-        icon : 'http://app.pidataxi.com/assets/images/taxi.png'
+        icon : icon_taxi
     });
     markersArray.push(taxiMarker);
             

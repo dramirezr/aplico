@@ -26,6 +26,7 @@
 <body>
 
 <div data-role="page" id="page1">
+
     <div data-theme="e" data-role="header">
     	<h3><?= $this->config->item('app_name') ?></h3>
     </div>

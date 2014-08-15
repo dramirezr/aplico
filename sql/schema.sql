@@ -46,4 +46,8 @@ ALTER TABLE agente ADD fecha_sos datetime;
 
 ALTER TABLE agente ADD direccion_sos char(250) DEFAULT NULL;
 
+ALTER TABLE `usuarios` ADD `idsucursal` INT( 11 ) NOT NULL DEFAULT '0';
+ALTER TABLE `agente` ADD `idsucursal` INT( 11 ) NOT NULL DEFAULT '0';
+ALTER TABLE `vehiculos` ADD `idsucursal` INT( 11 ) NOT NULL DEFAULT '0';
+
 

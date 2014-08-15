@@ -134,7 +134,7 @@ class Agent extends CI_Controller {
 		$request = $this->agente->get_sos($id,$lat,$lng);
 		
 		if(!$request){
-			die(json_encode(array('state' => '','agenteid' => $id)));
+			die(json_encode(array('state' => '')));
 		}
 		
 		$response = array(

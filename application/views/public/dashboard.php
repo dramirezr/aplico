@@ -4,7 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- 
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    
 	<title><?= $this->config->item('app_name') ?></title>
 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
@@ -59,15 +62,14 @@
     
     <div data-role="content" class="padding-0">
          <div id="map_canvas"></div>
-    </div>
 
-    <div data-theme="e" data-role="footer" data-position="fixed">
-        <h3>
-            © 2013 <?= $this->config->item('app_name') ?>
-        </h3>
-        <div id="sound_"></div>
     </div>
+  
         
+    <div data-theme="e" data-role="footer" data-position="fixed" align="center">
+       	<a href="http://www.facil.com.co/" >© 2013 <?= $this->config->item('app_name') ?> - GPTechnologies.</a>
+    </div>
+    <div id="sound_"></div>    
 </div>
 
 <!-- Start of third page: #popup -->
@@ -94,11 +96,11 @@
 		</div><!-- /header -->
 	
 		<div data-role="content" data-theme="d">	
-			<p><?=lang('dashboard.confimationcode')?>: <span id="confirmation-code"><span></p>
+			<p><?=lang('dashboard.confimationcode')?>: <span id="confirmation-code"></span></p>
 			<p id="agent-photo"></p>
 			<p id="agent-name"></p>
-			<!--<p><?=lang('dashboard.agentid')?>: <span id="agent-id"><span></p>-->
-			<p><?=lang('dashboard.agentcode2')?>: <span id="agent-placa"><span></p>
+			
+			<p><?=lang('dashboard.agentcode2')?>: <span id="agent-placa"></span></p>
 			<p><?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span></p>
 			
 			<p><div data-role="collapsible">

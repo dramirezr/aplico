@@ -2,13 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-<?php 
-foreach($css_files as $file): ?>
-	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
-<?php endforeach; ?>
-<?php foreach($js_files as $file): ?>
-	<script src="<?php echo $file; ?>"></script>
-<?php endforeach; ?>
+
 <style type='text/css'>
 body
 {
@@ -34,6 +28,7 @@ a:hover
 
 </head>
 <body>
+
 	<div>
 		<a href='<?php echo site_url('admin/callService') ?>'>Pedir taxi</a> |
 		<a href='<?php echo site_url('admin/user_managervehicle')?>'>Dueños de Taxis</a> |
@@ -41,18 +36,12 @@ a:hover
 		<a href='<?php echo site_url('admin/agent_management')?>'>Taxitas</a> |
 		<a href='<?php echo site_url('admin/tabletCallAgent') ?>'>Seguimiento Vehiculos</a> |
 		<a href='<?php echo site_url('admin/close')?>'>Salida segura</a> |
+	
 	</div> 
 
 	<div style='height:20px;'></div>  
-	<?php 
-		if ($op==''){
-			$url = site_url('').$op; 
-			echo "<iframe id='targetFrame' src='".$url."' width='100%' height='600px'  frameborder='0' ></iframe>";
-		}else{
-			
-			echo $output;
-		}
-	?>
+	<?php  $url = site_url('').$op; ?>
+	<iframe id="targetFrame" src="<?php echo $url;?>" width="100%" height="600px"  frameborder="0" ></iframe>
 
 	<div style='height:100%;'>
 		
