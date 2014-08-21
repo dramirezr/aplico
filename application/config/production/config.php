@@ -360,6 +360,7 @@ $config['proxy_ips'] = '';
  //Custom config
  
 $config['app_name'] = 'PidaTaxi.com';
+$config['copyright'] = 'PidaTaxi.com - © 2013 GPTechnologies';
 $config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 8000; //In milliseconds
  

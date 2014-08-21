@@ -10,16 +10,16 @@
     
 	<title><?= $this->config->item('app_name') ?></title>
 
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
 	<link rel="stylesheet" href="<?=base_url()?>assets/css/app.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
 	
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+    
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
     
     <script src="<?=base_url()?>assets/js/mitrapana.js"></script>
-    <script src="<?=base_url()?>assets/js/jquery.playSound.js"></script>
-
+    
   	<script>
  		var lang = '<?=current_lang()?>';
  		var verification_interval = <?=ci_config('verification_interval')?>;
@@ -67,7 +67,7 @@
   
         
     <div data-theme="e" data-role="footer" data-position="fixed" align="center">
-       	<a href="http://www.facil.com.co/" >© 2013 <?= $this->config->item('app_name') ?> - GPTechnologies.</a>
+       	<a href="http://www.facil.com.co/" ><?= $this->config->item('copyright') ?></a>
     </div>
     <div id="sound_"></div>    
 </div>
@@ -125,8 +125,8 @@
 <audio id="not" src="assets/audio/not.mp3" preload="auto"></audio>
 <audio id="ring" src="assets/audio/ring.mp3" preload="auto"></audio>
  -->
-<audio id="pito" src=" http://app.pidataxi.com/assets/audio/pito.mp3" preload="auto"></audio>
-<audio id="yes" src=" http://app.pidataxi.com/assets/audio/yes.mp3" preload="auto"></audio>
+<audio id="pito" src="<?=base_url()?>assets/audio/pito.mp3" preload="auto"></audio>
+<audio id="yes" src="<?=base_url()?>assets/audio/yes.mp3" preload="auto"></audio>
 
 </body>
 </html>

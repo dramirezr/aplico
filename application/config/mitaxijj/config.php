@@ -359,7 +359,8 @@ $config['proxy_ips'] = '';
 
  //Custom config
  
-$config['app_name'] = 'mitaxijj.com.ec';
+$config['app_name'] = 'Mi Taxi JJ';
+$config['copyright'] = 'Mi Taxi JJ - © 2013 GPTechnologies';
 $config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 8000; //In milliseconds
  

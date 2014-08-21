@@ -222,7 +222,7 @@ function setTaxiIcon(lat, lng){
         taxiMarker = new google.maps.Marker({
             position: new google.maps.LatLng( lat, lng ),
             map: map,
-            icon : 'http://app.pidataxi.com/assets/images/taxi.png'
+            icon : '../assets/images/taxi.png'
         });
         
         tracerRoute(lat, lng, latitud, longitud);
@@ -303,20 +303,19 @@ function verifyCall(){
             $('#agent-phone').html(response.agent.telefono);
             $('#confirmation-code').html('<span style="color: red; font-weight:bold;">' + queryId + '</span>');
             $('#agent-placa').html(response.agent.placa);
+            
+            /*
             addr = response.agent.direccion;
             addr=addr.replace("#","Num.");
             coment = 'Viajo en el taxi con placa '+response.agent.placa+' saliendo de '+addr; 
-            //tw = '<a href="http://twitter.com/share?url=http://www.pidataxi.com/&text='+coment+'&via=pidataxi&related=hptxt"  rel="nofollow" target="_parent" ><img src="assets/images/social/twitter.png"/  height="32" width="32" alt="Twitter" ></img></a>';
-            //fc = '<a href="http://www.facebook.com/sharer.php?s=100&p[url]=http://www.pidataxi.com&p[title]=Servicio de taxi por dispositivo móvil PidaTaxi.com&p[summary]='+coment+'&&p[images][0]=http://www.pidataxi.com/icon.png" rel="nofollow" target="_parent" ><img src="assets/images/social/facebook.png"/  height="32" width="32" alt="Facebook" ></img></a>';
             url = 'http://twitter.com/share?url=http://www.pidataxi.com/&text='+coment+'&via=pidataxi&related=hptxt';
             tw = '<a href="'+url+'" rel="nofollow" target="_parent" data-rel="dialog" data-transition="slideup"><img src="assets/images/social/twitter.png" /></a>';
             url = 'http://www.facebook.com/sharer.php?s=100&p[url]=http://www.pidataxi.com&p[title]=Servicio de taxi por dispositivo móvil PidaTaxi.com&p[summary]='+coment+'&&p[images][0]=http://www.pidataxi.com/icon.png';
             fc = '<a href="'+url+'" target="_blank" data-rel="dialog" data-transition="slideup"><img src="assets/images/social/facebook.png" /></a>';
             $('#share-twitter').html(tw);
             $('#share-facebook').html(fc);
-
+            */
     
-            //$('#share-info').html(tw+fc);
             $('#confirm-wrapper').hide();
             $('#agent-wrapper').show();
             
@@ -476,7 +475,7 @@ function cargarMapa() {
         map: map, /* Lo vinculamos a nuestro mapa */
         animation: google.maps.Animation.DROP, 
         draggable: true,
-        icon : 'http://app.pidataxi.com/assets/images/male.png'
+        icon : '../assets/images/male.png'
     });
 
    /*

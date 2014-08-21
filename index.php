@@ -17,9 +17,11 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
- 	//define('ENVIRONMENT', 'testing');
+ 	//define('ENVIRONMENT', 'production');
+	//define('ENVIRONMENT', 'testing');
 	//define('ENVIRONMENT', 'development');
 	define('ENVIRONMENT', 'mitaxijj');
+	//define('ENVIRONMENT', 'pidataxi');
 	
 /*
  *---------------------------------------------------------------
@@ -43,6 +45,10 @@ if (defined('ENVIRONMENT'))
 			date_default_timezone_set('America/Bogota');
 		break;
 		case 'production':
+			error_reporting(0);
+			date_default_timezone_set('America/Bogota');
+		break;
+		case 'pidataxi':
 			error_reporting(0);
 			date_default_timezone_set('America/Bogota');
 		break;

@@ -118,7 +118,9 @@ class Api extends CI_Controller {
 				'state' => 'ok',
 				'code' => $scode,
 				'verification_interval' => ci_config('agent_verification_interval'),
-				'updatelocation_interval' => ci_config('agent_updatelocation_interval')
+				'updatelocation_interval' => ci_config('agent_updatelocation_interval'),
+				'app_name' => ci_config('app_name'),
+				'copyright' => ci_config('copyright')
 			);
 			
 			die(json_encode($data));
