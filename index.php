@@ -19,8 +19,8 @@
  */
  	//define('ENVIRONMENT', 'production');
 	//define('ENVIRONMENT', 'testing');
-	define('ENVIRONMENT', 'development');
-	//define('ENVIRONMENT', 'mitaxijj');
+	//define('ENVIRONMENT', 'development');
+	define('ENVIRONMENT', 'mitaxijj');
 	//define('ENVIRONMENT', 'pidataxi');
 	
 /*
