@@ -358,7 +358,7 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
  //Custom config
- 
+$config['app_path'] = 'http://www.pidataxi.com.co/app/'; 
 $config['app_name'] = 'PidaTaxi.com';
 $config['copyright'] = 'PidaTaxi.com - © 2013 GPTechnologies';
 $config['max_verification_attemps'] = 10;

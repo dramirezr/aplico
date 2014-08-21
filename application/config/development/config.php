@@ -358,7 +358,7 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
  //Custom config
- 
+$config['app_path'] = 'http://pidataxi.dev/'; 
 $config['app_name'] = 'Fácil Taxi';
 $config['copyright'] = 'Fácil Taxi - © 2013 GPTechnologies';
 

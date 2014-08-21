@@ -358,9 +358,9 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
  //Custom config
- 
+$config['app_path'] = 'http://www.mitaxijj.com.ec/app/'; 
 $config['app_name'] = 'Mi Taxi JJ';
-$config['copyright'] = 'Mi Taxi JJ - © 2013 GPTechnologies';
+$config['copyright'] = 'Mi Taxi JJ - © 2014 GPTechnologies';
 $config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 8000; //In milliseconds
  

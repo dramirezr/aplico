@@ -18,6 +18,7 @@
     
   	<script>
  		var lang = '<?=current_lang()?>';
+        var app_path = '<?=ci_config('app_path')?>';
  		var verification_interval = <?=ci_config('verification_interval')?>;
  		var searching_msg = '<h1><?=lang('dashboard.searching')?></h1>';
  	</script>
