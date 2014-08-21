@@ -433,5 +433,6 @@ class Admin extends CI_Controller {
     	//cerrar sesión
     	$this->session->sess_destroy();
     	redirect($user->lang.'/login'); 
+	}
 
-    }
+}
