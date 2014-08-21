@@ -111,9 +111,9 @@ function setTaxiIcon(coordenadas, agent, estadoagent){
     var icon_taxi
    
     if(estadoagent==1)
-        icon_taxi = 'http://app.pidataxi.com/assets/images/taxi2.png';
+        icon_taxi = '/assets/images/taxi2.png';
     else
-        icon_taxi =  'http://app.pidataxi.com/assets/images/taxi.png';
+        icon_taxi =  '/assets/images/taxi.png';
 
     taxiMarker = new google.maps.Marker({
         position:coordenadas,
