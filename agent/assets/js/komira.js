@@ -49,15 +49,42 @@ var map;
 //var longitud;
 //var geocoder = new google.maps.Geocoder();
 
-
 $(document).ready(function() {
-    
+
+
+  if (window.history && window.history.pushState) {
+    $(window).on('popstate', function() {
+      var hashLocation = location.hash;
+      var hashSplit = hashLocation.split("#!/");
+      var hashName = hashSplit[1];
+
+      if (hashName !== '') {
+        var hash = window.location.hash;
+        if (hash === '') {
+          history.go(1); 
+        }
+      }
+    });
+  }
+
+
     $.mobile.loading( "show" );
     
     $("#audio-wrap, #btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
     
     init();
     
+
+    $('#btn-close').click(function(e){
+        e.preventDefault();
+        clearInterval(verifyServiceStateDemonId);
+        clearInterval(localizationDemonId);
+        clearInterval(verifyServiceDemonId);
+        clearInterval(updateLocationDemonId);
+        password = '';
+        $("#show-login").trigger('click');
+    });
+
     $('#do-login').click(function(e){
         e.preventDefault();
         play_sound('pito'); 

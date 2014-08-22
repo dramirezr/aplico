@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>App Solicitud de Taxis</title>
+<title>Solicitud de Taxis</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 
@@ -13,7 +13,6 @@
 <script src="assets/js/jquery.mobile-1.3.2.min.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
 <script src="assets/js/komira.js"></script>
-
 
 </head>
 <body>
@@ -88,13 +87,14 @@
                 <p id="agent-name"></p>
             </td>
             <td  align="right" width="20%">
-                <a data-role="button" data-theme="a" href="#maps-modal" data-rel="dialog" data-transition="pop" id="btn-vermapa">Ver mapa</a>
+                <a href="#" data-role="button" data-mini="true" data-theme="a" data-inline="true" data-rel="back" id="btn-close">Salir</a>
+                <a href="#login-page" data-role="button" id="show-login" style="display: none;">Show page "login"</a>
             </td>
         </tr>
         </tbody></table>
     </div>
     
- <div data-role=="nav"> 
+    <div data-role=="nav"> 
         <div data-role="fieldcontain">
          <input name="current-position" id="current-position" placeholder="" value="" type="text" readonly> 
         </div>
@@ -106,6 +106,7 @@
             <h3><span id="verificacion-cod"></span></h3>
             <div data-role="fieldcontain">
                 <textarea name="service-addr" id="service-addr" placeholder="Dirección"></textarea>
+                <a data-role="button" data-theme="a" href="#maps-modal" data-rel="dialog" data-transition="pop" id="btn-vermapa">Ver mapa</a>
             </div>
         </div>
         

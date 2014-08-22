@@ -67,7 +67,7 @@
   
         
     <div data-theme="e" data-role="footer" data-position="fixed" align="center">
-       	<a href="http://www.facil.com.co/" ><?= $this->config->item('copyright') ?></a>
+       	<a href="<?= $this->config->item('app_link') ?>" ><?= $this->config->item('copyright') ?></a>
     </div>
     <div id="sound_"></div>    
 </div>

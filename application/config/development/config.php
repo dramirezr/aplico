@@ -361,6 +361,7 @@ $config['proxy_ips'] = '';
 $config['app_path'] = 'http://pidataxi.dev/'; 
 $config['app_name'] = 'Fácil Taxi';
 $config['copyright'] = 'Fácil Taxi - © 2013 GPTechnologies';
+$config['app_link'] = 'http://www.geocommerce.com.ec'; 
 
 $config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 5000; //In milliseconds

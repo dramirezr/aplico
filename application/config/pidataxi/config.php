@@ -361,6 +361,7 @@ $config['proxy_ips'] = '';
 $config['app_path'] = 'http://www.pidataxi.com.co/app/'; 
 $config['app_name'] = 'PidaTaxi.com';
 $config['copyright'] = 'PidaTaxi.com - © 2013 GPTechnologies';
+$config['app_link'] = 'http://www.facil.com.co/presentacion.php'; 
 $config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 16000; //In milliseconds
  
