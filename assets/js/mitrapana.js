@@ -27,8 +27,29 @@ var longitudOriginal;
 var geocoder = new google.maps.Geocoder();
 var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
+var page_state  = 'dashboard';
+
+window.onpopstate = function(event) {
+ if (window.history && window.history.pushState) {
+    $(window).on('popstate', function() {
+      var hashLocation = location.hash;
+      var hashSplit = hashLocation.split("#!/");
+      var hashName = hashSplit[1];
+      
+      if (hashName !== '') {
+        var hash = window.location.hash;
+        if ((hash === '') && (page_state==='call')) {
+          history.go(1); 
+        }
+      }
+    });
+  }
+};
+
 
 $(document).ready(function() {
+
+
     $('#waiting-msg, #agent-wrapper, #agent-call2-wrapper').hide();
     
     localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
@@ -61,6 +82,7 @@ $(document).ready(function() {
     
     $('#call-cancelation, #query-cancelation').click(function (e){
         
+        page_state  = 'dashboard';       
         if(!queryId){
             reset_modal();
             return true;
@@ -95,12 +117,12 @@ $(document).ready(function() {
     $('#call-confirmation').click(function(e){
        
         if ($('input[name="address"]').val()!=''){  
-            
+
             if (trim($('input[name="address"]').val())!=trim(formatted_addr)) {  
        
                 if ( ($('input[name="lat"]').val()!='') && ($('input[name="lat"]').val()!='0') ){   
                
-
+                    page_state  = 'call';
                     $.mobile.loading("show");
                     $('#call-confirmation, #confirmation-msg').hide();
                     $('#waiting-msg').show();
@@ -123,15 +145,17 @@ $(document).ready(function() {
                         if(response.queryId > 0){
                             queryId = response.queryId;
                             demonId = setInterval(verifyCall, verification_interval);
-                        }else
+                        }else{
+                            page_state  = 'dashboard';
                             alert('No se pudo hacer la solicitud, por favor intente de nuevo.');
+                        }
                     });
                     
             }else{
                 alert('Por favor configure su dispositivo para compartir su ubicación geográfica e intente de nuevo.');
             }
         }else{
-            alert('Por favor asegurate de completar tu dirección correctamente, puedes adicionar datos de ubicación como apartamento, oficina, urbanización, manzana, casa.'  );
+            alert('Por favor asegurate de ingresar la nomenclatura de tu ubicación. puedes adicionar datos de ubicación como Edificio, Urbanización, Manzana, Casa.'  );
             reset_modal();
             $("#call-modal").dialog('close');
         }
@@ -287,15 +311,15 @@ function verifyCall(){
         }
     }).done(function(response){
         
-        
         if(response.state == 'error'){
+            page_state  = 'dashboard';
             $.mobile.loading("hide");
             clearInterval(demonId);
             $('#waiting-msg').html(response.msg);
         }
          
         if(response.state == '1'){
-            
+            page_state  = 'call';
             $('#agent-photo').html('<img height="150" width="150" src="' + response.agent.foto + '"/>');
             $('#agent-name').html(response.agent.nombre);
             agentId = response.agent.id
@@ -342,6 +366,7 @@ function verifyServiceState(){
     }).done(function(response){
         
         if(response.state == 'error'){
+            page_state  = 'dashboard';
             clearInterval(verifyServiceStatus);
             alert(response.msg);
             reset_modal();
@@ -357,6 +382,8 @@ function verifyServiceState(){
         }
 
         if(response.state == 'delivered'){
+            //hacer llamado a la pantalla de encuesta
+            page_state  = 'dashboard';
             clearInterval(verifyServiceStatus);
             clearInterval(taxiLocationDemonId);
             reset_modal();

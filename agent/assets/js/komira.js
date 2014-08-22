@@ -24,7 +24,7 @@ var lat_user = null;
 var lng_user = null;
 var placa = null;
 var fecha_sos = null;
-
+var page_state  = 'do-login';
 var styles = [
                   {
                         "featureType": "poi",
@@ -48,11 +48,14 @@ var map;
 //var latitud;
 //var longitud;
 //var geocoder = new google.maps.Geocoder();
-
-$(document).ready(function() {
-
-
-  if (window.history && window.history.pushState) {
+/*
+window.onpopstate = function(event) {
+  var count = parseInt(localStorage.getItem('history-changes-count'));
+  localStorage.setItem('history-changes-count', ++count);
+};
+*/
+window.onpopstate = function(event) {
+ if (window.history && window.history.pushState) {
     $(window).on('popstate', function() {
       var hashLocation = location.hash;
       var hashSplit = hashLocation.split("#!/");
@@ -60,13 +63,15 @@ $(document).ready(function() {
 
       if (hashName !== '') {
         var hash = window.location.hash;
-        if (hash === '') {
+        if ((hash === '') && (page_state==='dashboard')) {
           history.go(1); 
         }
       }
     });
   }
+};
 
+$(document).ready(function() {
 
     $.mobile.loading( "show" );
     
@@ -82,6 +87,8 @@ $(document).ready(function() {
         clearInterval(verifyServiceDemonId);
         clearInterval(updateLocationDemonId);
         password = '';
+        //window.close() ;
+        page_state  = 'do-login';
         $("#show-login").trigger('click');
     });
 
@@ -192,6 +199,7 @@ function login(id, key){
     }).done(function(response){
         
         if(response.state=='ok'){
+            page_state  = 'dashboard';
             $("#show-dashboard").trigger('click');
             user = response.data
             $('#agent-name').html(user.nombre);
