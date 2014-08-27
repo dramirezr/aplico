@@ -23,7 +23,20 @@
   	<script>
  		var lang = '<?=current_lang()?>';
  		var verification_interval = <?=ci_config('verification_interval')?>;
+ 		var app_country = <?=ci_config('app_country')?>;
+ 		
  		var searching_msg = '<h1><?=lang('dashboard.searching')?></h1>';
+ 		var msg_cancel_service = '<?=lang('dashboard.cancel_service')?>';
+ 		var msg_nomenclature = '<?=lang('dashboard.nomenclature')?>';
+ 		var msg_nomenclature_empty = '<?=lang('dashboard.nomenclature_empty')?>';
+ 		var msg_configure_device = '<?=lang('dashboard.configure_device')?>';
+ 		var msg_error_attempts = '<?=lang('dashboard.error_attempts')?>';
+ 		var msg_address_not_found = '<?=lang('dashboard.address_not_found')?>';
+ 		var msg_error_geolocation = '<?=lang('dashboard.error_geolocation')?>';
+ 		var msg_error_share_position = '<?=lang('dashboard.error_share_position')?>';
+ 		var msg_error_current_position = '<?=lang('dashboard.error_current_position')?>';
+ 		var msg_error_exceeded_timeout = '<?=lang('dashboard.error_exceeded_timeout')?>';
+
  	</script>
 </head>
  
@@ -51,6 +64,7 @@
             <div data-role="fieldcontain">
             	<table border=0 width="100%"><tbody>
         		<tr><td >
+        			<?=lang('dashboard.enter_address')?>
                 	<input name="address" id="address" value="" type="text" data-mini="true" onkeydown="return validarEnter(event)">
             	</td><td >
                 	<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="c" data-inline="true">Search</a>
@@ -120,6 +134,8 @@
 		</p>
 	</div>
 </div><!-- /page popup -->
+
+
 <!-- 
 <audio id="yes" src="assets/audio/yes.mp3" preload="auto"></audio>
 <audio id="not" src="assets/audio/not.mp3" preload="auto"></audio>

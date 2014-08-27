@@ -360,6 +360,7 @@ $config['proxy_ips'] = '';
  //Custom config
 $config['app_path'] = 'http://www.mitaxijj.com.ec/app/'; 
 $config['app_name'] = 'Mi Taxi JJ';
+$config['app_country'] = 'ecuador, quito';
 $config['copyright'] = 'by Geocommerce Cia. Ltda. Quito, Ecuador';
 $config['app_link'] = 'http://www.geocommerce.com.ec'; 
 

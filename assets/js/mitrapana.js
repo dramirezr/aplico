@@ -81,7 +81,14 @@ $(document).ready(function() {
     });
     
     $('#call-cancelation, #query-cancelation').click(function (e){
-        
+        if (confirm(msg_cancel_service))
+        {
+            cancel_service();
+        }
+    });
+    
+
+    function cancel_service(){
         page_state  = 'dashboard';       
         if(!queryId){
             reset_modal();
@@ -107,8 +114,10 @@ $(document).ready(function() {
                 queryId : queryId
             }
         }).done(function(response){});
-    });
-    
+
+    }
+
+
     function trim(myString)
     {
         return myString.replace(/^\s+/g,'').replace(/\s+$/g,'')
@@ -147,20 +156,20 @@ $(document).ready(function() {
                             demonId = setInterval(verifyCall, verification_interval);
                         }else{
                             page_state  = 'dashboard';
-                            alert('No se pudo hacer la solicitud, por favor intente de nuevo.');
+                            alert(msg_error_attempts);
                         }
                     });
                     
             }else{
-                alert('Por favor configure su dispositivo para compartir su ubicación geográfica e intente de nuevo.');
+                alert(msg_configure_device);
             }
         }else{
-            alert('Por favor asegurate de ingresar la nomenclatura de tu ubicación. puedes adicionar datos de ubicación como Edificio, Urbanización, Manzana, Casa.'  );
+            alert(msg_nomenclature);
             reset_modal();
             $("#call-modal").dialog('close');
         }
       }else{
-        alert('La direccón no debe ser vacia. Por favor escriba su ubicación.');
+        alert(msg_nomenclature_empty);
       }
     });
     
@@ -421,7 +430,7 @@ function localizame() {
     if (navigator.geolocation) { /* Si el navegador tiene geolocalizacion */
         navigator.geolocation.getCurrentPosition(coordenadas, errores);
     }else{
-        alert('No hay soporte para la geolocalización.');
+        alert(msg_error_geolocation);
     }
 }
 
@@ -444,22 +453,22 @@ function coordenadas(position) {
 function errores(err) {
     /*Controlamos los posibles errores */
     if (err.code == 0) {
-      alert("Error en la geolocalización.");
+      alert(msg_error_geolocation);
     }
     if (err.code == 1) {
-      alert("No has aceptado compartir tu posición.");
+      alert(msg_error_share_position);
     }
     if (err.code == 2) {
-      alert("No se puede obtener la posición actual.");
+      alert(msg_error_current_position);
     }
     if (err.code == 3) {
-      alert("Hemos superado el tiempo de espera. Vuelve a intentarlo.");
+      alert(msg_error_exceeded_timeout);
     }
 }
  
 
 function address_search() {
- var address = 'colombia,'+document.getElementById("address").value;
+ var address = app_country+','+document.getElementById("address").value;
  geocoder.geocode( { 'address': address}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
                 
@@ -474,7 +483,7 @@ function address_search() {
         cargarMapa();
 
     } else {
-        alert('No hay soporte para la geolocalización.');
+        alert(msg_error_geolocation);
     }
  });
 }
@@ -576,7 +585,7 @@ function codeLatLng(lat, lng) {
                 
     
             } else {
-                $('#address').val('No encontró una dirección asociada a las coordenadas.');
+                $('#address').val(msg_address_not_found);
             }
             
         } else {

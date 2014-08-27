@@ -86,10 +86,13 @@ $(document).ready(function() {
         clearInterval(localizationDemonId);
         clearInterval(verifyServiceDemonId);
         clearInterval(updateLocationDemonId);
+        username = '';
         password = '';
+        $('#password').val('');
+        $('#username').val('');
         //window.close() ;
         page_state  = 'do-login';
-        $("#show-login").trigger('click');
+        $("#show-login").trigger('click'); 
     });
 
     $('#do-login').click(function(e){
@@ -103,7 +106,9 @@ $(document).ready(function() {
     $('#btn-cancelar').click(function(e){
         e.preventDefault();
         //play_sound('alerta'); 
-        cancel_service();
+        if (confirm("Esta seguro que desea cancelar el servicio de taxi?")){ 
+            cancel_service();
+        }
     });
     
     $('#btn-aplico').click(function(e){
@@ -613,6 +618,7 @@ function cargarMapa() {
             directionsDisplay.setDirections(response);
         }
     });
+
     
 }
 

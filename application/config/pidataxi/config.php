@@ -360,6 +360,7 @@ $config['proxy_ips'] = '';
  //Custom config
 $config['app_path'] = 'http://www.pidataxi.com.co/app/'; 
 $config['app_name'] = 'PidaTaxi.com';
+$config['app_country'] = 'colombia';
 $config['copyright'] = 'PidaTaxi.com - © 2013 GPTechnologies';
 $config['app_link'] = 'http://www.facil.com.co/presentacion.php'; 
 $config['max_verification_attemps'] = 10;

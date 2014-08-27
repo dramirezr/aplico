@@ -11,17 +11,34 @@ $lang['dashboard.callconfirm.content'] = 'Are you sure call a service at this lo
 
 $lang['dashboard.cancel'] = 'Cancel service';
 $lang['dashboard.confirm'] = 'Confirm';
+$lang['dashboard.cancel_service'] = 'Are you sure you want to cancel your service taxi?';
 
 $lang['dashboard.error.attempts'] = 'There is not available services at the moment, please, try again few minutes latter';
+$lang['dashboard.error_attempts'] = 'There is not available services at the moment, please, try again few minutes latter';
 $lang['dashboard.searching'] = 'Searching....';
 $lang['dashboard.assinged'] = 'Assigned!';
 $lang['dashboard.agentid'] = 'Id';
 $lang['dashboard.agentphone'] = 'Phone';
 $lang['dashboard.call'] = 'Call';
-$lang['dashboard.error.canceled_service'] = 'Service canceled, please try again.';
+$lang['dashboard.error.canceled_service'] = 'For technical problems with the taxi service has been canceled. Please request your taxi service again.';
 $lang['dashboard.error.arrival_service'] = 'The taxi service has arrived.!!!';
 $lang['dashboard.showtaxi'] = 'Show taxi';
 $lang['dashboard.infoshare'] = 'Share this information';
+$lang['dashboard.nomenclature'] = 'Please make sure that you attach  the postcode of your area. You can add as a reference the color of you property neighborhood, house, building, state, block.';
+$lang['dashboard.nomenclature_empty'] = 'The address should not be empty. Please enter your location.';
+$lang['dashboard.configure_device'] = 'Please configure your device to share its geographical location and try again.';
+
+$lang['dashboard.address_not_found'] = 'Not an address associated with the coordinates are found.';
+$lang['dashboard.error_geolocation'] = 'Error on geolocation.';
+$lang['dashboard.error_share_position'] = 'You have not agreed to share your position.';
+$lang['dashboard.error_current_position'] = 'Unable to get the current position.';
+$lang['dashboard.error_exceeded_timeout'] = 'We have exceeded the timeout. Please try again.';
+
+$lang['dashboard.enter_address'] = 'Enter here the postcode of your address:';
+
+
+
+
 
 $lang['login.userlogin'] = 'Get in';
 $lang['login.usercode'] = 'Code';
