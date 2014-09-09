@@ -23,7 +23,8 @@
   	<script>
  		var lang = '<?=current_lang()?>';
  		var verification_interval = <?=ci_config('verification_interval')?>;
- 		var app_country = <?=ci_config('app_country')?>;
+ 		//var app_country = '<?=ci_config('app_country')?>';
+ 		var app_country ='';
  		
  		var searching_msg = '<h1><?=lang('dashboard.searching')?></h1>';
  		var msg_cancel_service = '<?=lang('dashboard.cancel_service')?>';

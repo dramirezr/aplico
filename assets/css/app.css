@@ -26,3 +26,8 @@
 .width-96{
 	width: 96% !important;
 }
+
+.imagenagent img {
+ max-width: 110px; 
+ height: auto;
+}

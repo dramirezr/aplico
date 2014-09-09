@@ -329,7 +329,7 @@ function verifyCall(){
          
         if(response.state == '1'){
             page_state  = 'call';
-            $('#agent-photo').html('<img height="150" width="150" src="' + response.agent.foto + '"/>');
+            $('#agent-photo').html('<img  style="imagenagent" src="' + response.agent.foto + '"/>');
             $('#agent-name').html(response.agent.nombre);
             agentId = response.agent.id
             $('#agent-id').html(response.agent.codigo);

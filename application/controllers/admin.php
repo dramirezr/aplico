@@ -254,6 +254,7 @@ class Admin extends CI_Controller {
 			$crud->display_as('fecha_localizacion', 'Fec. Geolocalizacón');
 			
 			$crud->set_field_upload('foto','assets/images/agents');
+			$crud->callback_after_upload(array($this,'image_callback_after_upload'));
 			$crud->change_field_type('clave', 'password');
 			
 
@@ -434,5 +435,19 @@ class Admin extends CI_Controller {
     	$this->session->sess_destroy();
     	redirect($user->lang.'/login'); 
 	}
+
+
+	function image_callback_after_upload($uploader_response,$field_info, $files_to_upload)
+	{
+	    $this->load->library('image_moo');
+	 
+	    //Is only one file uploaded so it ok to use it with $uploader_response[0].
+	    $file_uploaded = $field_info->upload_path.'/'.$uploader_response[0]->name; 
+	 
+	    $this->image_moo->load($file_uploaded)->resize(96,'%')->save($file_uploaded,true);
+	 
+	    return true;
+	}
+	
 
 }
