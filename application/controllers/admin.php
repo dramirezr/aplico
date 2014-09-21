@@ -89,6 +89,7 @@ class Admin extends CI_Controller {
 
 			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
 			$crud->display_as('idsucursal', 'Sucursal');
+			$crud->display_as('departamento', 'Provincia');
 			
 			$crud->change_field_type('clave', 'password');
 			
@@ -141,6 +142,7 @@ class Admin extends CI_Controller {
 			
 			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
 			$crud->display_as('idsucursal', 'Sucursal');
+			$crud->display_as('departamento', 'Provincia');
 			
 			$crud->change_field_type('clave', 'password');
 			$crud->change_field_type('perfil', 'hidden');
@@ -175,6 +177,7 @@ class Admin extends CI_Controller {
 		$crud->fields('nombre','idsucursal','codigo','clave','pais','departamento','ciudad','direccion','telefono','perfil');
 		$crud->required_fields('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
 		$crud->display_as('codigo', 'Login');
+		$crud->display_as('departamento', 'Provincia');
 		
 		$crud->change_field_type('clave', 'password');
 		$crud->change_field_type('perfil', 'hidden');
@@ -210,8 +213,8 @@ class Admin extends CI_Controller {
 		$crud->set_theme('datatables');
 		$crud->set_table('vehiculos');
 		$crud->set_subject('Vehiculos');
-		$crud->columns('placa','idsucursal','modelo','marca','propietario');
-		$crud->fields('placa','idsucursal','modelo','marca','propietario');
+		$crud->columns('placa','unidad','idsucursal','modelo','marca','propietario');
+		$crud->fields('placa','unidad','idsucursal','modelo','marca','propietario');
 		$crud->display_as('idsucursal', 'Sucursal');
 		$crud->required_fields('idsucursal','placa','propietario');
 
@@ -248,6 +251,7 @@ class Admin extends CI_Controller {
 			
 			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
 			$crud->display_as('idsucursal', 'Sucursal');
+			$crud->display_as('departamento', 'Provincia');
 
 			$crud->display_as('codigo', 'Cedula');
 			$crud->display_as('vehiculo', 'Placa');
@@ -297,6 +301,7 @@ class Admin extends CI_Controller {
 			$crud->columns('id','ubicacion','pais','departamento','ciudad','fecha_solicitud','estado','idagente');
 			$crud->display_as('idagente', 'Taxista');
 			$crud->display_as('id', 'Código');
+			$crud->display_as('departamento', 'Provincia');
 			$crud->set_relation('idagente', 'agente', 'nombre');
 			
 

@@ -115,7 +115,10 @@
 			<p id="agent-photo"></p>
 			<p id="agent-name"></p>
 			
-			<p><?=lang('dashboard.agentcode2')?>: <span id="agent-placa"></span></p>
+			<p>
+			<?=lang('dashboard.agentcode2')?>: <span id="agent-placa"></span>,&nbsp;
+			<?=lang('dashboard.unidad')?>: <span id="agent-unidad"></span>
+			</p>
 			<p><?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span></p>
 			
 			<p><div data-role="collapsible">

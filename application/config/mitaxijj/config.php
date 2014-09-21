@@ -369,8 +369,8 @@ $config['verification_interval'] = 8000; //In milliseconds
  
 $config['agent_verification_interval'] = 8000; //In milliseconds
 $config['agent_updatelocation_interval'] = 8000; //In milliseconds
-$config['distance_call'] = 2; //In kilometros
-$config['distance_call_sos'] = 5; //In kilometros
+$config['distance_call'] = 1000.5; //In kilometros
+$config['distance_call_sos'] = 50; //In kilometros
 
  
 /* End of file config.php */

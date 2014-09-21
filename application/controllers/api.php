@@ -88,6 +88,7 @@ class Api extends CI_Controller {
 			$this->load->model('vehiculos');
 			$vehiculo = $this->vehiculos->get_by_id($agente->vehiculo);
 			$data['placa'] = $vehiculo->placa;
+			$data['unidad'] = $vehiculo->unidad;
 			$sol = $this->solicitud->get_by_id($queryId);
 			$data['direccion'] = $sol->ubicacion;
 			$this->agent_accept();

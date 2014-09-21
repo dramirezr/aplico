@@ -336,6 +336,7 @@ function verifyCall(){
             $('#agent-phone').html(response.agent.telefono);
             $('#confirmation-code').html('<span style="color: red; font-weight:bold;">' + queryId + '</span>');
             $('#agent-placa').html(response.agent.placa);
+            $('#agent-unidad').html(response.agent.unidad);
             
             /*
             addr = response.agent.direccion;

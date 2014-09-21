@@ -5,6 +5,7 @@ $lang['dashboard.calltaxi'] = 'Call Taxi';
 $lang['dashboard.localizame'] = 'Find Me';
 $lang['dashboard.confimationcode'] = 'Confirmation code';
 $lang['dashboard.agentcode2'] = 'Plate';
+$lang['dashboard.unidad'] = 'Unit';
 
 $lang['dashboard.callconfirm.title'] = 'Call Confirmation';
 $lang['dashboard.callconfirm.content'] = 'Are you sure call a service at this location';
