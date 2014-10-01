@@ -358,8 +358,8 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
  //Custom config
-$config['app_path'] = 'http://www.mitaxijj.com.ec/app/'; 
-$config['app_name'] = 'Mi Taxi JJ';
+$config['app_path'] = 'http://taxi.buskoo.com/'; 
+$config['app_name'] = 'Taxi-Buskoo';
 $config['app_country'] = 'ecuador, quito';
 $config['copyright'] = 'by Geocommerce Cia. Ltda. Quito, Ecuador';
 $config['app_link'] = 'http://www.geocommerce.com.ec'; 
@@ -369,8 +369,8 @@ $config['verification_interval'] = 8000; //In milliseconds
  
 $config['agent_verification_interval'] = 8000; //In milliseconds
 $config['agent_updatelocation_interval'] = 8000; //In milliseconds
-$config['distance_call'] = 2.5; //In kilometros
-$config['distance_call_sos'] = 2.5; //In kilometros
+$config['distance_call'] = 1000.5; //In kilometros
+$config['distance_call_sos'] = 1000.5; //In kilometros
 
  
 /* End of file config.php */

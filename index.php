@@ -20,7 +20,8 @@
  	//define('ENVIRONMENT', 'production');
 	//define('ENVIRONMENT', 'testing');
 	//define('ENVIRONMENT', 'development');
-	define('ENVIRONMENT', 'mitaxijj');
+	//define('ENVIRONMENT', 'mitaxijj');
+	define('ENVIRONMENT', 'buskoo');
 	//define('ENVIRONMENT', 'pidataxi');
 	
 /*
@@ -53,6 +54,10 @@ if (defined('ENVIRONMENT'))
 			date_default_timezone_set('America/Bogota');
 		break;
 		case 'mitaxijj':
+			error_reporting(0);
+			date_default_timezone_set('America/Guayaquil');
+		break;
+	    case 'buskoo':
 			error_reporting(0);
 			date_default_timezone_set('America/Guayaquil');
 		break;

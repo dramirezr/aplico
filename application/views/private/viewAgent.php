@@ -36,7 +36,7 @@
     </div>
     <div data-theme="e" data-role="footer" data-position="fixed">
         <h3>
-            © 2013 <?= $this->config->item('app_name') ?>
+            <?= $this->config->item('app_name') ?>
         </h3>
     </div>
 </div>
