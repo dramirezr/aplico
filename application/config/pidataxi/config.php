@@ -363,6 +363,9 @@ $config['app_name'] = 'PidaTaxi.com';
 $config['app_country'] = 'colombia';
 $config['copyright'] = 'PidaTaxi.com - © 2013 GPTechnologies';
 $config['app_link'] = 'http://www.facil.com.co/presentacion.php'; 
+$config['app_users_download'] = 'pidataxi/PidaTaxi-AN.apk';
+$config['app_agent_download'] = 'pidataxi/PidaTaxiAgente.apk';
+
 $config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 16000; //In milliseconds
  

@@ -69,6 +69,11 @@
 			    </fieldset>
 			    <input type="hidden" name="action" value="do_login" />             
 			</form>  
+			<div class="centre"> 
+			Descarga aquí:
+				<a href="<?=base_url()?>/assets/download/<?=$this->config->item('app_users_download');?>"><img src="<?=base_url()?>assets/images/android.png" width="60" height="60" title="Aplicación para padres" /> </a>
+				<a href="<?=base_url()?>/assets/download/<?=$this->config->item('app_agent_download');?>"><img src="<?=base_url()?>assets/images/android-taxi.png" width="60" height="60" title="Aplicación para conductores" /> </a>
+			</div>
 		</div>
 	</div>
 

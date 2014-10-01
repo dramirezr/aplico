@@ -363,6 +363,8 @@ $config['app_name'] = 'Taxi-Buskoo';
 $config['app_country'] = 'ecuador, quito';
 $config['copyright'] = 'by Geocommerce Cia. Ltda. Quito, Ecuador';
 $config['app_link'] = 'http://www.geocommerce.com.ec'; 
+$config['app_users_download'] = 'buskoo/TaxiBuskoo.apk';
+$config['app_agent_download'] = 'buskoo/TaxiBuskoo_Agente.apk';
 
 $config['max_verification_attemps'] = 10;
 $config['verification_interval'] = 8000; //In milliseconds
