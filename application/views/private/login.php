@@ -70,9 +70,9 @@
 			    <input type="hidden" name="action" value="do_login" />             
 			</form>  
 			<div class="centre"> 
-			Descarga aquí:
-				<a href="<?=base_url()?>/assets/download/<?=$this->config->item('app_users_download');?>"><img src="<?=base_url()?>assets/images/android.png" width="60" height="60" title="Aplicación para padres" /> </a>
-				<a href="<?=base_url()?>/assets/download/<?=$this->config->item('app_agent_download');?>"><img src="<?=base_url()?>assets/images/android-taxi.png" width="60" height="60" title="Aplicación para conductores" /> </a>
+			<h5 class="centered-text"> Descarga aquí las apps en android:</h5>
+				<a href="<?=base_url()?>/assets/download/<?=$this->config->item('app_users_download');?>"><img src="<?=base_url()?>assets/images/android.png" height="60" width="60"  title="Aplicación usuarios" /> </a>
+				<a href="<?=base_url()?>/assets/download/<?=$this->config->item('app_agent_download');?>"><img src="<?=base_url()?>assets/images/android-taxi.png" height="60" width="65" title="Aplicación taxistas" /> </a>
 			</div>
 		</div>
 	</div>

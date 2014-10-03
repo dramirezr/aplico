@@ -474,6 +474,8 @@ function verifyServiceState(){
 function updateLocation(){
     
     $('#current-position').parent().css('background-color', 'yellow');
+    $('#current-position').css('color', 'black');
+    $('#current-position').val('Latitud: ' + lat + ' Longitud: ' + lng);
     
     $.ajax({
         type : "GET",
@@ -497,7 +499,10 @@ function updateLocation(){
             }
             
      }).fail(function(jqXHR, textStatus, errorThrown){
-         $('#current-position').val('======= Error de conexión =======');
+         //$('#current-position').val('======= Error de conexión =======');
+         $('#current-position').parent().css('background-color', '#FFFFFF');
+         $('#current-position').css('color', 'red');
+         $('#current-position').val('Latitud: ' + lat + ' Longitud: ' + lng);
          login(username, password);
       }); 
      //verificar mensaje de ayuda de otros agentes.
