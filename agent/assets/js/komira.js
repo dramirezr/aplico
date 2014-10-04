@@ -471,6 +471,9 @@ function verifyServiceState(){
     });  
 }
 
+
+
+
 function updateLocation(){
     
     $('#current-position').parent().css('background-color', 'yellow');
