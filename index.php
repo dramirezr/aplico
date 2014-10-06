@@ -20,8 +20,8 @@
  	//define('ENVIRONMENT', 'production');
 	//define('ENVIRONMENT', 'testing');
 	//define('ENVIRONMENT', 'development');
-	//define('ENVIRONMENT', 'mitaxijj');
-	define('ENVIRONMENT', 'buskoo');
+	define('ENVIRONMENT', 'mitaxijj');
+	//define('ENVIRONMENT', 'buskoo');
 	//define('ENVIRONMENT', 'pidataxi');
 	
 /*
