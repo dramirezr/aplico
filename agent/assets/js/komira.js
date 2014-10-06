@@ -63,8 +63,13 @@ window.onpopstate = function(event) {
 
       if (hashName !== '') {
         var hash = window.location.hash;
+        console.log('page_state:'+page_state+' hash:'+hash);
         if ((hash === '') && (page_state==='dashboard')) {
           history.go(1); 
+        }else{
+            if ((hash === '#dashboard') && (page_state==='do-login')) {
+                history.go(-2); 
+            }
         }
       }
     });
