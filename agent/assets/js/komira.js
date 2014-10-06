@@ -470,7 +470,7 @@ function verifyServiceState(){
             //$.playSound('assets/audio/not.mp3');
             //play_sound('not'); 
             $("#pito")[0].play();
-            alert(response.msg);
+            alert("El servicio de taxi ha sido cancelado por el usuario.");
             switchToFree();
         }
     });  

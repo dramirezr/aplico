@@ -291,7 +291,11 @@ function tracerRoute(lat, lng, lat2, lng2){
 
 
 function setUserIcon(lat, lng){
-    userMarker.setPosition( new google.maps.LatLng( lat, lng ) );
+    var latlon = new google.maps.LatLng(lat, lng);
+    codeLatLng(lat, lng);
+    userMarker.setPosition(latlon);
+    map.setCenter(latlon); 
+    //codeLatLng(lat, lng);
 }
 
 function reset_modal(){
@@ -532,7 +536,7 @@ function cargarMapa() {
         latitud = evento.latLng.lat();
         longitud = evento.latLng.lng();
             
-       codeLatLng(evento.latLng.lat(), evento.latLng.lng());
+        codeLatLng(evento.latLng.lat(), evento.latLng.lng());
        
        // console.log(coorMarcador);
         $('#lat').val(evento.latLng.lat());
@@ -547,11 +551,13 @@ function cargarMapa() {
 
 }
 
+var calle = '';
+var ruta = '';
 var sector = null;
-var ciudad = null;
-var pais = null;
-var depto = null; 
-var formatted_addr = null;
+var ciudad = '';
+var pais = '';
+var depto = ''; 
+var formatted_addr = '';
 
 function codeLatLng(lat, lng) {
 
@@ -559,15 +565,38 @@ function codeLatLng(lat, lng) {
     geocoder.geocode({'latLng': latlng}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
-                //formatted address
-                var tam = results[0].address_components.length;
-                //console.log(results[0]);
+                //var tam = results[0].address_components.length;
                 sector = results[0].address_components[2] ;
-                ciudad = (tam == 6) ? results[0].address_components[3] : results[0].address_components[2] ;
-                depto = (tam == 6) ? results[0].address_components[4] : results[0].address_components[3] ;
-                pais = (tam == 6) ? results[0].address_components[5] : results[0].address_components[4] ;
-                
+                //ciudad = (tam == 6) ? results[0].address_components[3] : results[0].address_components[2] ;
+                //depto = (tam == 6) ? results[0].address_components[4] : results[0].address_components[3] ;
+                //pais = (tam == 6) ? results[0].address_components[5] : results[0].address_components[4] ;
                 //console.log(results[0]);  
+                //formatted_addr = sector.long_name + ', ' + results[0].formatted_address;
+                //var guion = formatted_addr.indexOf("-");
+                //if (guion>0) {
+                  //  formatted_addr = formatted_addr.substring(0, guion) + ' - ';
+                //} else{
+                  //  formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
+                //}
+                
+                for (var i = 0; i < results[0].address_components.length; i++)
+                {
+                    var addr = results[0].address_components[i];
+                    if (addr.types[0] == 'country') 
+                      pais = addr.long_name;
+                    if (addr.types[0] == 'administrative_area_level_1') 
+                      depto = addr.long_name;
+                    if (addr.types[0] == 'locality') 
+                      ciudad = addr.long_name;
+                    //if (addr.types[0] == 'sublocality_level_1') 
+                      //sector = addr.long_name;
+                    if (addr.types[0] == 'route') 
+                      ruta = addr.long_name;
+                    if (addr.types[0] == 'street_number') 
+                      calle = addr.long_name;
+                    //console.log('dir:'+addr.types[0]+' '+addr.long_name)
+                }
+                
                 formatted_addr = sector.long_name + ', ' + results[0].formatted_address;
                 var guion = formatted_addr.indexOf("-");
                 if (guion>0) {
@@ -575,16 +604,14 @@ function codeLatLng(lat, lng) {
                 } else{
                     formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
                 }
-                
-                
+
                 $('#address').val(formatted_addr);
                 $('#show-address').html(formatted_addr);
                 $('#zone').val(sector.long_name);
-                $('#city').val(ciudad.long_name);
-                $('#state_c').val(depto.long_name);
-                $('#country').val(pais.long_name);
-                
-    
+                $('#city').val(ciudad);
+                $('#state_c').val(depto);
+                $('#country').val(pais);
+                    
             } else {
                 $('#address').val(msg_address_not_found);
             }
