@@ -594,7 +594,7 @@ function codeLatLng(lat, lng) {
                       ruta = addr.long_name;
                     if (addr.types[0] == 'street_number') 
                       calle = addr.long_name;
-                    console.log('dir:'+addr.types[0]+' '+addr.long_name)
+                    console.log('address: '+addr.types[0]+' - '+addr.long_name)
                 }
                 
                 formatted_addr = sector.long_name + ', ' + results[0].formatted_address;
