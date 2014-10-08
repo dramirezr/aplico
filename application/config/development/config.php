@@ -361,6 +361,7 @@ $config['proxy_ips'] = '';
 $config['app_path'] = 'http://pidataxi.dev/'; 
 $config['app_name'] = 'Fácil Taxi';
 $config['app_country'] = 'colombia';
+$config['app_icon'] = 'icon_development.png';
 $config['app_users_download'] = 'buskoo/TaxiBuskoo.apk';
 $config['app_agent_download'] = 'buskoo/TaxiBuskoo_Agente.apk';
 

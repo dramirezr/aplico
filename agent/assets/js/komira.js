@@ -703,6 +703,7 @@ function init(){
             verification_interval = response.verification_interval;
             updatelocation_interval = response.updatelocation_interval;
             $('#app_name').html(response.app_name);
+            $('#app_icon').attr('src', "assets/images/" + response.app_icon) ;
             $('#copyright').html(response.copyright);
             $('#copyright2').html(response.copyright);
 

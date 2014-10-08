@@ -360,6 +360,7 @@ $config['proxy_ips'] = '';
  //Custom config
 $config['app_path'] = 'http://taxi.buskoo.com/'; 
 $config['app_name'] = 'Taxi-Buskoo';
+$config['app_icon'] = 'icon_buskoo.png';
 $config['app_country'] = 'ecuador, quito';
 $config['copyright'] = 'by Geocommerce Cia. Ltda. Quito, Ecuador';
 $config['app_link'] = 'http://www.geocommerce.com.ec'; 
