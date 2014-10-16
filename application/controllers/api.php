@@ -180,5 +180,52 @@ class Api extends CI_Controller {
 		
 		die(json_encode(array('state' => 'ok','agent' => $agente)));
 	}
+
+
+	function get_cust_location(){
+		$telefono = $this->input->get_post('phone');
+		$this->load->model('cliente_loc');
+		$result = $this->cliente_loc->get_by_telefono($telefono);
+		
+		die(json_encode(array('state' => 'ok', 'result' => $result )));
+	}
+
+	function saveClientLoc(){
+		$this->load->model('cliente_loc');
+
+		//echo "<pre>";
+		//print_r($_REQUEST);
+		//echo "</pre>";
+		$idcliente				= $this->input->get_post('idclient');
+		$id  					= $this->input->get_post('id');
+		$data['telefono'] 		= $this->input->get_post('phone');
+		$data['celular'] 		= $this->input->get_post('cell');		
+		$data['direccion'] 		= $this->input->get_post('address');
+		$data['latitud'] 		= $this->input->get_post('lat');
+		$data['longitud'] 		= $this->input->get_post('lng');
+		
+		$this->load->model('cliente');
+		$dataE['nombre'] 		= $this->input->get_post('name');
+		if($idcliente=='-1'){
+			$dataE['idcliente_e']	= '-1';
+			$idcliente 				= $this->cliente->create($dataE);			
+		}else{
+			$this->cliente->update($idcliente,$dataE);			
+		}
+
+		$data['idcliente']	= $idcliente;
+		$this->load->model('cliente_loc');
+		if($id=='-1'){
+			$idlocalizacion = $this->cliente_loc->create($data);			
+		}else{
+			$this->cliente_loc->update($id,$data);	
+			$idlocalizacion =	$id;	
+		}
+
+		die(json_encode(array('state' => 'ok', 'idlocation' => $idlocalizacion, 'idclient' => $idcliente)) );
+		
+		
+	}
+
 		
 }

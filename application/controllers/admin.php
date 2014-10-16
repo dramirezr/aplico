@@ -43,7 +43,7 @@ class Admin extends CI_Controller {
 			$this->user_management();
 		else
 			if($this->userconfig->perfil=='CALL')
-				$this->_admin_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '' ));
+				$this->_admin_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '/admin/dashboardCall' ));
 			else
 				if($this->userconfig->perfil=='CUST')
 					$this->_admin_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '' ));
@@ -392,11 +392,6 @@ class Admin extends CI_Controller {
 		$this->load->view('private/admin.php',(object)array('output' => $output , 'js_files' => array() , 'css_files' => array() , 'op' => 'service_agent','fechaini' => $fi,'fechafin' => $ff  ));
 	}
 
-	function callService()
-	{
-		//$this->load->view('private/callcenter.php',array('op' => ''));
-		$this->load->view('private/callcenter.php',(object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '' ));
-	}
 
 	
 	
@@ -416,16 +411,31 @@ class Admin extends CI_Controller {
 		$this->load->view('private/tabletAdminAgent.php',array('op' => '/admin/viewAgent'));
 	}
 
-	function tabletCallAgent()
-	{
-
-		$this->load->view('private/tabletCallAgent.php',array('op' => '/admin/viewAgent'));
-	}
-	
-	
 	function viewAgent()
 	{
 		$this->load->view('private/viewAgent',array('op' => '/admin/viewAgent'));
+	}
+
+
+	function tabletShowAgent()
+	{
+		$this->load->view('private/callcenter.php',(object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '/admin/tabletCallAgent' ));
+	}
+	
+	function tabletCallAgent()
+	{
+
+		$this->load->view('private/viewAgent.php',array('op' => '/admin/tabletCallAgent'));
+	}
+
+	function callService()
+	{
+		$this->load->view('private/callcenter.php',(object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '/admin/dashboardCall' ));
+	}
+
+	function dashboardCall()
+	{
+		$this->load->view('private/dashboardCall.php',array('op' => '/admin/dashboardCall'));
 	}
 	
 	function underConstuction()

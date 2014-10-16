@@ -39,18 +39,23 @@ a:hover
 		<a href='<?php echo site_url('admin/user_managervehicle')?>'>Dueños de Taxis</a> |
 		<a href='<?php echo site_url('admin/vehicle_management')?>'>Vehiculos</a> |
 		<a href='<?php echo site_url('admin/agent_management')?>'>Taxitas</a> |
-		<a href='<?php echo site_url('admin/tabletCallAgent') ?>'>Seguimiento Vehiculos</a> |
+		<a href='<?php echo site_url('admin/tabletShowAgent') ?>'>Seguimiento Vehiculos</a> |
 		<a href='<?php echo site_url('admin/close')?>'>Salida segura</a> |
 	</div> 
 
 	<div style='height:20px;'></div>  
 	<?php 
-		if ($op==''){
-			$url = site_url('').$op; 
+		$url = site_url('').$op; 
+		if ($op=='/admin/dashboardCall'){
 			echo "<iframe id='targetFrame' src='".$url."' width='100%' height='600px'  frameborder='0' ></iframe>";
 		}else{
+			if ($op=='/admin/tabletCallAgent'){
+				echo "<iframe id='targetFrame' src='".$url."' width='100%' height='600px'  frameborder='0' ></iframe>";
+			}else{
 			
-			echo $output;
+				echo $output;
+
+			}
 		}
 	?>
 

@@ -1,3 +1,7 @@
+var http = location.protocol;
+var slashes = http.concat("//");
+var server = slashes.concat(window.location.hostname);
+
 var directionsService = new google.maps.DirectionsService();
 
 var styles = [
@@ -46,6 +50,9 @@ window.onpopstate = function(event) {
   }
 };
 
+$(document).keypress(function(e){
+//  alert('tecla:'+e.keyCode)
+});
 
 $(document).ready(function() {
 
@@ -69,7 +76,7 @@ $(document).ready(function() {
     $('#agent-confirmation').click(function(e){
         $.ajax({
             type : "GET",
-            url : lang + '/api/agent_accept',           
+            url : server + '/' + lang + '/api/agent_accept',           
             dataType : "json",
             data : {
                 queryId : queryId
@@ -108,7 +115,7 @@ $(document).ready(function() {
                 
         $.ajax({
             type : "GET",
-            url : lang + '/api/request_cancel',           
+            url : server + lang + '/api/request_cancel',           
             dataType : "json",
             data : {
                 queryId : queryId
@@ -138,7 +145,7 @@ $(document).ready(function() {
 
                     $.ajax({
                         type : "GET",
-                        url : $('#call-form').attr('action'),        
+                        url : server + '/' + lang + '/api/call',        
                         dataType : "json",
                         data : {
                             hms1 : $('input[name="hms1"]').val(),
@@ -217,6 +224,10 @@ function play_sound(element) {
         document.getElementById(element).play();
 }
    
+function hola() {
+        alert('Hola mundo...');
+}
+
 function validarEnter(e) {
     if (window.event) {
         keyval=e.keyCode
@@ -233,7 +244,7 @@ function validarEnter(e) {
 function getTaxiLocation(){
        $.ajax({
             type : "GET",
-            url : lang + '/api/get_taxi_location',        
+            url : server + '/' + lang + '/api/get_taxi_location',        
             dataType : "json",
             data : {
                 agent_id : agentId,
@@ -255,7 +266,7 @@ function setTaxiIcon(lat, lng){
         taxiMarker = new google.maps.Marker({
             position: new google.maps.LatLng( lat, lng ),
             map: map,
-            icon : '../assets/images/taxi.png'
+            icon : server +'/assets/images/taxi.png'
         });
         
         tracerRoute(lat, lng, latitud, longitud);
@@ -295,7 +306,12 @@ function setUserIcon(lat, lng){
     codeLatLng(lat, lng);
     userMarker.setPosition(latlon);
     map.setCenter(latlon); 
-    //codeLatLng(lat, lng);
+
+    latitud = lat;
+    longitud = lng;
+    $('#lat').val(lat);
+    $('#lng').val(lng);
+    
 }
 
 function reset_modal(){
@@ -315,7 +331,7 @@ function reset_modal(){
 function verifyCall(){
     $.ajax({
         type : "GET",
-        url : lang + '/api/verify_call',        
+        url : server + '/' + lang + '/api/verify_call',        
         dataType : "json",
         data : {
             queryId : queryId,
@@ -370,7 +386,7 @@ function verifyCall(){
 function verifyServiceState(){
     $.ajax({
         type : "GET",
-        url : lang + '/api/verify_service_status',        
+        url : server + '/' + lang + '/api/verify_service_status',        
         dataType : "json",
         data : {
             queryId : queryId,
@@ -418,7 +434,7 @@ function verifyServiceState(){
 function updateStatusArribo(){
     $.ajax({
         type : "GET",
-        url : lang + '/api/updateStatusArribo',        
+        url : server + '/' + lang + '/api/updateStatusArribo',        
         dataType : "json",
         data : {
             queryId : queryId,
@@ -516,7 +532,7 @@ function cargarMapa() {
         map: map, /* Lo vinculamos a nuestro mapa */
         animation: google.maps.Animation.DROP, 
         draggable: true,
-        icon : '../assets/images/male.png'
+        icon : server + '/assets/images/male.png'
     });
 
    /*
@@ -594,7 +610,7 @@ function codeLatLng(lat, lng) {
                       ruta = addr.long_name;
                     if (addr.types[0] == 'street_number') 
                       calle = addr.long_name;
-                    console.log('address: '+addr.types[0]+' - '+addr.long_name)
+                    //console.log('address: '+addr.types[0]+' - '+addr.long_name)
                 }
                 
                 formatted_addr = sector.long_name + ', ' + results[0].formatted_address;
