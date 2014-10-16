@@ -139,6 +139,7 @@ function centerCustLocation(id,center){
 			if (center==='S')
 				map.setCenter(markersArray[i].position);
 			$('#address').val(markersArray[i].title);
+			$('#show-address').html(markersArray[i].title);
 			latitud = markersArray[i].latitud;
     		longitud = markersArray[i].longitud;
     		$('#lat').val(markersArray[i].latitud);
