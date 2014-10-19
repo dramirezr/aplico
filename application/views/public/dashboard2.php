@@ -13,33 +13,6 @@
 	<link rel="stylesheet" href="<?=base_url()?>assets/css/app.css" />
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
 	
-	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
-    
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
-    
-    <script src="<?=base_url()?>assets/js/mitrapana.js"></script>
-    
-  	<script>
- 		var lang = '<?=current_lang()?>';
- 		var verification_interval = <?=ci_config('verification_interval')?>;
- 		var app_country = '<?=ci_config('app_country')?>';
- 		//var app_country ='';
- 		
- 		var searching_msg = '<h1><?=lang('dashboard.searching')?></h1>';
- 		var msg_cancel_service = '<?=lang('dashboard.cancel_service')?>';
- 		var msg_nomenclature = '<?=lang('dashboard.nomenclature')?>';
- 		var msg_nomenclature_empty = '<?=lang('dashboard.nomenclature_empty')?>';
- 		var msg_configure_device = '<?=lang('dashboard.configure_device')?>';
- 		var msg_error_attempts = '<?=lang('dashboard.error_attempts')?>';
- 		var msg_address_not_found = '<?=lang('dashboard.address_not_found')?>';
- 		var msg_error_geolocation = '<?=lang('dashboard.error_geolocation')?>';
- 		var msg_error_share_position = '<?=lang('dashboard.error_share_position')?>';
- 		var msg_error_current_position = '<?=lang('dashboard.error_current_position')?>';
- 		var msg_error_exceeded_timeout = '<?=lang('dashboard.error_exceeded_timeout')?>';
-
- 	</script>
-
 
  	<script type="text/javascript" charset="utf-8" src="cordova.js"></script> 
 	<script type="text/javascript" charset="utf-8"> 
@@ -80,6 +53,37 @@ function onDeviceReady() {
  }
 
 </script>
+
+
+
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+    
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
+    
+    <script src="<?=base_url()?>assets/js/mitrapana.js"></script>
+    
+  	<script>
+ 		var lang = '<?=current_lang()?>';
+ 		var verification_interval = <?=ci_config('verification_interval')?>;
+ 		var app_country = '<?=ci_config('app_country')?>';
+ 		//var app_country ='';
+ 		
+ 		var searching_msg = '<h1><?=lang('dashboard.searching')?></h1>';
+ 		var msg_cancel_service = '<?=lang('dashboard.cancel_service')?>';
+ 		var msg_nomenclature = '<?=lang('dashboard.nomenclature')?>';
+ 		var msg_nomenclature_empty = '<?=lang('dashboard.nomenclature_empty')?>';
+ 		var msg_configure_device = '<?=lang('dashboard.configure_device')?>';
+ 		var msg_error_attempts = '<?=lang('dashboard.error_attempts')?>';
+ 		var msg_address_not_found = '<?=lang('dashboard.address_not_found')?>';
+ 		var msg_error_geolocation = '<?=lang('dashboard.error_geolocation')?>';
+ 		var msg_error_share_position = '<?=lang('dashboard.error_share_position')?>';
+ 		var msg_error_current_position = '<?=lang('dashboard.error_current_position')?>';
+ 		var msg_error_exceeded_timeout = '<?=lang('dashboard.error_exceeded_timeout')?>';
+
+ 	</script>
+
+
 
 </head>
  
