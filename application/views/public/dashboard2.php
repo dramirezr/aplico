@@ -18,6 +18,7 @@
     
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
     
+    <script src="<?=base_url()?>assets/js/mitrapana.js"></script>
     
   	<script>
  		var lang = '<?=current_lang()?>';
@@ -39,7 +40,47 @@
 
  	</script>
 
- 	<script src="<?=base_url()?>assets/js/toribio.js"></script>
+
+ 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script> 
+	<script type="text/javascript" charset="utf-8"> 
+
+document.addEventListener("deviceready", onDeviceReady, false); 
+
+
+function onDeviceReady() { 
+	var miDispositivo = document.getElementById('informaciondeldispositivo'); 
+	var titulo = '<div align="center"><h2>Informaci&oacute;n del dispositivo</h2></div>'; 
+	var phonegapData = '<div align="center"><h2>Versi&oacute;n de Phonegap</h2></div>';
+	 miDispositivo.innerHTML = '<strong>' + titulo + '</strong><br/>' + 
+	''     + '<br />' + 
+	'<strong>Equipo:</strong> ' + device.model + '<br/>' +
+	''     + '<br />' + 
+		 '<strong>S.O.:</strong> ' + device.platform + '<br/>' +
+	''     + '<br />' + 
+	'<strong>Versi&oacute;n:</strong> ' + device.version + '<br />'; 
+	''     + '<br />';
+	 
+	var miPhonegap = document.getElementById('informacionadicional');
+	miPhonegap.innerHTML = '<strong>' + phonegapData + '</strong><br/>' + 
+	''     + '<br />' + 
+	'<strong>Phonegap:</strong> ' + device.phonegap + '<br/>' +
+	''     + '<br />' + 
+	'<strong>UUID:</strong> ' + device.uuid + '<br/>';
+
+	 window.addEventListener("batterystatus", onBatteryStatus, false);
+
+
+	
+
+}
+
+ function onBatteryStatus(info) {
+       var mibateria = document.getElementById('informacionbateria');
+	mibateria.innerHTML = '<strong>Bateria Level</strong> '   + info.level + ' isPlugged: ' + info.isPlugged+ '<br/>';
+ }
+
+</script>
+
 </head>
  
 <body>
@@ -47,59 +88,33 @@
 
 <div data-role="page" id="page1">
     <div data-theme="e" data-role="header">
-    	<a id="btn-localizame" data-role="button"  data-theme="a" class="ui-btn-left"  ><?=lang('dashboard.localizame')?></a>
+
+    	<a id="btn-prueba" data-role="button"  data-theme="a" class="ui-btn-left"  >prueba</a>
     	
     	<h3><?= $this->config->item('app_name') ?></h3>
-        
-    	<a id="agent-call" data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.calltaxi')?></a>
-    	
+        <div id="agent-call-wrapper">
+    		<a id="agent-call" data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.calltaxi')?></a>
+    	</div>
+    	<div id="agent-call2-wrapper">
+    		<a id="agent-call2" data-role="button" data-theme="b" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.showtaxi')?></a>
+    	</div>
        	<?= form_open('api/call', array('id' => 'call-form', 'class' => '')) ?>
-       		<input id="idlocation" 	name="idlocation" 	type="hidden" value="">
-       		<input id="idclient" 	name="idclient" 	type="hidden" value="">
-			<input id="lat" 		name="lat" 			type="hidden" value="">
-			<input id="lng" 		name="lng" 			type="hidden" value="">
-			<input id="zone" 		name="zone" 		type="hidden" value="">
-			<input id="city" 		name="city" 		type="hidden" value="">
-			<input id="state_c" 	name="state_c" 		type="hidden" value="">
-			<input id="country" 	name="country" 		type="hidden" value="">
-            
+			<input id="lat" name="lat" type="hidden" value="">
+			<input id="lng" name="lng" type="hidden" value="">
+			<input id="zone" name="zone" type="hidden" value="">
+			<input id="city" name="city" type="hidden" value="">
+			<input id="state_c" name="state_c" type="hidden" value="">
+			<input id="country" name="country" type="hidden" value="">
             <div data-role="fieldcontain">
             	<table border=0 width="100%"><tbody>
-            	<tr>
-	        		<td >
-	        		   <input name="phone-client" id="phone-client" value="" type="text" data-mini="true" placeholder="Buscar por número tefónico" onkeydown="return searchUserTelephone(event)" >
-					</td>
-	            	<td >
-						<input name="name-client" id="name-client" value="" type="text" data-mini="true" placeholder="Nombre cliente">
-	            	</td>
-	            	<td >
-						<input name="cell-client" id="cell-client" value="" type="text" data-mini="true" placeholder="Celular cliente">
-	            	</td>
-	            	<td >
-	            	
-	            	<select name="select-location" id="select-location"  data-native-menu="false" onchange="centerCustLocation(this.value,'S')" > 
-				        <option value="-1">Todas</option>
-				    </select>
-				    
-				    </td>
-	            </tr>
-	            </tbody></table>
-	            <hr>
-            	<table border=0 width="100%"><tbody>
-            	<tr>
-	        		<td >
-	        			<input name="address" id="address" value="" type="text" data-mini="true" onkeydown="return validarEnter(event)">
-	        			<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="c" data-inline="true">Buscar por dirección</a>
-	        			<a href="#" id='btn-add'  align="left" data-role="button" data-icon="plus" data-iconpos="notext" data-theme="c" data-inline="true">Adiccionar</a>
-	        			<a href="#" id='btn-save'  align="left" data-role="button" data-icon="check" data-iconpos="notext" data-theme="c" data-inline="true">Grabar</a>
-	            	</td>
-	            	<td >
-	                	
-	                </td>
-	                <td >
-	                	
-	                </td>
-	            </tr>
+        		<tr><td >
+        			<?=lang('dashboard.enter_address')?>
+                	<input name="address" id="address" value="" type="text" data-mini="true" onkeydown="return validarEnter(event)">
+            	</td><td >
+                	<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="c" data-inline="true">Search</a>
+
+
+                </td></tr>
                 </tbody></table>
             </div>    		
     	 </form>        
@@ -111,7 +126,15 @@
     </div>
   
         
-    
+    <div data-theme="e" data-role="footer" data-position="fixed" align="center">
+       	<a href="<?= $this->config->item('app_link') ?>" ><?= $this->config->item('copyright') ?></a>
+		<p id="informaciondeldispositivo">Cargando informaci&oacute;n...</p>
+		<br />
+		<p id="informacionadicional">Cargando informaci&oacute;n...</p>  
+		<br />
+		<p id="informacionbateria">Cargando informaci&oacute;n bateria...</p>  
+
+    </div>
     <div id="sound_"></div>    
 </div>
 
@@ -149,10 +172,19 @@
 			</p>
 			<p><?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span></p>
 			
+			<p><div data-role="collapsible">
+					<h2><?=lang('dashboard.infoshare')?>:</h2>
+					<ul data-role="listview" data-split-icon="gear" data-split-theme="d">
+						<li><span id="share-twitter"></span></li>
+						<li><span id="share-facebook"></span></li>
+					</ul>
+				</div>
+			</p>
+		
 		</div><!-- /content -->
 		
 		<p>
-			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn-back">Regresar</a>
+			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="show-taxi"><?=lang('dashboard.showtaxi')?></a>
 			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="query-cancelation"><?=lang('dashboard.cancel')?></a>
 		</p>
 	</div>

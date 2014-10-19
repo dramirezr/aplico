@@ -203,6 +203,10 @@ class Api extends CI_Controller {
 		$data['direccion'] 		= $this->input->get_post('address');
 		$data['latitud'] 		= $this->input->get_post('lat');
 		$data['longitud'] 		= $this->input->get_post('lng');
+		$data['sector'] 		= $this->input->get_post('zone');
+		$data['ciudad'] 		= $this->input->get_post('city');
+		$data['pais'] 			= $this->input->get_post('country');
+		$data['departamento'] 	= $this->input->get_post('state_c');
 		
 		$this->load->model('cliente');
 		$dataE['nombre'] 		= $this->input->get_post('name');

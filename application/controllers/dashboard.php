@@ -10,5 +10,13 @@ class Dashboard extends CI_Controller {
 		$data['id_user'] = "user";
 		$this->load->view('public/dashboard',$data);
 	}
+
+	public function prueba(){
+		 
+		// load language file
+		$this->lang->load('dashboard');
+		$data['id_user'] = "user";
+		$this->load->view('public/dashboard2',$data);
+	}
 	
 }

@@ -56,6 +56,11 @@ $(document).keypress(function(e){
 
 $(document).ready(function() {
 
+    $('#btn-prueba').click(function (e){
+        e.preventDefault();
+         onDeviceReady();
+    });
+   
 
     $('#waiting-msg, #agent-wrapper, #agent-call2-wrapper').hide();
     
@@ -419,17 +424,19 @@ function verifyServiceState(){
             reset_modal();
             $("#call-modal").dialog('close');
             if(taxiMarker){
-                taxiMarker.setMap(null);
-                taxiMarker = null;
+                        taxiMarker.setMap(null);
+                        taxiMarker = null;
             }      
             if(directionsDisplay != null) { 
-                directionsDisplay.setMap(null);
-                directionsDisplay = null; 
-            }         
+                        directionsDisplay.setMap(null);
+                        directionsDisplay = null; 
+            }          
         }
 
     }); 
 }
+
+
 
 function updateStatusArribo(){
     $.ajax({
