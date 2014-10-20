@@ -12,49 +12,6 @@
 
 	<link rel="stylesheet" href="<?=base_url()?>assets/css/app.css" />
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
-	
-
- 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script> 
-	<script type="text/javascript" charset="utf-8"> 
-
-document.addEventListener("deviceready", onDeviceReady, false); 
-
-
-function onDeviceReady() { 
-	var miDispositivo = document.getElementById('informaciondeldispositivo'); 
-	var titulo = '<div align="center"><h2>Informaci&oacute;n del dispositivo</h2></div>'; 
-	var phonegapData = '<div align="center"><h2>Versi&oacute;n de Phonegap</h2></div>';
-	 miDispositivo.innerHTML = '<strong>' + titulo + '</strong><br/>' + 
-	''     + '<br />' + 
-	'<strong>Equipo:</strong> ' + device.model + '<br/>' +
-	''     + '<br />' + 
-		 '<strong>S.O.:</strong> ' + device.platform + '<br/>' +
-	''     + '<br />' + 
-	'<strong>Versi&oacute;n:</strong> ' + device.version + '<br />'; 
-	''     + '<br />';
-	 
-	var miPhonegap = document.getElementById('informacionadicional');
-	miPhonegap.innerHTML = '<strong>' + phonegapData + '</strong><br/>' + 
-	''     + '<br />' + 
-	'<strong>Phonegap:</strong> ' + device.phonegap + '<br/>' +
-	''     + '<br />' + 
-	'<strong>UUID:</strong> ' + device.uuid + '<br/>';
-
-	 window.addEventListener("batterystatus", onBatteryStatus, false);
-
-
-	
-
-}
-
- function onBatteryStatus(info) {
-       var mibateria = document.getElementById('informacionbateria');
-	mibateria.innerHTML = '<strong>Bateria Level</strong> '   + info.level + ' isPlugged: ' + info.isPlugged+ '<br/>';
- }
-
-</script>
-
-
 
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
@@ -132,12 +89,7 @@ function onDeviceReady() {
         
     <div data-theme="e" data-role="footer" data-position="fixed" align="center">
        	<a href="<?= $this->config->item('app_link') ?>" ><?= $this->config->item('copyright') ?></a>
-		<p id="informaciondeldispositivo">Cargando informaci&oacute;n...</p>
-		<br />
-		<p id="informacionadicional">Cargando informaci&oacute;n...</p>  
-		<br />
-		<p id="informacionbateria">Cargando informaci&oacute;n bateria...</p>  
-
+		<?php echo '<br />'.$uuid.'<br />'.$model.'<br />'.$platform.'<br />'.$version; ?>
     </div>
     <div id="sound_"></div>    
 </div>
