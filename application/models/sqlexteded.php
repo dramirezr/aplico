@@ -19,6 +19,18 @@ class Sqlexteded extends CI_Model {
 		return $service;	
 	}
 
+	function getIdMotivo_horas($id){
+		$sql = 	" SELECT horas ";
+		$sql .= " FROM motivos_sanciones ";
+ 		$sql .= " WHERE id=$id ";
+		$result = $this->db->query($sql)->result();
+		
+		if(!$result)
+			return null;
+		return $result[0];	
+	}
+
+
 	
 		
 }

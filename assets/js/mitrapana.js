@@ -33,6 +33,7 @@ var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 var page_state  = 'dashboard';
 
+
 window.onpopstate = function(event) {
  if (window.history && window.history.pushState) {
     $(window).on('popstate', function() {
@@ -160,7 +161,10 @@ $(document).ready(function() {
                             zone : $('input[name="zone"]').val(),
                             city : $('input[name="city"]').val(),
                             country : $('input[name="country"]').val(),
-                            state_c : $('input[name="state_c"]').val()
+                            state_c : $('input[name="state_c"]').val(),
+                            average : average,
+                            uuid    : uuid,
+                            idcall  : '-1'
                         }
                     }).done(function(response){
                         if(response.queryId > 0){

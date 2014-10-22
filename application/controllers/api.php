@@ -13,6 +13,10 @@ class Api extends CI_Controller {
 		$data['ciudad'] 		= $this->input->get_post('city');
 		$data['pais'] 			= $this->input->get_post('country');
 		$data['departamento'] 	= $this->input->get_post('state_c');
+		$data['medio'] 			= $this->input->get_post('average');
+		$data['uuid'] 			= $this->input->get_post('uuid');
+		$data['idcall'] 		= $this->input->get_post('idcall');
+
 				
 		$queryId = $this->solicitud->create($data);
 		

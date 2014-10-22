@@ -11,13 +11,11 @@
 	<title><?= $this->config->item('app_name') ?></title>
 
 	<link rel="stylesheet" href="<?=base_url()?>assets/css/app.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
-	
-	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
-    
+    <link rel="stylesheet" href="<?=base_url()?>assets/css/jquery.mobile-1.3.2.min.css" />
+    <script src="<?=base_url()?>assets/js/jquery-1.10.2.min.js"></script>
+    <script src="<?=base_url()?>assets/js/jquery.mobile-1.3.2.min.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
-    
+
     <script src="<?=base_url()?>assets/js/mitrapana.js"></script>
     
   	<script>
@@ -37,6 +35,8 @@
  		var msg_error_share_position = '<?=lang('dashboard.error_share_position')?>';
  		var msg_error_current_position = '<?=lang('dashboard.error_current_position')?>';
  		var msg_error_exceeded_timeout = '<?=lang('dashboard.error_exceeded_timeout')?>';
+ 		var average = '<?=$average?>';
+ 		var uuid = '<?=$uuid?>';
 
  	</script>
 </head>

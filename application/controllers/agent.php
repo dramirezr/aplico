@@ -105,6 +105,11 @@ class Agent extends CI_Controller {
 		$lat = $this->input->get_post('lat');
 		$lng = $this->input->get_post('lng');
 
+		$sanction = $this->agente->get_fecha_sancion($id);
+		if($sanction->fecha_sancion>date("Y-m-d H:i:s")){
+			die(json_encode(array('state' => 'agent_sanction', 'date_santion' => $sanction->fecha_sancion)));
+		}
+
 		$request = $this->agente->get_nearest_request($id,$lat,$lng);
 		
 		if(!$request){

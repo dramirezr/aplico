@@ -24,29 +24,25 @@ class Admin extends CI_Controller {
 	
 	function _admin_output($output = null)
 	{
-		if($this->userconfig->perfil=='ADMIN')
-			$this->load->view('private/admin.php',$output);	
-		else
-			if($this->userconfig->perfil=='CALL')
-				//$this->callService();
-				$this->load->view('private/callcenter.php',$output);	
-			else
-				if($this->userconfig->perfil=='CUST')
-					$this->showAgentCust();
+		
+		$this->load->view('private/admin.php',$output);	
+		
+
 	}
 	
 	
 	
 	function index()
 	{
+		
 		if($this->userconfig->perfil=='ADMIN')
 			$this->user_management();
 		else
 			if($this->userconfig->perfil=='CALL')
-				$this->_admin_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '/admin/dashboardCall' ));
+				$this->callService();
 			else
 				if($this->userconfig->perfil=='CUST')
-					$this->_admin_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '' ));
+					$this->show_agent_map();
 	}	
 	
 	function encrypt_password_callback($post_array) {
@@ -77,6 +73,8 @@ class Admin extends CI_Controller {
 
 	function user_management()
 	{
+		if($this->userconfig->perfil=='ADMIN'){
+
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
@@ -108,10 +106,12 @@ class Admin extends CI_Controller {
 			
 			
 			$this->_admin_output($output);
+		}
 	}
 
 	function office_management()
 	{
+		if($this->userconfig->perfil=='ADMIN'){
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
@@ -126,10 +126,12 @@ class Admin extends CI_Controller {
 			$output -> op = 'office_management';
 		
 			$this->_admin_output($output);
+		}
 	}
 
 	function user_callcenter()
 	{
+		if($this->userconfig->perfil=='ADMIN'){
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
@@ -163,83 +165,92 @@ class Admin extends CI_Controller {
 			
 			
 			$this->_admin_output($output);
+		}
 	}
 
 
 	function user_managervehicle()
 	{
-		$crud = new grocery_CRUD();
+	
+		if(($this->userconfig->perfil=='ADMIN')or($this->userconfig->perfil=='CALL')){
 
-		$crud->set_theme('datatables');
-		$crud->set_table('usuarios');
-		$crud->set_subject('Dueños de vehiculos');
-		$crud->columns('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
-		$crud->fields('nombre','idsucursal','codigo','clave','pais','departamento','ciudad','direccion','telefono','perfil');
-		$crud->required_fields('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
-		$crud->display_as('codigo', 'Login');
-		$crud->display_as('departamento', 'Provincia');
-		
-		$crud->change_field_type('clave', 'password');
-		$crud->change_field_type('perfil', 'hidden');
-		if($this->userconfig->perfil=='ADMIN')
-			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
-		else
-			$crud->set_relation('idsucursal', 'sucursales', 'nombre','id IN ("'.$this->userconfig->idsucursal.'")');			
-		
-		$crud->display_as('idsucursal', 'Sucursal');
+			$crud = new grocery_CRUD();
 
-    	$crud->callback_edit_field('clave',array($this,'set_password_input_to_empty'));
-		$crud->callback_add_field('clave',array($this,'set_password_input_to_empty'));
+			$crud->set_theme('datatables');
+			$crud->set_table('usuarios');
+			$crud->set_subject('Dueños de vehiculos');
+			$crud->columns('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
+			$crud->fields('nombre','idsucursal','codigo','clave','pais','departamento','ciudad','direccion','telefono','perfil');
+			$crud->required_fields('nombre','idsucursal','codigo','pais','departamento','ciudad','direccion','telefono','perfil');
+			$crud->display_as('codigo', 'Login');
+			$crud->display_as('departamento', 'Provincia');
 			
-		$crud->callback_edit_field('perfil',array($this,'set_user_cust'));
-		$crud->callback_add_field('perfil',array($this,'set_user_cust'));
+			$crud->change_field_type('clave', 'password');
+			$crud->change_field_type('perfil', 'hidden');
+			if($this->userconfig->perfil=='ADMIN')
+				$crud->set_relation('idsucursal', 'sucursales', 'nombre');
+			else
+				$crud->set_relation('idsucursal', 'sucursales', 'nombre','id IN ("'.$this->userconfig->idsucursal.'")');			
 			
-		$crud->callback_before_update(array($this,'encrypt_password_callback'));
-		$crud->callback_before_insert(array($this,'encrypt_password_callback'));
+			$crud->display_as('idsucursal', 'Sucursal');
 
-		$crud->where('perfil =', 'CUST');
+	    	$crud->callback_edit_field('clave',array($this,'set_password_input_to_empty'));
+			$crud->callback_add_field('clave',array($this,'set_password_input_to_empty'));
+				
+			$crud->callback_edit_field('perfil',array($this,'set_user_cust'));
+			$crud->callback_add_field('perfil',array($this,'set_user_cust'));
+				
+			$crud->callback_before_update(array($this,'encrypt_password_callback'));
+			$crud->callback_before_insert(array($this,'encrypt_password_callback'));
 
-		if($this->userconfig->perfil<>'ADMIN')
-			$crud->where('idsucursal =', $this->userconfig->idsucursal);
-		$output = $crud->render();
-		$output -> op = 'user_management';
-		$this->_admin_output($output);
+			$crud->where('perfil =', 'CUST');
+
+			if($this->userconfig->perfil<>'ADMIN')
+				$crud->where('idsucursal =', $this->userconfig->idsucursal);
+			$output = $crud->render();
+			$output -> op = 'user_management';
+			$this->_admin_output($output);
+		}
 	}
 
 	function vehicle_management()
 	{
-		$crud = new grocery_CRUD();
-
-		$crud->set_theme('datatables');
-		$crud->set_table('vehiculos');
-		$crud->set_subject('Vehiculos');
-		$crud->columns('placa','unidad','idsucursal','modelo','marca','propietario');
-		$crud->fields('placa','unidad','idsucursal','modelo','marca','propietario');
-		$crud->display_as('idsucursal', 'Sucursal');
-		$crud->required_fields('idsucursal','placa','propietario');
-
-		if($this->userconfig->perfil=='ADMIN'){
-			$crud->set_relation('idsucursal', 'sucursales', 'nombre');
-			$crud->set_relation('propietario', 'usuarios', 'nombre','perfil IN ("CUST") ');
-
-		}
-		else{
-			$crud->set_relation('idsucursal', 'sucursales', 'nombre','id IN ("'.$this->userconfig->idsucursal.'")');			
-			$crud->set_relation('propietario', 'usuarios', 'nombre','perfil IN ("CUST") and idsucursal IN ("'.$this->userconfig->idsucursal.'")');
-		}
-
-		if($this->userconfig->perfil<>'ADMIN')
-			$crud->where('vehiculos.idsucursal =', $this->userconfig->idsucursal);
 		
-		$output = $crud->render();
-		$output -> op = 'user_management';
-		$this->_admin_output($output);
+		if(($this->userconfig->perfil=='ADMIN')or($this->userconfig->perfil=='CALL')){
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('vehiculos');
+			$crud->set_subject('Vehiculos');
+			$crud->columns('placa','unidad','idsucursal','modelo','marca','propietario');
+			$crud->fields('placa','unidad','idsucursal','modelo','marca','propietario');
+			$crud->display_as('idsucursal', 'Sucursal');
+			$crud->required_fields('idsucursal','placa','propietario');
+
+			if($this->userconfig->perfil=='ADMIN'){
+				$crud->set_relation('idsucursal', 'sucursales', 'nombre');
+				$crud->set_relation('propietario', 'usuarios', 'nombre','perfil IN ("CUST") ');
+
+			}
+			else{
+				$crud->set_relation('idsucursal', 'sucursales', 'nombre','id IN ("'.$this->userconfig->idsucursal.'")');			
+				$crud->set_relation('propietario', 'usuarios', 'nombre','perfil IN ("CUST") and idsucursal IN ("'.$this->userconfig->idsucursal.'")');
+			}
+
+			if($this->userconfig->perfil<>'ADMIN')
+				$crud->where('vehiculos.idsucursal =', $this->userconfig->idsucursal);
+			
+			$output = $crud->render();
+			$output -> op = 'user_management';
+			$this->_admin_output($output);
+		}
 	}
 
 
 
 	function agent_management()
 	{
+		if(($this->userconfig->perfil=='ADMIN')or($this->userconfig->perfil=='CALL')){
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
@@ -288,21 +299,25 @@ class Admin extends CI_Controller {
 			$output -> op = 'agent_management';
 
 			$this->_admin_output($output);
+		}
 	}
 
 
 	function solicitude_management()
 	{
+		if(($this->userconfig->perfil=='ADMIN')or($this->userconfig->perfil=='CALL')){
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
 			$crud->set_table('solicitud');
 			$crud->set_subject('Solicitudes');
-			$crud->columns('id','ubicacion','pais','departamento','ciudad','fecha_solicitud','estado','idagente');
+			$crud->columns('id','ubicacion','pais','departamento','ciudad','fecha_solicitud','estado','idagente','medio','idcall');
 			$crud->display_as('idagente', 'Taxista');
 			$crud->display_as('id', 'Código');
 			$crud->display_as('departamento', 'Provincia');
 			$crud->set_relation('idagente', 'agente', 'nombre');
+			$crud->display_as('idcall', 'Call Center');
+			$crud->set_relation('idcall', 'usuarios', 'nombre');
 			
 
 			$crud->order_by('id','asc');
@@ -335,10 +350,99 @@ class Admin extends CI_Controller {
 			$output -> op = 'solicitude_management';
 
 			$this->_admin_output($output);
+		}
 			
 	}
 
 
+	function reasons_sanction_management()
+	{
+		if(($this->userconfig->perfil=='ADMIN')){
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('motivos_sanciones');
+			$crud->set_subject('Motivos sanciones');
+			$crud->columns('descripcion','horas');
+			$crud->fields('descripcion','horas');
+			$crud->required_fields('descripcion','horas');
+			
+			$crud->display_as('descripcion', 'Motivo');
+			$crud->display_as('id', 'Código');
+			
+			$output = $crud->render();
+			$output -> op = 'reasons_sanction_management';
+
+			$this->_admin_output($output);
+		}			
+	}
+
+	function sanction_management()
+	{
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('sanciones');
+			$crud->set_subject('Sanciones');
+			
+			if($this->userconfig->perfil!='ADMIN'){
+				$crud->unset_delete();
+				$crud->unset_edit();
+			}
+				
+			$crud->columns('id','idagente','idmotivo','fecha','fecha_fin','idusuario');
+			$crud->fields('idagente','idmotivo','descripcion','idusuario','fecha','fecha_fin');
+			$crud->required_fields('idagente','idmotivo','descripcion','idusuario');
+			
+			
+			$crud->display_as('idagente', 'Taxista');
+			$crud->display_as('idmotivo', 'Motivo');
+			$crud->display_as('idusuario', 'Usuario');
+			$crud->display_as('fecha', 'Fecha sanción');
+			$crud->display_as('fecha_fin', 'Fecha fin sanción');
+
+
+			//el ultimo usuario que guarda
+			$crud->field_type('idusuario', 'hidden', $this->userconfig->id);
+			//$crud->field_type('fecha', 'readonly', $this->userconfig->id);
+			$crud->field_type('fecha', 'hidden');
+			$crud->field_type('fecha_fin', 'hidden');
+
+			$crud->set_relation('idagente', 'agente', 'nombre');
+			$crud->set_relation('idmotivo', 'motivos_sanciones', 'descripcion');
+			$crud->set_relation('idusuario', 'usuarios', 'nombre');
+			
+			$crud->callback_before_insert(array($this,'before_insert_sanction_management'));
+			$crud->callback_before_update(array($this,'before_update_sanction_management'));
+
+			$crud->order_by('id','desc');
+
+			$output = $crud->render();
+			$output -> op = 'sanction_management';
+
+			$this->_admin_output($output);
+
+	}
+
+	function before_insert_sanction_management($post_array){
+		$this->load->model('sqlexteded');
+		$result = $this->sqlexteded->getIdMotivo_horas($post_array['idmotivo']);
+		$post_array['fecha'] = date("Y-m-d H:i:s");
+		$post_array['fecha_fin'] = date("Y-m-d H:i:s", (strtotime ("+".$result->horas." hours")));
+		$this->load->model('agente');
+		$this->agente->update($post_array['idagente'], array('fecha_sancion' => $post_array['fecha_fin']));
+	   	return $post_array;
+	}
+
+	function before_update_sanction_management($post_array){
+		$this->load->model('sqlexteded');
+		$result = $this->sqlexteded->getIdMotivo_horas($post_array['idmotivo']);
+		 
+		$post_array['fecha_fin'] = date("Y-m-d H:i:s", (strtotime ($post_array['fecha']." +".$result->horas." hours")));
+		$this->load->model('agente');
+		$this->agente->update($post_array['idagente'], array('fecha_sancion' => $post_array['fecha_fin']));
+    	return $post_array;
+	}
 
 	function service_agent()
 	{
@@ -393,8 +497,7 @@ class Admin extends CI_Controller {
 	}
 
 
-	
-	
+/*	
 	function showAgent()
 	{
 		$this->load->view('private/callcenter.php',array('op' => '/admin/underConstuction'));
@@ -404,11 +507,13 @@ class Admin extends CI_Controller {
 	{
 		$this->load->view('private/customer.php',array('op' => '/admin/viewAgent'));
 	}
+*/
 
+	
 
-	function tabletAdminAgent()
+	function show_agent_map()
 	{
-		$this->load->view('private/tabletAdminAgent.php',array('op' => '/admin/viewAgent'));
+		$this->load->view('private/admin.php',(object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => 'show_agent_map', 'url' => '/admin/viewAgent' ));
 	}
 
 	function viewAgent()
@@ -416,34 +521,34 @@ class Admin extends CI_Controller {
 		$this->load->view('private/viewAgent',array('op' => '/admin/viewAgent'));
 	}
 
+	
+	function callService()
+	{
+		$this->load->view('private/admin.php',(object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => 'callService', 'url' => '/admin/dashboardCall' ));
+	}
+
+	function dashboardCall()
+	{
+		$this->load->view('private/dashboardCall.php',array('op' => '/admin/dashboardCall', 'idcall' => $this->userconfig->id));
+	}
+
+
+
+
 
 	function tabletShowAgent()
 	{
-		$this->load->view('private/callcenter.php',(object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '/admin/tabletCallAgent' ));
+		//$this->load->view('private/callcenter.php',(object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '/admin/tabletCallAgent' ));
 	}
 	
 	function tabletCallAgent()
 	{
 
-		$this->load->view('private/viewAgent.php',array('op' => '/admin/tabletCallAgent'));
+		//$this->load->view('private/viewAgent.php',array('op' => '/admin/tabletCallAgent'));
 	}
 
-	function callService()
-	{
-		$this->load->view('private/callcenter.php',(object)array('output' => '' , 'js_files' => array() , 'css_files' => array() , 'op' => '/admin/dashboardCall' ));
-	}
-
-	function dashboardCall()
-	{
-		$this->load->view('private/dashboardCall.php',array('op' => '/admin/dashboardCall'));
-	}
 	
-	function underConstuction()
-	{
-		$this->load->view('public/underconstuction',array('op' => ''));
-	}
-
-
+	
 	public function close()
     {
     	//cerrar sesión

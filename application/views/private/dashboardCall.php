@@ -36,6 +36,9 @@
  		var msg_error_share_position = '<?=lang('dashboard.error_share_position')?>';
  		var msg_error_current_position = '<?=lang('dashboard.error_current_position')?>';
  		var msg_error_exceeded_timeout = '<?=lang('dashboard.error_exceeded_timeout')?>';
+ 		var average = 'CALL';
+ 		var uuid 	= '';
+ 		var idcall  = '<?=$idcall?>';
 
  	</script>
 

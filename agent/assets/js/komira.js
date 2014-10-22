@@ -262,7 +262,6 @@ function verifyService(){
         },
         success: function(response){        
             if(response.state == 'ok'){
-                
                 $("#pito")[0].play();
                 request_id = response.request;
                 
@@ -283,10 +282,14 @@ function verifyService(){
                 clearInterval(WaitVeryServiceDemonid);
                 WaitVeryServiceDemonid = setInterval(WaitVeryService, verification_interval*4);
 
-
                 $('#service-addr').css('background-color', 'red');
-                
-                
+            }else{
+                if(response.state == 'agent_sanction'){
+                  $('#service-addr').val('Uste esta sancionado hasta : ' + response.date_santion );  
+                }else{
+                    $('#service-addr').val('');  
+                }
+
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {

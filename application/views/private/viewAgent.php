@@ -29,16 +29,39 @@
 <div data-role="page" id="page1">
 
     <div data-theme="e" data-role="header">
-    	<h3><?= $this->config->item('app_name') ?></h3>
+    	<table border=0 width="100%"><tbody>
+        <tr>
+            <td >
+                Sucursal:
+                <select name="select-sucursal" id="select-sucursal"  data-native-menu="true" onchange="centerCustLocation(this.value,'S')" > 
+                    <option value="-1">Todas</option>
+                </select>
+            </td >
+            <td >
+                Unidad:
+                <select name="select-unidad" id="select-unidad"  data-native-menu="true" onchange="centerCustLocation(this.value,'S')" > 
+                    <option value="-1">Todas</option>
+                </select>
+            </td >
+            <td >
+                Placa:
+                <select name="select-placa" id="select-placa"  data-native-menu="true" onchange="centerCustLocation(this.value,'S')" > 
+                    <option value="-1">Todas</option>
+                </select>
+            </td >
+            <td >
+                Taxista:
+                <select name="select-taxista" id="select-taxista"  data-native-menu="true" onchange="centerCustLocation(this.value,'S')" > 
+                    <option value="-1">Todas</option>
+                </select>
+            </td >
+        </tr >
+        </tbody></table>
     </div>
     <div data-role="content" class="padding-0">
          <div id="map_canvas"></div>
     </div>
-    <div data-theme="e" data-role="footer" data-position="fixed">
-        <h3>
-            <?= $this->config->item('app_name') ?>
-        </h3>
-    </div>
+    
 </div>
 
 </body>

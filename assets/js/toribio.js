@@ -33,6 +33,8 @@ var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 var page_state  = 'dashboard';
 
+
+
 var markersArray = [];
 
 $(document).keypress(function(e){
@@ -150,20 +152,29 @@ $(document).ready(function() {
                     $.mobile.loading("show");
                     $('#call-confirmation, #confirmation-msg').hide();
                     $('#waiting-msg').show();
-
+                    var address_det = '';
+                    if ($('input[name="name-client"]').val()!='')
+                    	address_det = ' - ' + $('input[name="name-client"]').val();
+                    if ($('input[name="phone-client"]').val()!='')
+                    	address_det = address_det + ' - ' + $('input[name="phone-client"]').val();
+                    if ($('input[name="cell-client"]').val()!='')
+                    	address_det = address_det + ' - ' + $('input[name="cell-client"]').val();
                     $.ajax({
                         type : "GET",
                         url : server + '/' + lang + '/api/call',        
                         dataType : "json",
                         data : {
                             hms1 	: $('input[name="hms1"]').val(),
-                            address : $('input[name="address"]').val(),
+                            address : $('input[name="address"]').val() + address_det,
                             lat 	: $('input[name="lat"]').val(),
                             lng 	: $('input[name="lng"]').val(),
                             zone 	: $('input[name="zone"]').val(),
                             city 	: $('input[name="city"]').val(),
                             country : $('input[name="country"]').val(),
-                            state_c : $('input[name="state_c"]').val()
+                            state_c : $('input[name="state_c"]').val(),
+                         	average : average,
+                         	uuid    : '',
+                            idcall  : idcall   
                         }
                     }).done(function(response){
                         if(response.queryId > 0){
@@ -365,6 +376,10 @@ function setIcons(coordenadas, result){
     	idcliente: result.idcliente,
     	latitud  : result.latitud,
     	longitud : result.longitud,
+    	sector   : result.sector,
+    	ciudad   : result.ciudad,
+    	departamento   : result.departamento,
+    	pais   : result.pais,
         position : coordenadas,
         map      : map,
         animation: google.maps.Animation.DROP, 

@@ -103,4 +103,19 @@ class Agente extends CI_Model {
 		
 		return ($this->db->affected_rows() > 0);
 	}
+
+
+	function get_fecha_sancion($id){
+		
+		$sql  = " SELECT fecha_sancion ";
+		$sql .= " from agente ";
+		$sql .= " where id=$id ";
+		$fecha_sancion = $this->db->query($sql)->result();
+		if(!count($fecha_sancion))
+			return null;
+		
+		return $fecha_sancion[0];
+	}
+
+
 }
