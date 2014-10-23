@@ -32,11 +32,6 @@ a:hover
  
 	<title><?= $this->config->item('app_name') ?></title>
 
-<!--	
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
-	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
--->
 	<link type="text/css" rel="stylesheet" href="<?=base_url()?>assets/grocery_crud/css/jquery_plugins/jquery.ui.datetime.css" />
 	<link type="text/css" rel="stylesheet" href="<?=base_url()?>assets/grocery_crud/css/jquery_plugins/jquery-ui-timepicker-addon.css" />
 	<script src="<?=base_url()?>assets/grocery_crud/js/jquery_plugins/jquery-ui-timepicker-addon.min.js"></script>
@@ -44,8 +39,22 @@ a:hover
 	<script src="<?=base_url()?>assets/grocery_crud/js/jquery_plugins/ui/i18n/timepicker/jquery-ui-timepicker-es.js"></script>
 	<script src="<?=base_url()?>assets/grocery_crud/js/jquery_plugins/config/jquery-ui-timepicker-addon.config.js"></script>
 	
+	<link type="text/css" rel="stylesheet" href="<?=base_url()?>assets/css/menu.css" />
+	<script src="<?=base_url()?>assets/js/menu.js"></script>
+	
 </head>
 <body>
+
+<!-- <div id="sse50">
+<div id="sses50">
+<ul>
+<li><a href="?menu=50&skin=2&p=Javascript-Menus">Javascript Menus</a></li>
+<li><a href="?menu=50&skin=2&p=Horizontal-Menus">Horizontal Menus</a></li>
+<li><a href="?menu=50&skin=2&p=Web-Menus">Web Menus</a></li>
+</ul>
+</div>
+</div>
+ -->
 	<div>
 	<?php
 	if($this->userconfig->perfil=='ADMIN'){ ?>
