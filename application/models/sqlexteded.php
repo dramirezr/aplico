@@ -31,6 +31,26 @@ class Sqlexteded extends CI_Model {
 	}
 
 
-	
+	function getConfiguracion($atributo){
+		$sql = 	" SELECT $atributo ";
+		$sql .= " FROM configuracion ";
+ 		$sql .= " WHERE id=1 ";
+		$result = $this->db->query($sql)->result();
+		
+		if(!$result)
+			return null;
+		return $result[0];	
+	}
+
+	function getVehiclePlacaUnidad($idagente){
+		$sql = 	" SELECT v.placa, v.unidad ";
+		$sql .= " FROM agente a, vehiculos v ";
+ 		$sql .= " WHERE a.id=$idagente and a.vehiculo=v.id ";
+		$result = $this->db->query($sql)->result();
+		
+		if(!$result)
+			return null;
+		return $result[0];	
+	}
 		
 }

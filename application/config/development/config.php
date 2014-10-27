@@ -360,7 +360,7 @@ $config['proxy_ips'] = '';
  //Custom config
 $config['app_path'] = 'http://pidataxi.dev/'; 
 $config['app_name'] = 'Fácil Taxi';
-$config['app_country'] = 'colombia, valle del cauca';
+$config['app_country'] = 'ecuador, quito';
 $config['app_icon'] = 'icon_development.png';
 $config['app_users_download'] = 'buskoo/TaxiBuskoo.apk';
 $config['app_agent_download'] = 'buskoo/TaxiBuskoo_Agente.apk';
@@ -369,10 +369,10 @@ $config['copyright'] = 'Fácil Taxi - © 2013 GPTechnologies';
 $config['app_link'] = 'http://www.geocommerce.com.ec'; 
 
 $config['max_verification_attemps'] = 10;
-$config['verification_interval'] = 5000; //In milliseconds
+$config['verification_interval'] = 8000; //In milliseconds
  
-$config['agent_verification_interval'] = 5000; //In milliseconds
-$config['agent_updatelocation_interval'] = 5000; //In milliseconds
+$config['agent_verification_interval'] = 8000; //In milliseconds
+$config['agent_updatelocation_interval'] = 8000; //In milliseconds
 $config['distance_call'] = 1000.5; //In kilometros
 $config['distance_call_sos'] = 3; //In kilometros
 

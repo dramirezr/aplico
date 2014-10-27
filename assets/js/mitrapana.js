@@ -32,6 +32,7 @@ var geocoder = new google.maps.Geocoder();
 var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 var page_state  = 'dashboard';
+var id_user_app = -1;
 
 
 window.onpopstate = function(event) {
@@ -56,6 +57,7 @@ $(document).keypress(function(e){
 });
 
 $(document).ready(function() {
+    
 
     $('#btn-prueba').click(function (e){
         e.preventDefault();
@@ -66,11 +68,9 @@ $(document).ready(function() {
     $('#waiting-msg, #agent-wrapper, #agent-call2-wrapper').hide();
     
     localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
-    
-    $('#address').change(function(e){
-        
-        $('#show-address').html($(this).val());
-    
+
+    $('#call-address').change(function(e){
+        $('#address').html($(this).val());
     });
     
     $('#calling-agent').click(function (e){
@@ -78,6 +78,9 @@ $(document).ready(function() {
         
         //TODO: LLamar para android
     });
+    
+    
+
     
     $('#agent-confirmation').click(function(e){
         $.ajax({
@@ -121,7 +124,7 @@ $(document).ready(function() {
                 
         $.ajax({
             type : "GET",
-            url : server + lang + '/api/request_cancel',           
+            url : server + '/' + lang + '/api/request_cancel',           
             dataType : "json",
             data : {
                 queryId : queryId
@@ -140,7 +143,7 @@ $(document).ready(function() {
        
         if ($('input[name="address"]').val()!=''){  
 
-            if (trim($('input[name="address"]').val())!=trim(formatted_addr)) {  
+            if (trim($('input[name="call-address"]').val())!=trim(formatted_addr)) {  
        
                 if ( ($('input[name="lat"]').val()!='') && ($('input[name="lat"]').val()!='0') ){   
                
@@ -148,14 +151,19 @@ $(document).ready(function() {
                     $.mobile.loading("show");
                     $('#call-confirmation, #confirmation-msg').hide();
                     $('#waiting-msg').show();
-
+                    address_det = $('input[name="call-address"]').val();
+                    if ($('input[name="call-name"]').val()!='')
+                        address_det = address_det + ' - ' + $('input[name="call-name"]').val();
+                    if ($('input[name="call-phone"]').val()!='')
+                        address_det = address_det + ' - ' + $('input[name="call-phone"]').val();
+                    
                     $.ajax({
                         type : "GET",
                         url : server + '/' + lang + '/api/call',        
                         dataType : "json",
                         data : {
                             hms1 : $('input[name="hms1"]').val(),
-                            address : $('input[name="address"]').val(),
+                            address : address_det,
                             lat : $('input[name="lat"]').val(),
                             lng : $('input[name="lng"]').val(),
                             zone : $('input[name="zone"]').val(),
@@ -169,6 +177,7 @@ $(document).ready(function() {
                     }).done(function(response){
                         if(response.queryId > 0){
                             queryId = response.queryId;
+                            clearInterval(demonId);
                             demonId = setInterval(verifyCall, verification_interval);
                         }else{
                             page_state  = 'dashboard';
@@ -181,8 +190,8 @@ $(document).ready(function() {
             }
         }else{
             alert(msg_nomenclature);
-            reset_modal();
-            $("#call-modal").dialog('close');
+            //reset_modal();
+            //$("#call-modal").dialog('close');
         }
       }else{
         alert(msg_nomenclature_empty);
@@ -195,9 +204,13 @@ $(document).ready(function() {
     });    
     
     $('#agent-call').click(function(e){
+        $('#call-name').val($('#user-name').val());
+        $('#call-phone').val($('#user-phone').val());
+        $('#call-address').val($('#address').val()); 
         clearInterval(taxiLocationDemonId);
     });
-    
+
+     
     $('#show-taxi').click(function(e){
         if(directionsDisplay != null) { 
             directionsDisplay.setMap(null);
@@ -206,8 +219,10 @@ $(document).ready(function() {
         $('#agent-call-wrapper').hide();
         $('#agent-call2-wrapper').show();
         
+        clearInterval(taxiLocationDemonId);
         getTaxiLocation();
         taxiLocationDemonId = setInterval(getTaxiLocation, verification_interval);
+        getTaxiLocation
     });
 
     $('#btn-address-search').click(function(e){
@@ -215,6 +230,27 @@ $(document).ready(function() {
         address_search();
     });
 
+    
+    $('#btn_tyc_acept').click(function(e){
+        e.preventDefault();
+        $('#tyc-wrapper').hide();
+        $("#btn_user_back").closest('.ui-btn').hide();
+        $('#user-wrapper').show();
+    });
+
+    $('#btn_user_save').click(function(e){
+        e.preventDefault();
+        $('#tyc-wrapper').hide();
+        $('#user-wrapper').show();
+        $("#user-modal").dialog('close');
+        $("#btn_user_back").closest('.ui-btn').show();
+        save_user_app();
+    });
+
+
+    $('#tyc-wrapper').hide();
+    $('#user-wrapper').show();
+    getUserApp();
   
 });
 
@@ -233,10 +269,6 @@ function play_sound(element) {
         document.getElementById(element).play();
 }
    
-function hola() {
-        alert('Hola mundo...');
-}
-
 function validarEnter(e) {
     if (window.event) {
         keyval=e.keyCode
@@ -248,6 +280,76 @@ function validarEnter(e) {
         e.preventDefault();
         address_search();
     } 
+}
+
+
+function getUserApp(){
+   
+   if(uuid!=''){
+       $.ajax({
+            type : "GET",
+            url : server + '/' + lang + '/api/get_user_app',        
+            dataType : "json",
+            data : {
+                uuid        : uuid,
+                model       : model,
+                platform    : platform,
+                version     : version,
+                cachehora   : (new Date()).getTime()
+            }
+        }).done(function(response){
+            if(response.state == 'ok'){
+                $('#user-name').val(response.user.nombre);
+                $('#user-phone').val(response.user.telefono);
+                $('#user-email').val(response.user.email);
+                id_user_app = response.user.id;
+                if(response.user.tyc!='S'){
+                    getTyC();
+                }
+            }
+        });
+    }else{
+        $("#btn-data-user").closest('.ui-btn').hide();
+    }
+}
+
+function getTyC(){
+   $.ajax({
+        type : "GET",
+        url : server + '/' + lang + '/api/get_tyc',        
+        dataType : "json",
+        data : {
+        }
+    }).done(function(response){
+        if(response.state == 'ok'){
+            $('#tyc-msj').html(response.result.terminos);
+            $('#user-wrapper').hide();
+            $('#tyc-wrapper').show();
+            $("#show-user").trigger('click');
+        }
+    });
+}
+
+function save_user_app(){
+   $.ajax({
+        type        : "GET",
+        url         : server + '/' + lang + '/api/save_user_app',        
+        dataType    : "json",
+        data : {
+            id      : id_user_app,
+            uuid    : uuid,
+            name    : $('input[name="user-name"]').val(),
+            phone   : $('input[name="user-phone"]').val(),
+            email   : $('input[name="user-email"]').val(),
+            cachehora : (new Date()).getTime()
+
+        }
+    }).done(function(response){
+        if(response.state == 'ok'){
+            
+        }
+    });
+    
 }
 
 function getTaxiLocation(){
@@ -280,8 +382,6 @@ function setTaxiIcon(lat, lng){
         
         tracerRoute(lat, lng, latitud, longitud);
     }
-    
-
 }
 
 function tracerRoute(lat, lng, lat2, lng2){
@@ -387,6 +487,7 @@ function verifyCall(){
             play_sound('yes'); 
 
             clearInterval(demonId);
+            clearInterval(verifyServiceStatus);
             verifyServiceStatus = setInterval(verifyServiceState, verification_interval);
         }
     });
@@ -417,7 +518,6 @@ function verifyServiceState(){
             play_sound('pito'); 
 			updateStatusArribo();
             alert(response.msg);
-            
         }
 
         if(response.state == 'delivered'){
@@ -592,20 +692,8 @@ function codeLatLng(lat, lng) {
     geocoder.geocode({'latLng': latlng}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
-                //var tam = results[0].address_components.length;
+             
                 sector = results[0].address_components[2] ;
-                //ciudad = (tam == 6) ? results[0].address_components[3] : results[0].address_components[2] ;
-                //depto = (tam == 6) ? results[0].address_components[4] : results[0].address_components[3] ;
-                //pais = (tam == 6) ? results[0].address_components[5] : results[0].address_components[4] ;
-                //console.log(results[0]);  
-                //formatted_addr = sector.long_name + ', ' + results[0].formatted_address;
-                //var guion = formatted_addr.indexOf("-");
-                //if (guion>0) {
-                  //  formatted_addr = formatted_addr.substring(0, guion) + ' - ';
-                //} else{
-                  //  formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
-                //}
-                
                 for (var i = 0; i < results[0].address_components.length; i++)
                 {
                     var addr = results[0].address_components[i];
@@ -621,7 +709,7 @@ function codeLatLng(lat, lng) {
                       ruta = addr.long_name;
                     if (addr.types[0] == 'street_number') 
                       calle = addr.long_name;
-                    //console.log('address: '+addr.types[0]+' - '+addr.long_name)
+                    console.log('address: '+addr.types[0]+' - '+addr.long_name)
                 }
                 
                 formatted_addr = sector.long_name + ', ' + results[0].formatted_address;
@@ -633,7 +721,7 @@ function codeLatLng(lat, lng) {
                 }
 
                 $('#address').val(formatted_addr);
-                $('#show-address').html(formatted_addr);
+               // $('#show-address').html(formatted_addr);
                 $('#zone').val(sector.long_name);
                 $('#city').val(ciudad);
                 $('#state_c').val(depto);
@@ -648,3 +736,6 @@ function codeLatLng(lat, lng) {
         }
     });
 }
+
+
+

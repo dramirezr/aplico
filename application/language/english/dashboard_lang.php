@@ -17,6 +17,7 @@ $lang['dashboard.cancel_service'] = 'Are you sure you want to cancel your servic
 $lang['dashboard.error.attempts'] = 'There is not available services at the moment, please, try again few minutes latter';
 $lang['dashboard.error_attempts'] = 'There is not available services at the moment, please, try again few minutes latter';
 $lang['dashboard.searching'] = 'Searching....';
+$lang['dashboard.search'] = 'Search';
 $lang['dashboard.assinged'] = 'Assigned!';
 $lang['dashboard.agentid'] = 'Id';
 $lang['dashboard.agentphone'] = 'Phone';
@@ -36,6 +37,20 @@ $lang['dashboard.error_current_position'] = 'Unable to get the current position.
 $lang['dashboard.error_exceeded_timeout'] = 'We have exceeded the timeout. Please try again.';
 
 $lang['dashboard.enter_address'] = 'Enter here the postcode of your address:';
+
+$lang['dashboard.personal_data'] = 'Personal data:';
+$lang['dashboard.back'] = 'Back';
+$lang['dashboard.save'] = 'Save data';
+$lang['dashboard.your_data'] = 'Your data';
+$lang['dashboard.user_name'] = 'Name';
+$lang['dashboard.user_phone'] = 'Phone';
+$lang['dashboard.user_email'] = 'E-mail';
+
+$lang['dashboard.tyc_msj'] = 'Terms and conditions';
+$lang['dashboard.tyc_acept'] = 'Acept';
+
+
+$lang['dashboard.exit'] = 'Exit';
 
 
 

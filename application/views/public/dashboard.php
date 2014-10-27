@@ -11,19 +11,15 @@
 	<title><?= $this->config->item('app_name') ?></title>
 
 	<link rel="stylesheet" href="<?=base_url()?>assets/css/app.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/css/jquery.mobile-1.3.2.min.css" />
+  	<link rel="stylesheet" href="<?=base_url()?>assets/css/jquery.mobile-1.3.2.min.css" />
+ 
     <script src="<?=base_url()?>assets/js/jquery-1.10.2.min.js"></script>
     <script src="<?=base_url()?>assets/js/jquery.mobile-1.3.2.min.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
-
-    <script src="<?=base_url()?>assets/js/mitrapana.js"></script>
-    
   	<script>
  		var lang = '<?=current_lang()?>';
  		var verification_interval = <?=ci_config('verification_interval')?>;
  		var app_country = '<?=ci_config('app_country')?>';
- 		//var app_country ='';
- 		
  		var searching_msg = '<h1><?=lang('dashboard.searching')?></h1>';
  		var msg_cancel_service = '<?=lang('dashboard.cancel_service')?>';
  		var msg_nomenclature = '<?=lang('dashboard.nomenclature')?>';
@@ -37,25 +33,29 @@
  		var msg_error_exceeded_timeout = '<?=lang('dashboard.error_exceeded_timeout')?>';
  		var average = '<?=$average?>';
  		var uuid = '<?=$uuid?>';
-
+ 		var model = '<?=$model?>';
+ 		var platform = '<?=$platform?>';
+ 		var version = '<?=$version?>';
  	</script>
+
+ 	<script src="<?=base_url()?>assets/js/mitrapana.js"></script>
+
 </head>
  
 <body>
 
-
-<div data-role="page" id="page1">
+<div data-role="page" id="page1"  >
     <div data-theme="e" data-role="header">
-    	<a id="btn-localizame" data-role="button"  data-theme="a" class="ui-btn-left"  ><?=lang('dashboard.localizame')?></a>
-    	
-    	<h3><?= $this->config->item('app_name') ?></h3>
+    	<a id="btn-data-user" data-role="button" data-theme="a" href="#user-modal" data-rel="dialog" data-transition="pop" data-icon="grid" >Tus datos</a>
+        <h3><?= $this->config->item('app_name') ?></h3>
         <div id="agent-call-wrapper">
     		<a id="agent-call" data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.calltaxi')?></a>
     	</div>
     	<div id="agent-call2-wrapper">
     		<a id="agent-call2" data-role="button" data-theme="b" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.showtaxi')?></a>
-    	</div>
-       	<?= form_open('api/call', array('id' => 'call-form', 'class' => '')) ?>
+    	</div>   
+
+    	<?= form_open('api/call', array('id' => 'call-form', 'class' => '')) ?>
 			<input id="lat" name="lat" type="hidden" value="">
 			<input id="lng" name="lng" type="hidden" value="">
 			<input id="zone" name="zone" type="hidden" value="">
@@ -68,14 +68,21 @@
         			<?=lang('dashboard.enter_address')?>
                 	<input name="address" id="address" value="" type="text" data-mini="true" onkeydown="return validarEnter(event)">
             	</td><td >
-                	<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="c" data-inline="true">Search</a>
-                </td></tr>
+                	<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="a" data-inline="true"><?=lang('dashboard.search')?></a>
+                </td>
+                <td >
+                	<a href="#" id='btn-localizame'  align="left" data-role="button" data-icon="home" data-iconpos="notext" data-theme="a" data-inline="true"><?=lang('dashboard.localizame')?></a>
+                </td>
+				</tr>
                 </tbody></table>
             </div>    		
-    	 </form>        
+    	 </form>   
+
     </div>
     
+
     <div data-role="content" class="padding-0">
+    	
          <div id="map_canvas"></div>
 
     </div>
@@ -84,7 +91,10 @@
     <div data-theme="e" data-role="footer" data-position="fixed" align="center">
        	<a href="<?= $this->config->item('app_link') ?>" ><?= $this->config->item('copyright') ?></a>
     </div>
+
     <div id="sound_"></div>    
+    <a href="#user-modal" data-role="button" id="show-user" style="display: none;" data-rel="dialog" data-transition="pop">Show user</a>
+    
 </div>
 
 <!-- Start of third page: #popup -->
@@ -93,9 +103,12 @@
 		<div data-role="header" data-theme="e">
 			<h1><?=lang('dashboard.callconfirm.title')?></h1>
 		</div><!-- /header -->
-	
-		<div data-role="content" data-theme="d">	
-			<div id="confirmation-msg"><p><?=lang('dashboard.callconfirm.content')?>: <span id="show-address"></span></p></div>	
+			<div data-role="content" data-theme="d">	
+				<input name="call-name" id="call-name" placeholder="<?=lang('dashboard.user_name')?>" value="" type="text">
+				<input name="call-phone" id="call-phone" placeholder="<?=lang('dashboard.user_phone')?>" value="" type="text">
+				<div id="confirmation-msg"><p><?=lang('dashboard.callconfirm.content')?>: 
+				<input name="call-address" id="call-address" value="" type="text">
+			</div>	
 			<div id="waiting-msg"><h1><?=lang('dashboard.searching')?></h1></div>
 		</div><!-- /content -->
 		
@@ -120,7 +133,7 @@
 			<?=lang('dashboard.unidad')?>: <span id="agent-unidad"></span>
 			</p>
 			<p><?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span></p>
-			
+				
 			<p><div data-role="collapsible">
 					<h2><?=lang('dashboard.infoshare')?>:</h2>
 					<ul data-role="listview" data-split-icon="gear" data-split-theme="d">
@@ -129,7 +142,7 @@
 					</ul>
 				</div>
 			</p>
-		
+			
 		</div><!-- /content -->
 		
 		<p>
@@ -139,6 +152,57 @@
 	</div>
 </div><!-- /page popup -->
 
+<div data-role="page" id="user-modal" data-close-btn="none">
+	<div id="user-wrapper">
+		<div data-role="header" data-theme="e">
+			<h1><?=lang('dashboard.personal_data')?></h1>
+		</div><!-- /header -->
+	
+		<div data-role="content" data-theme="d">	
+			<table border=0 width="100%"><tbody>
+	            <tr>
+	            <td ><label for="user-name"><?=lang('dashboard.user_name')?>:</label></td>
+	            <td ><input name="user-name" id="user-name" placeholder="<?=lang('dashboard.user_name')?>" value="" type="text"></td>
+	            </tr>
+	            <tr>
+	            <td ><label for="user-phone"><?=lang('dashboard.user_phone')?>:</label></td>
+	            <td ><input name="user-phone" id="user-phone" placeholder="<?=lang('dashboard.user_phone')?>:" value="" type="text"></td>
+	            </tr>
+	            <tr>
+	            <td ><label for="user-email"><?=lang('dashboard.user_email')?>:</label></td>
+	            <td ><input name="user-email" id="user-email" placeholder="<?=lang('dashboard.user_email')?>" value="" type="text"></td>
+	            </tr>
+	            </tbody>
+        	</table>
+    	</div><!-- /content -->
+		
+		<p>
+			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_user_back"><?=lang('dashboard.back')?></a>
+			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_user_save"><?=lang('dashboard.save')?></a>
+		</p>
+	</div>
+
+	<div id="tyc-wrapper">
+		<div data-role="header" data-theme="e">
+			<h1><?=lang('dashboard.tyc_msj')?></h1>
+		</div><!-- /header -->
+	
+		<div data-role="content" data-theme="d">	
+			<div>
+			<label id='tyc-msj'></label>
+			</div>
+    	</div><!-- /content -->
+		
+		<p>
+			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_tyc_exit"><?=lang('dashboard.exit')?></a>
+			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_tyc_acept"><?=lang('dashboard.tyc_acept')?></a>
+		</p>
+	</div>
+
+</div><!-- /page popup -->
+
+
+
 
 <!-- 
 <audio id="yes" src="assets/audio/yes.mp3" preload="auto"></audio>
@@ -147,6 +211,8 @@
  -->
 <audio id="pito" src="<?=base_url()?>assets/audio/pito.mp3" preload="auto"></audio>
 <audio id="yes" src="<?=base_url()?>assets/audio/yes.mp3" preload="auto"></audio>
+
+
 
 </body>
 </html>

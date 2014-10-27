@@ -256,7 +256,7 @@ class Admin extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('agente');
 			$crud->set_subject('Taxistas');
-			$crud->columns('nombre','idsucursal','codigo','vehiculo','pais','departamento','ciudad','direccion','telefono','fecha_localizacion');
+			$crud->columns('nombre','idsucursal','codigo','vehiculo','pais','departamento','ciudad','direccion','telefono','fecha_localizacion','supendido');
 			$crud->fields('nombre','idsucursal','codigo','clave','vehiculo','pais','departamento','ciudad','direccion','telefono','foto');
 			$crud->required_fields('nombre','idsucursal','codigo','vehiculo','pais','departamento','ciudad','direccion','telefono');
 			
@@ -288,6 +288,8 @@ class Admin extends CI_Controller {
  
     		$crud->callback_before_update(array($this,'encrypt_password_callback'));
     		$crud->callback_before_insert(array($this,'encrypt_password_callback'));
+
+    		$crud->callback_column('supendido',array($this,'callback_agent_management'));
     		
 			if($this->userconfig->perfil<>'ADMIN')
 				$crud->where('agente.idsucursal =', $this->userconfig->idsucursal);
@@ -302,6 +304,15 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	function callback_agent_management($value, $row)
+	{
+	 	if ($row->fecha_sancion > date("Y-m-d H:i:s") )
+	 		$sancion = 'SI';
+	 	else
+	 		$sancion = 'NO';
+
+	  return $sancion;
+	}
 
 	function solicitude_management()
 	{
@@ -424,6 +435,68 @@ class Admin extends CI_Controller {
 
 	}
 
+	function sanction_agent()
+	{
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('sanciones');
+			$crud->set_subject('Taxistas sancionados');
+			
+			$crud->unset_delete();
+			$crud->unset_edit();
+			$crud->unset_add();
+				
+			$crud->columns('id','unidad','placa','idagente','idmotivo','fecha','fecha_fin','idusuario');
+			
+			$crud->display_as('idagente', 'Taxista');
+			$crud->display_as('idmotivo', 'Motivo');
+			$crud->display_as('idusuario', 'Usuario');
+			$crud->display_as('fecha', 'Fecha sanción');
+			$crud->display_as('fecha_fin', 'Fecha fin sanción');
+
+			//el ultimo usuario que guarda
+			$crud->field_type('idusuario', 'hidden', $this->userconfig->id);
+			//$crud->field_type('fecha', 'readonly', $this->userconfig->id);
+			$crud->field_type('fecha', 'hidden');
+			$crud->field_type('fecha_fin', 'hidden');
+
+			$crud->set_relation('idagente', 'agente', 'nombre');
+			$crud->set_relation('idmotivo', 'motivos_sanciones', 'descripcion');
+			$crud->set_relation('idusuario', 'usuarios', 'nombre');
+			//$crud->set_relation('vehiculo', 'usuarios', 'vehiculo');
+			$crud->callback_column('unidad',array($this,'callback_unidad_sanction_agent'));
+			$crud->callback_column('placa',array($this,'callback_placa_sanction_agent'));
+			
+			$where = array('fecha_fin >=' => date("Y-m-d H:i:s"));
+		 	$crud->where($where);  
+		 
+			$crud->order_by('id','desc');
+
+			$output = $crud->render();
+			$output -> op = 'sanction_agent';
+
+			$this->_admin_output($output);
+
+	}
+
+	function callback_unidad_sanction_agent($value, $row)
+	{
+	 	$this->load->model('sqlexteded');
+		$result = $this->sqlexteded->getVehiclePlacaUnidad($row->idagente);
+
+	  	return $result->unidad;
+	}
+
+
+	function callback_placa_sanction_agent($value, $row)
+	{
+	 	$this->load->model('sqlexteded');
+		$result = $this->sqlexteded->getVehiclePlacaUnidad($row->idagente);
+
+	  	return $result->placa;
+	}
+
 	function before_insert_sanction_management($post_array){
 		$this->load->model('sqlexteded');
 		$result = $this->sqlexteded->getIdMotivo_horas($post_array['idmotivo']);
@@ -442,6 +515,83 @@ class Admin extends CI_Controller {
 		$this->load->model('agente');
 		$this->agente->update($post_array['idagente'], array('fecha_sancion' => $post_array['fecha_fin']));
     	return $post_array;
+	}
+
+
+	function config_management()
+	{
+		if(($this->userconfig->perfil=='ADMIN')){
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('configuracion');
+			$crud->set_subject('Empresa');
+			$crud->unset_add();
+			$crud->unset_delete();
+			
+			$crud->columns('nombre','descripcion');
+			$crud->fields('nombre','descripcion','terminos','imagen','url');
+			$crud->required_fields('nombre_empresa','descripcion');
+			$this->grocery_crud->set_field_upload('imagen','assets/images/banner');
+
+			$this->grocery_crud->unset_texteditor('terminos');
+			
+			$output = $crud->render();
+			
+			$output -> op = 'config_management';
+
+			$this->_admin_output($output);
+		}			
+	}
+
+
+	function banner_management()
+	{
+		if(($this->userconfig->perfil=='ADMIN')){
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('publicidad');
+			$crud->set_subject('Publicidad');
+			$crud->columns('descripcion','fecha_activo');
+			$crud->fields('descripcion','contenido','imagen','url','fecha_activo');
+			$crud->required_fields('descripcion','fecha_activo');
+			$this->grocery_crud->set_field_upload('imagen','assets/images/banner');
+			
+
+    $crud->unset_back_to_list();
+    
+			$output = $crud->render();
+			
+			$output -> op = 'banner_management';
+
+			$this->_admin_output($output);
+		}			
+	}
+
+	function user_app_management()
+	{
+		if(($this->userconfig->perfil=='ADMIN')){
+			$crud = new grocery_CRUD();
+			$crud->set_theme('datatables');
+			$crud->set_table('user_app');
+			$crud->set_subject('Usuarios apps');
+
+			$crud->unset_delete();
+			$crud->unset_edit();
+			$crud->unset_add();
+
+			$crud->columns('fecha','uuid','nombre','telefono','email','plataforma','version','modelo','fecha_log','tyc');
+			$crud->display_as('fecha', 'Fecha crecación');
+			$crud->display_as('fecha_log', 'Ultimo ingreso');
+			$crud->display_as('tyc', 'Acepto tyc?');
+
+			$output = $crud->render();
+			
+			$output -> op = 'user_app_management';
+
+			$this->_admin_output($output);
+		}			
 	}
 
 	function service_agent()
@@ -496,20 +646,6 @@ class Admin extends CI_Controller {
 		$this->load->view('private/admin.php',(object)array('output' => $output , 'js_files' => array() , 'css_files' => array() , 'op' => 'service_agent','fechaini' => $fi,'fechafin' => $ff  ));
 	}
 
-
-/*	
-	function showAgent()
-	{
-		$this->load->view('private/callcenter.php',array('op' => '/admin/underConstuction'));
-	}
-	
-	function showAgentCust()
-	{
-		$this->load->view('private/customer.php',array('op' => '/admin/viewAgent'));
-	}
-*/
-
-	
 
 	function show_agent_map()
 	{

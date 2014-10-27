@@ -1,7 +1,7 @@
 <?php
 
 $lang['dashboard.footer'] = 'La forma más fácil de pedir un taxi - www.pidetutaxi.com';
-$lang['dashboard.calltaxi'] = 'Pida su Taxi';
+$lang['dashboard.calltaxi'] = 'Pide tu Taxi';
 $lang['dashboard.localizame'] = 'Localizame';
 $lang['dashboard.confimationcode'] = 'Codigo de confirmación';
 $lang['dashboard.agentcode2'] = 'Placa';
@@ -19,6 +19,7 @@ $lang['dashboard.cancel_service'] = 'Esta seguro que desea cancelar su servicio 
 $lang['dashboard.error.attempts'] = 'No hay servicios disponibles en la zona, intenta en unos minutos';
 $lang['dashboard.error_attempts'] = 'No hay servicios disponibles en la zona, intenta en unos minutos';
 $lang['dashboard.searching'] = 'Buscando....';
+$lang['dashboard.search'] = 'Buscar';
 $lang['dashboard.assinged'] = 'Asignado!';
 $lang['dashboard.agentid'] = 'Identificación';
 $lang['dashboard.agentphone'] = 'Tel';
@@ -39,6 +40,17 @@ $lang['dashboard.error_exceeded_timeout'] = 'Hemos superado el tiempo de espera.
 
 $lang['dashboard.enter_address'] = 'Ingresa aquí la nomenclatura de tu dirección:';
 
+$lang['dashboard.personal_data'] = 'Datos personales:';
+$lang['dashboard.back'] = 'Regresar';
+$lang['dashboard.save'] = 'Grabar datos';
+$lang['dashboard.your_data'] = 'Tus datos';
+$lang['dashboard.user_name'] = 'Nombre';
+$lang['dashboard.user_phone'] = 'Teléfono';
+$lang['dashboard.user_email'] = 'E-mail';
+$lang['dashboard.tyc_msj'] = 'Terminos y condiciones';
+$lang['dashboard.tyc_acept'] = 'Acepto';
+
+$lang['dashboard.exit'] = 'Salir';
  
 
 $lang['login.userlogin'] = 'Ingreso';

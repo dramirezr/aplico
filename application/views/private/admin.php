@@ -58,7 +58,8 @@ a:hover
 	<div>
 	<?php
 	if($this->userconfig->perfil=='ADMIN'){ ?>
-		<a href='<?php echo site_url('admin/office_management')?>'>Sucursales</a> |
+	    <a href='<?php echo site_url('admin/config_management')?>'>Empresa</a> |
+	   	<a href='<?php echo site_url('admin/office_management')?>'>Sucursales</a> |
 		<a href='<?php echo site_url('admin/user_management')?>'>Usuarios del sistema</a> |
 		<a href='<?php echo site_url('admin/user_callcenter')?>'>Centro de atención</a> |
 		<a href='<?php echo site_url('admin/user_managervehicle')?>'>Dueños de Taxis</a> |
@@ -68,7 +69,12 @@ a:hover
 		<a href='<?php echo site_url('admin/service_agent')?>'>Servicios X Taxista</a> |
 		<a href='<?php echo site_url('admin/reasons_sanction_management') ?>'>Motivos sanción</a> |
 		<a href='<?php echo site_url('admin/sanction_management') ?>'>Sanciones</a> |
+		<a href='<?php echo site_url('admin/sanction_agent') ?>'>Taxistas sancionados</a> |
 		<a href='<?php echo site_url('admin/show_agent_map') ?>'>Seguimiento Vehiculos</a> |
+		<a href='<?php echo site_url('admin/banner_management') ?>'>Publicidad</a> |
+		<a href='<?php echo site_url('admin/user_app_management') ?>'>Usuarios apps</a> |
+		
+		
 	<?php 
 	}else
 	if($this->userconfig->perfil=='CALL'){ ?>

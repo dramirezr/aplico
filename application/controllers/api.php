@@ -232,8 +232,98 @@ class Api extends CI_Controller {
 
 		die(json_encode(array('state' => 'ok', 'idlocation' => $idlocalizacion, 'idclient' => $idcliente)) );
 		
+	}
+
+	function get_user_app(){
+		$uuid = $this->input->get_post('uuid');
+
+		$this->load->model('user_app');
+		$user_app = $this->user_app->get_by_uuid($uuid);
+		if(!count($user_app)){
+			$data['uuid'] 			= $uuid;
+			$data['nombre'] 		= '';
+			$data['telefono'] 		= '';
+			$data['email'] 			= '';
+			$data['modelo'] 		= $this->input->get_post('model');
+			$data['plataforma'] 	= $this->input->get_post('platform');
+			$data['version'] 		= $this->input->get_post('version');
+			$data['fecha'] 			= date("Y-m-d H:i:s");
+			$data['fecha_log']		= date("Y-m-d H:i:s");
+			$data['tyc'] 			= 'N';
+			$data['id']				= $this->user_app->create($data);
+
+			die(json_encode(array('state' => 'ok', 'user' => $data)) );
+		}
+		
+		$this->user_app->update($user_app->id, array('fecha_log' => date("Y-m-d H:i:s")));
+		
+		die(json_encode(array('state' => 'ok', 'user' => $user_app)) );
+
+	}
+
+
+	function insert_user_app(){
+		$this->load->model('user_app');
+		$data['uuid'] 			= $this->input->get_post('uuid');
+		$data['nombre'] 		= $this->input->get_post('name');
+		$data['telefono'] 		= $this->input->get_post('phone');
+		$data['email'] 			= $this->input->get_post('email');
+		$data['modelo'] 		= $this->input->get_post('model');
+		$data['plataforma'] 	= $this->input->get_post('platform');
+		$data['version'] 		= $this->input->get_post('version');
+		$data['fecha'] 			= date("Y-m-d H:i:s");
+		$id 					= $this->user_app->create($data);
+	
+		die(json_encode(array('state' => 'ok', 'id' => $id)) );
 		
 	}
+
+	function update_user_app(){
+		$this->load->model('user_app');
+		$id 					= $this->input->get_post('id');
+		$data['uuid'] 			= $this->input->get_post('uuid');
+		$data['nombre'] 		= $this->input->get_post('name');
+		$data['telefono'] 		= $this->input->get_post('phone');
+		$data['email'] 			= $this->input->get_post('email');
+		$data['modelo'] 		= $this->input->get_post('model');
+		$data['plataforma'] 	= $this->input->get_post('platform');
+		$data['version'] 		= $this->input->get_post('version');
+		$data['tyc'] 			= 'S';
+		//$data['fecha'] 			= date("Y-m-d H:i:s");
+		
+		$this->user_app->update($id,$data);
+	
+		die(json_encode(array('state' => 'ok')) );
+		
+	}
+
+
+	function get_tyc(){
+		$this->load->model('sqlexteded');
+		$tyc = $this->sqlexteded->getConfiguracion('terminos');
+		die(json_encode(array('state' => 'ok', 'result' => $tyc)) );
+
+	}
+
+	function save_user_app(){
+		$this->load->model('user_app');
+		$id 					= $this->input->get_post('id');
+		$data['uuid'] 			= $this->input->get_post('uuid');
+		$data['nombre'] 		= $this->input->get_post('name');
+		$data['telefono'] 		= $this->input->get_post('phone');
+		$data['email'] 			= $this->input->get_post('email');
+		//$data['modelo'] 		= $this->input->get_post('model');
+		//$data['plataforma'] 	= $this->input->get_post('platform');
+		//$data['version'] 		= $this->input->get_post('version');
+		$data['tyc'] 			= 'S';
+		$data['fecha'] 			= date("Y-m-d H:i:s");
+		
+		$this->user_app->update($id,$data);
+	
+		die(json_encode(array('state' => 'ok')) );
+
+	}
+
 
 		
 }
