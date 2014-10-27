@@ -33,6 +33,7 @@ var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 var page_state  = 'dashboard';
 var id_user_app = -1;
+var flag_tyc  = 'S';
 
 
 window.onpopstate = function(event) {
@@ -245,7 +246,10 @@ $(document).ready(function() {
         $("#user-modal").dialog('close');
         $("#btn_user_back").closest('.ui-btn').show();
         save_user_app();
-        localizame(); 
+        if (flag_tyc=='N'){
+            flag_tyc='S';
+            localizame(); 
+        }
     });
 
 
@@ -306,6 +310,7 @@ function getUserApp(){
                 $('#user-phone').val(response.user.telefono);
                 $('#user-email').val(response.user.email);
                 id_user_app = response.user.id;
+                flag_tyc = response.user.tyc;
                 if(response.user.tyc!='S'){
                     getTyC();
                 }
