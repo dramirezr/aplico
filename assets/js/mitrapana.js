@@ -67,7 +67,7 @@ $(document).ready(function() {
 
     $('#waiting-msg, #agent-wrapper, #agent-call2-wrapper').hide();
     
-    localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
+  //  localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
 
     $('#call-address').change(function(e){
         $('#address').html($(this).val());
@@ -245,12 +245,15 @@ $(document).ready(function() {
         $("#user-modal").dialog('close');
         $("#btn_user_back").closest('.ui-btn').show();
         save_user_app();
+        localizame(); 
     });
 
 
     $('#tyc-wrapper').hide();
     $('#user-wrapper').show();
     getUserApp();
+
+    localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
   
 });
 
@@ -326,6 +329,7 @@ function getTyC(){
             $('#user-wrapper').hide();
             $('#tyc-wrapper').show();
             $("#show-user").trigger('click');
+
         }
     });
 }
