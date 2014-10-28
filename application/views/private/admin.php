@@ -138,7 +138,7 @@ a:hover
 	<?php } ?>
 	<div>
 		<?php 
-echo $op;
+
 
 			if( ($op=="show_agent_map") or ($op=="callService") )
 			{
