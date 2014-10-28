@@ -60,6 +60,10 @@ $(document).keypress(function(e){
 $(document).ready(function() {
     //ocultar publidad
     $('#banner-wrapper').hide();
+    if (average=='WEB'){
+        $("#btn-data-user").closest('.ui-btn').hide();
+        $("#btn-localizame1").closest('.ui-btn').show();
+    }
 
     $('#btn-prueba').click(function (e){
         e.preventDefault();
@@ -204,7 +208,11 @@ $(document).ready(function() {
         e.preventDefault();
         setUserIcon(latitudOriginal, longitudOriginal);
     });    
-    
+    $('#btn-localizame1').click(function(e){
+        e.preventDefault();
+        setUserIcon(latitudOriginal, longitudOriginal);
+    }); 
+
     $('#agent-call').click(function(e){
         $('#call-name').val($('#user-name').val());
         $('#call-phone').val($('#user-phone').val());
@@ -302,7 +310,7 @@ function getbanner(){
         url : server + '/' + lang + '/api/get_banner',           
         dataType : "json",
         data : {
-
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){
         if(response.state == 'ok'){
@@ -351,6 +359,7 @@ function getTyC(){
         url : server + '/' + lang + '/api/get_tyc',        
         dataType : "json",
         data : {
+            cachehora : (new Date()).getTime()
         }
     }).done(function(response){
         if(response.state == 'ok'){

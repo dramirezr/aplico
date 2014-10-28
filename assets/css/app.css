@@ -39,3 +39,16 @@
     top: 0;
     left: 0;
     z-index: -5000;}
+
+
+#phone-iframe-v{
+            height:711px;
+            width:420px;
+            background: no-repeat
+        }
+#phone-iframe-v iframe{
+            margin-top:140px;
+            margin-left: 0px;
+            height:428px;
+            width:310px
+}
