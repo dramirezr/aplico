@@ -324,6 +324,17 @@ class Api extends CI_Controller {
 
 	}
 
+	function get_banner(){
+		$this->load->model('sqlexteded');
+		$banner = $this->sqlexteded->getBanner();
+		if(!$banner)
+			die(json_encode(array('state' => 'no')) );	
+		else
+			die(json_encode(array('state' => 'ok', 'result' => $banner)) );
+			
+
+	}
+
 
 		
 }

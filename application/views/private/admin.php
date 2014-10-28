@@ -138,7 +138,7 @@ a:hover
 	<?php } ?>
 	<div>
 		<?php 
-
+echo $op;
 
 			if( ($op=="show_agent_map") or ($op=="callService") )
 			{
@@ -148,11 +148,17 @@ a:hover
 			}else
 				echo $output; 
 		?>
+
     </div>
 
     <script type="text/javascript">
 //var js_date_format = 'dd/mm/yy';
-var js_date_format = 'yy/mm/dd';
+
+<?php 	if( ($op=="banner_management")  ){ ?>
+	var js_date_format = 'dd/mm/yy';
+<?php }else { ?>
+	var js_date_format = 'yy/mm/dd';
+<?php } ?>
 </script>
 
 </body>

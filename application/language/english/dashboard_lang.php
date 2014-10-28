@@ -51,6 +51,7 @@ $lang['dashboard.tyc_acept'] = 'Acept';
 
 
 $lang['dashboard.exit'] = 'Exit';
+$lang['dashboard.exit_banner'] = 'Exit banner';
 
 
 

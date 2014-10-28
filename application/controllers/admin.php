@@ -556,11 +556,10 @@ class Admin extends CI_Controller {
 			$crud->columns('descripcion','fecha_activo');
 			$crud->fields('descripcion','contenido','imagen','url','fecha_activo');
 			$crud->required_fields('descripcion','fecha_activo');
-			$this->grocery_crud->set_field_upload('imagen','assets/images/banner');
+			$crud->set_field_upload('imagen','assets/images/banner');
 			
-
-    $crud->unset_back_to_list();
-    
+			$crud->callback_after_upload(array($this,'image_callback_after_upload50'));
+   
 			$output = $crud->render();
 			
 			$output -> op = 'banner_management';
@@ -704,6 +703,20 @@ class Admin extends CI_Controller {
 	 
 	    return true;
 	}
+
+
+	function image_callback_after_upload50($uploader_response,$field_info, $files_to_upload)
+	{
+	    $this->load->library('image_moo');
+	 
+	    //Is only one file uploaded so it ok to use it with $uploader_response[0].
+	    $file_uploaded = $field_info->upload_path.'/'.$uploader_response[0]->name; 
+	 
+	    $this->image_moo->load($file_uploaded)->resize(350,50)->save($file_uploaded,true);
+	 
+	    return true;
+	}
 	
+
 
 }

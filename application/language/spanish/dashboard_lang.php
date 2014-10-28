@@ -51,7 +51,8 @@ $lang['dashboard.tyc_msj'] = 'Terminos y condiciones';
 $lang['dashboard.tyc_acept'] = 'Acepto';
 
 $lang['dashboard.exit'] = 'Salir';
- 
+$lang['dashboard.exit_banner'] = 'Cerrar publicidad';
+
 
 $lang['login.userlogin'] = 'Ingreso';
 $lang['login.usercode'] = 'Código';

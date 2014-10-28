@@ -58,7 +58,8 @@ $(document).keypress(function(e){
 });
 
 $(document).ready(function() {
-    
+    //ocultar publidad
+    $('#banner-wrapper').hide();
 
     $('#btn-prueba').click(function (e){
         e.preventDefault();
@@ -252,13 +253,18 @@ $(document).ready(function() {
         }
     });
 
+    $('#btn_banner_close').click(function(e){
+        e.preventDefault();
+        $('#banner-wrapper').hide();
+    });
+
 
     $('#tyc-wrapper').hide();
     $('#user-wrapper').show();
     getUserApp();
-
+    getbanner();
     localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
-  
+    
 });
 
 
@@ -289,6 +295,24 @@ function validarEnter(e) {
     } 
 }
 
+
+function getbanner(){
+    $.ajax({
+        type : "GET",
+        url : server + '/' + lang + '/api/get_banner',           
+        dataType : "json",
+        data : {
+
+        }
+    }).done(function(response){
+        if(response.state == 'ok'){
+            var style = "background-image: url("+ server + "/assets/images/banner/"+ response.result.imagen+"); height: 50px; width: 350px; border: 0px solid black";
+            document.getElementById("banner-wrapper").setAttribute("style",style);
+           // $('#banner-label').html(response.result.descripcion);
+            $('#banner-wrapper').show();
+        }    
+    });
+}
 
 function getUserApp(){
    

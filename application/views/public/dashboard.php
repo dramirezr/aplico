@@ -80,16 +80,20 @@
 
     </div>
     
-
+   <!-- Mapa -->
     <div data-role="content" class="padding-0">
-    	
          <div id="map_canvas"></div>
-
-    </div>
+   </div>
   
-        
+
     <div data-theme="e" data-role="footer" data-position="fixed" align="center">
-       	<a href="<?= $this->config->item('app_link') ?>" ><?= $this->config->item('copyright') ?></a>
+    	<!-- Publicidad -->
+    	<div align="right" id="banner-wrapper" style="">
+    		<label id="banner-label"></label>
+			<a href="#" id='btn_banner_close'  align="right" data-role="button" data-icon="delete" data-iconpos="notext" data-theme="a" data-inline="true"><?=lang('dashboard.exit_banner')?></a>				
+		</div>
+	
+	   	<a href="<?= $this->config->item('app_link') ?>" ><?= $this->config->item('copyright') ?></a>
     </div>
 
     <div id="sound_"></div>    
@@ -144,7 +148,7 @@
 			</p>
 			
 		</div><!-- /content -->
-		
+				
 		<p>
 			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="show-taxi"><?=lang('dashboard.showtaxi')?></a>
 			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="query-cancelation"><?=lang('dashboard.cancel')?></a>

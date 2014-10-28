@@ -52,5 +52,17 @@ class Sqlexteded extends CI_Model {
 			return null;
 		return $result[0];	
 	}
+
+	function getBanner(){
+		$sql = 	" SELECT * ";
+		$sql .= " FROM publicidad ";
+ 		$sql .= " WHERE fecha_activo >= ( CURRENT_TIMESTAMP( )) ";
+ 		$sql .= " ORDER BY RAND() LIMIT 1 ";
+		$result = $this->db->query($sql)->result();
+		
+		if(!$result)
+			return null;
+		return $result[0];	
+	}
 		
 }
