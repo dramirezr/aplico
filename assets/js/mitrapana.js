@@ -306,7 +306,7 @@ function getbanner(){
         }
     }).done(function(response){
         if(response.state == 'ok'){
-            var style = "background-image: url("+ server + "/assets/images/banner/"+ response.result.imagen+"); height: 50px; width: 350px; border: 0px solid black";
+            var style = "background-image: url("+ server + "/assets/images/banner/"+ response.result.imagen+"); height: 50px; width: 320px; border: 0px solid black";
             document.getElementById("banner-wrapper").setAttribute("style",style);
            // $('#banner-label').html(response.result.descripcion);
             $('#banner-wrapper').show();

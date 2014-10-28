@@ -712,7 +712,7 @@ class Admin extends CI_Controller {
 	    //Is only one file uploaded so it ok to use it with $uploader_response[0].
 	    $file_uploaded = $field_info->upload_path.'/'.$uploader_response[0]->name; 
 	 
-	    $this->image_moo->load($file_uploaded)->resize(350,50)->save($file_uploaded,true);
+	    $this->image_moo->load($file_uploaded)->resize(320,50)->save($file_uploaded,true);
 	 
 	    return true;
 	}
