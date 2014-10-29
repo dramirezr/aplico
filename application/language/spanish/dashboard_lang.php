@@ -41,6 +41,8 @@ $lang['dashboard.error_exceeded_timeout'] = 'Hemos superado el tiempo de espera.
 $lang['dashboard.enter_address'] = 'Ingresa aquí la nomenclatura de tu dirección:';
 
 $lang['dashboard.personal_data'] = 'Datos personales:';
+$lang['dashboard.your_data'] = 'Tus datos';
+
 $lang['dashboard.back'] = 'Regresar';
 $lang['dashboard.save'] = 'Grabar datos';
 $lang['dashboard.your_data'] = 'Tus datos';

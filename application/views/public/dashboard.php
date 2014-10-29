@@ -46,8 +46,10 @@
 
 <div data-role="page" id="page1"  >
     <div data-theme="e" data-role="header">
-    	<a id="btn-localizame1" data-role="button"  data-theme="a" class="ui-btn-left" style="display: none;" ><?=lang('dashboard.localizame')?></a>
-    	<a id="btn-data-user" data-role="button" data-theme="a" href="#user-modal" data-rel="dialog" data-transition="pop" data-icon="grid" >Tus datos</a>
+    	<a id="btn-data-user" data-role="button" data-theme="a" href="#user-modal" data-rel="dialog" data-transition="pop" data-icon="grid" ><?=lang('dashboard.your_data')?></a>
+    	 <!-- 
+    	<a id="btn-localizame1" data-role="button"  data-theme="a" style="display: none;" ><?=lang('dashboard.localizame')?></a>
+    	-->
         <h3><?= $this->config->item('app_name') ?></h3>
         <div id="agent-call-wrapper">
     		<a id="agent-call" data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.calltaxi')?></a>

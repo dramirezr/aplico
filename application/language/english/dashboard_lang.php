@@ -39,6 +39,8 @@ $lang['dashboard.error_exceeded_timeout'] = 'We have exceeded the timeout. Pleas
 $lang['dashboard.enter_address'] = 'Enter here the postcode of your address:';
 
 $lang['dashboard.personal_data'] = 'Personal data:';
+$lang['dashboard.your_data'] = 'Your data';
+
 $lang['dashboard.back'] = 'Back';
 $lang['dashboard.save'] = 'Save data';
 $lang['dashboard.your_data'] = 'Your data';
