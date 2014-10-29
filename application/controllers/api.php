@@ -175,12 +175,17 @@ class Api extends CI_Controller {
 	}
 
 	function get_agets_location(){
+		$office = $this->input->get_post('office'); 
+		$unit = $this->input->get_post('unit');
+		$plate = $this->input->get_post('plate');
+		$agent = $this->input->get_post('agent');
+
 		$this->load->model('agente');
 		$userconfig = $this->session->userdata('userconfig');
 		$cust_id = $userconfig->id;
 		$cust_perfil = $userconfig->perfil;
 		$cust_idsucursal = $userconfig->idsucursal;
-		$agente = $this->agente->get_by_cust_id($cust_id,$cust_perfil,$cust_idsucursal);
+		$agente = $this->agente->get_by_cust_id($cust_id,$cust_perfil,$cust_idsucursal,$office,$unit,$plate,$agent);
 		
 		die(json_encode(array('state' => 'ok','agent' => $agente)));
 	}
@@ -335,6 +340,28 @@ class Api extends CI_Controller {
 
 	}
 
+	function select_sucursales(){
+		$this->load->model('sqlexteded');
+		$userconfig 		= $this->session->userdata('userconfig');
+		$cust_id 			= $userconfig->id;
+		$cust_perfil 		= $userconfig->perfil;
+		$cust_idsucursal 	= $userconfig->idsucursal;
+		$result = $this->sqlexteded->get_all_sucursal($cust_perfil,$cust_idsucursal);
+				
+		die(json_encode(array('state' => 'ok', 'result' => $result)));
+	}
+
+	function get_all_units(){
+		$idsucursal 				= $this->input->get_post('idsucursal');
+		$this->load->model('sqlexteded');
+		$userconfig 		= $this->session->userdata('userconfig');
+		$cust_id 			= $userconfig->id;
+		$cust_perfil 		= $userconfig->perfil;
+		$cust_idsucursal 	= $userconfig->idsucursal;
+		$result = $this->sqlexteded->get_all_units($cust_perfil,$cust_idsucursal,$idsucursal);
+				
+		die(json_encode(array('state' => 'ok', 'result' => $result)));
+	}
 
 		
 }

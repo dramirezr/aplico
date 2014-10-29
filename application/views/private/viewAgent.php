@@ -7,11 +7,11 @@
  
 	<title><?= $this->config->item('app_name') ?></title>
 
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
 	<link rel="stylesheet" href="<?=base_url()?>assets/css/app.css" />
-	
-	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+    <link rel="stylesheet" href="<?=base_url()?>assets/css/jquery.mobile-1.3.2.min.css" />
+ 
+    <script src="<?=base_url()?>assets/js/jquery-1.10.2.min.js"></script>
+    <script src="<?=base_url()?>assets/js/jquery.mobile-1.3.2.min.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
     
     <script src="<?=base_url()?>assets/js/custripan.js"></script>
@@ -33,31 +33,35 @@
         <tr>
             <td >
                 Sucursal:
-                <select name="select-sucursal" id="select-sucursal"  data-native-menu="true" onchange="centerCustLocation(this.value,'S')" > 
+                <select name="select-sucursal" id="select-sucursal"  data-native-menu="true" onchange="get_all_units(this.value)" > 
                     <option value="-1">Todas</option>
                 </select>
             </td >
             <td >
                 Unidad:
-                <select name="select-unidad" id="select-unidad"  data-native-menu="true" onchange="centerCustLocation(this.value,'S')" > 
+                <select name="select-unidad" id="select-unidad"  data-native-menu="true"  > 
                     <option value="-1">Todas</option>
                 </select>
             </td >
             <td >
                 Placa:
-                <select name="select-placa" id="select-placa"  data-native-menu="true" onchange="centerCustLocation(this.value,'S')" > 
+                <select name="select-placa" id="select-placa"  data-native-menu="true" > 
                     <option value="-1">Todas</option>
                 </select>
             </td >
             <td >
                 Taxista:
-                <select name="select-taxista" id="select-taxista"  data-native-menu="true" onchange="centerCustLocation(this.value,'S')" > 
+                <select name="select-taxista" id="select-taxista"  data-native-menu="true" > 
                     <option value="-1">Todas</option>
                 </select>
             </td >
+             
         </tr >
+    
         </tbody></table>
+
     </div>
+      <a id="btn-cosultar" data-role="button"  data-theme="a" >Consultar</a>
     <div data-role="content" class="padding-0">
          <div id="map_canvas"></div>
     </div>

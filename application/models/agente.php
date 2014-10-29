@@ -21,7 +21,7 @@ class Agente extends CI_Model {
 		return $agente[0];		
 	}
 
-	function get_by_cust_id($id,$perfil,$idsucursal){
+	function get_by_cust_id($id,$perfil,$idsucursal,$office,$unit,$plate,$agent){
 		
 		$sql = " select a.nombre, a.telefono, a.foto, a.latitud, a.longitud, a.estado_servicio, a.fecha_localizacion, v.placa, a.fecha_localizacion , ( CURRENT_TIMESTAMP( ) - INTERVAL 60 SECOND ) as datesytem ";
 		$sql .= " from vehiculos v, agente a";
@@ -38,6 +38,22 @@ class Agente extends CI_Model {
 			$sql .= " where v.propietario = $id and v.id=a.vehiculo"; 
 		if ($perfil=='CALL')
 			$sql .= " where v.idsucursal = $idsucursal and v.id=a.vehiculo"; 
+
+		if (($office!='-1') and ($office!='') ){
+			$sql .= " and ( v.idsucursal = $office "; 
+
+			if (($unit!='-1') and ($unit!=''))
+				$sql .= " and v.unidad = '$unit' "; 
+			if (($plate!='-1') and ($plate!=''))
+				$sql .= " and v.placa = '$plate' "; 
+			if (($agent!='-1') and ($agent!=''))
+				$sql .= " and a.id = $agent "; 
+
+			$sql .= " ) "; 
+		}
+		
+
+
 		
 		$agente = $this->db->query($sql)->result();
 		if(!count($agente))

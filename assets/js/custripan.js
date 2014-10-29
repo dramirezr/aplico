@@ -27,7 +27,19 @@ var markersArray = [];
 var limits = new google.maps.LatLngBounds();
 
 $(document).ready(function() {
+    getSelectSucursal();
     localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
+
+    $('#btn-cosultar').click(function (e){
+        e.preventDefault();
+        deleteOverlays()
+        clearInterval(taxiLocationDemonId);
+        taxiLocationDemonId = setInterval(getTaxiLocation, 10000);
+        getTaxiLocation();
+    });
+
+   
+
 });
 
 var taxiLocationDemonId;
@@ -46,13 +58,82 @@ function validarEnter(e) {
     } 
 }
 
+function getSelectSucursal(){
+    $('option', '#select-sucursal').remove();
+    $("option","#select-sucursal" ).empty();
+
+    $('option', '#select-unidad').remove();
+    $("option","#select-unidad" ).empty();
+    $('option', '#select-placa').remove();
+    $("option","#select-placa" ).empty();
+    $('option', '#select-taxista').remove();
+    $("option","#select-taxista" ).empty();
+
+    $.ajax({
+            type : "GET",
+            url : lang + '../../../api/select_sucursales' ,        
+            dataType : "json",
+            data : {}
+    }).done(function(response){
+        if(response.state == 'ok'){
+            $('#select-sucursal').append('<option value="-1">Todas</option>');
+            for(var i in response.result){
+                $('#select-sucursal').append('<option value="'+response.result[i].id+'" >'+response.result[i].nombre+'</option>');
+            }
+                
+        }
+    });
+       
+}
+
+function get_all_units(idsucursal){
+    $('option', '#select-unidad').remove();
+    $("option","#select-unidad" ).empty();
+    $('option', '#select-placa').remove();
+    $("option","#select-placa" ).empty();
+    $('option', '#select-taxista').remove();
+    $("option","#select-taxista" ).empty();
+   
+    $.ajax({
+            type : "GET",
+            url : lang + '../../../api/get_all_units' ,        
+            dataType : "json",
+            data : {
+                idsucursal :  idsucursal
+            }
+    }).done(function(response){
+        if(response.state == 'ok'){
+            $('#select-unidad').append('<option value="-1">Todas</option>');
+            $('#select-placa').append('<option value="-1">Todas</option>');
+            $('#select-taxista').append('<option value="-1">Todas</option>');
+            for(var i in response.result){
+                $('#select-unidad').append('<option value="'+response.result[i].unidad+'" >'+response.result[i].unidad+'</option>');
+                $('#select-placa').append('<option value="'+response.result[i].placa+'" >'+response.result[i].placa+'</option>');
+                $('#select-taxista').append('<option value="'+response.result[i].id+'" >'+response.result[i].nombre+'</option>');
+            }
+                
+        }
+    });
+
+  
+}
+
+
+
 function getTaxiLocation(){
+     
+   $('#select-unidad').val(),$('#select-placa').val(),$('#select-taxista').val()
      
    $.ajax({
         type : "GET",
         url : lang + '../../../api/get_agets_location',        
-        dataType : "json"
-        
+        dataType : "json",
+        data : {
+            office : $('#select-sucursal').val(),
+            unit   : $('#select-unidad').val(),
+            plate  : $('#select-placa').val(),
+            agent  : $('#select-taxista').val()
+        }
     }).done(function(response){
 
         if(response.state == 'ok'){
@@ -185,11 +266,6 @@ function cargarMapa() {
 
     map = new google.maps.Map($("#map_canvas").get(0), myOptions); /*Creamos el mapa y lo situamos en su capa */
 
-    clearInterval(taxiLocationDemonId);
-    taxiLocationDemonId = setInterval(getTaxiLocation, 10000);
-    getTaxiLocation();
-
-   // map.fitBounds(limits);
 
 }
 

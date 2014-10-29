@@ -64,5 +64,39 @@ class Sqlexteded extends CI_Model {
 			return null;
 		return $result[0];	
 	}
+
+	function get_all_sucursal($perfil,$idsucursal){
+		$sql = 	" SELECT * ";
+		$sql .= " FROM sucursales ";
+ 		if ($perfil!='ADMIN')
+			$sql .= " where id = $idsucursal "; 
+		$result = $this->db->query($sql)->result();
+		if(!$result)
+			return null;
+		return $result; 
+	}
+
+	function get_all_units($perfil,$idsucursal, $idsuc){
+		$sql  = " select a.id, a.nombre, v.unidad, v.placa, a.fecha_localizacion ";
+		$sql .= " from vehiculos v, agente a";
+ 		$sql .= " 	inner join(";
+		$sql .= "     select vehiculo, max(fecha_localizacion) as max_fecha";
+		$sql .= "     from agente";
+		$sql .= "     group by vehiculo";
+		$sql .= "    ) as R";
+		$sql .= "    on a.vehiculo = R.vehiculo";
+		$sql .= "    and a.fecha_localizacion = R.max_fecha";
+		if ($perfil=='ADMIN')
+			$sql .= " where v.idsucursal = $idsuc and v.id=a.vehiculo"; 
+		if ($perfil=='CUST')
+			$sql .= " where v.propietario = $id and v.id=a.vehiculo"; 
+		if ($perfil=='CALL')
+			$sql .= " where v.idsucursal = $idsucursal and v.id=a.vehiculo"; 
+		
+		$result = $this->db->query($sql)->result();
+		if(!count($result))
+			return null;
+		return $result;		
+	}
 		
 }
