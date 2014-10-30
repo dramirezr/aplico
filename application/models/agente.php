@@ -23,7 +23,7 @@ class Agente extends CI_Model {
 
 	function get_by_cust_id($id,$perfil,$idsucursal,$office,$unit,$plate,$agent){
 		
-		$sql = " select a.nombre, a.telefono, a.foto, a.latitud, a.longitud, a.estado_servicio, a.fecha_localizacion, v.placa, a.fecha_localizacion , ( CURRENT_TIMESTAMP( ) - INTERVAL 60 SECOND ) as datesytem ";
+		$sql = " select a.nombre, a.telefono, a.foto, a.latitud, a.longitud, a.estado_servicio, a.fecha_localizacion, v.placa, v.unidad, a.fecha_localizacion , ( CURRENT_TIMESTAMP( ) - INTERVAL 60 SECOND ) as datesytem, a.fecha_sancion ";
 		$sql .= " from vehiculos v, agente a";
  		$sql .= " 	inner join(";
 		$sql .= "     select vehiculo, max(fecha_localizacion) as max_fecha";

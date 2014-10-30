@@ -122,7 +122,10 @@ class Agent extends CI_Controller {
 			'sector' => $request->sector,
 			'latitud' => $request->latitud,
 			'longitud' => $request->longitud,
-			'request' => $request->id
+			'request' => $request->id,
+			'name' => $request->nombre,
+			'phone' => $request->telefono,
+			'cell' => $request->celular
 		);
 		
 		$this->agente->update($id, array('estado_servicio' => 'OCUPADO'));

@@ -139,16 +139,19 @@
 			<?=lang('dashboard.agentcode2')?>: <span id="agent-placa"></span>,&nbsp;
 			<?=lang('dashboard.unidad')?>: <span id="agent-unidad"></span>
 			</p>
-			<p><?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span></p>
+			<p>
+			<?=lang('dashboard.agentphone')?>: <span id="agent-phone"></span>
+			<a href="#" id='btn-phone'  data-role="button" data-icon="grid" data-theme="a" data-inline="true"><?=lang('dashboard.call')?></a>
+			</p>
 				
-			<p><div data-role="collapsible">
+			<!--<p><div data-role="collapsible">
 					<h2><?=lang('dashboard.infoshare')?>:</h2>
 					<ul data-role="listview" data-split-icon="gear" data-split-theme="d">
 						<li><span id="share-twitter"></span></li>
 						<li><span id="share-facebook"></span></li>
 					</ul>
 				</div>
-			</p>
+			</p>-->
 			
 		</div><!-- /content -->
 				

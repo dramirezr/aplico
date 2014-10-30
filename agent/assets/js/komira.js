@@ -16,6 +16,7 @@ var verifyServiceStateDemonId;
 var WaitVeryServiceDemonid;
 var geoOptions = { timeout: verification_interval };
 var ubicacionServicio = null;
+var user_data = '';
 var request_id = null;
 var username = null;
 var password = null;
@@ -81,7 +82,7 @@ $(document).ready(function() {
     $.mobile.loading( "show" );
     
     $("#audio-wrap, #btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
-    
+    $('#current-position').show();
     init();
     
 
@@ -268,7 +269,14 @@ function verifyService(){
                 lat_user = response.latitud;
                 lng_user = response.longitud;
                 ubicacionServicio = response.ubicacion;
-            
+                user_data = '';
+                if (response.name!='')
+                    user_data  = response.name ;
+                if (response.phone!='')
+                    user_data += ' - '+'<a href="tel:'+response.phone+'">'+response.phone+'</a>';  
+                if ((response.phone!='')&&(response.phone!=response.cell))
+                    user_data += ' - '+'<a href="tel:'+response.cell+'" >'+response.cell+'</a>';  ;  
+                
                 $('#service-addr').val(response.sector);
                 $('#btn-aplico-wrap').show();
                 $('#btn-cancelar-wrap').show();
@@ -326,11 +334,12 @@ function switchServiceAddrBg(){
 function switchToFree(){
     request_id = null;
     
-    //$('#service-addr').html('');
-    //$('#verificacion-cod').html('');
-    
+    $('#service-addr').html('');
+    $('#verificacion-cod').html('');      
+    $('#user-data').html('');
+
     $("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
-    
+    $('#current-position').show();
     clearInterval(verifyServiceDemonId);    
     verifyServiceDemonId = setInterval(verifyService, verification_interval);
     
@@ -360,9 +369,10 @@ function cancel_service(){
     
     $('#service-addr').html('');
     $('#verificacion-cod').html('');
+    $('#user-data').html('');
     
     $("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
-    
+    $('#current-position').show();
     clearInterval(WaitVeryServiceDemonid);
 
     clearInterval(verifyServiceDemonId);
@@ -403,6 +413,7 @@ function service_delivered(){
         if(response.state=='ok'){  
             $('#service-addr').html('');
             $('#verificacion-cod').html('');      
+            $('#user-data').html('');
             switchToFree();
         }
     });  
@@ -436,10 +447,13 @@ function confirm_service(){
     }).done(function(response){        
         if(response.state == 'ok'){
             //assigned
+            //liberar espacio en la pantalla ocultando las coordenadas
+            $('#current-position').hide();
             $('#btn-aplico-wrap').hide();
             $('#btn-entregado-wrap').show();
             $('#btn-llego-wrap').show();
-            $('#verificacion-cod').html('Su Código de Verificación: ' + request_id);
+            $('#verificacion-cod').html('<b>Código de Verificación: ' + request_id +'</b>');
+            $('#user-data').html('<b>'+user_data+'</b>');
             $('#service-addr').val(ubicacionServicio);
             
             clearInterval(verifyServiceStateDemonId);

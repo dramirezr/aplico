@@ -265,7 +265,7 @@ class Admin extends CI_Controller {
 			$crud->display_as('departamento', 'Provincia');
 
 			$crud->display_as('codigo', 'Cedula');
-			$crud->display_as('vehiculo', 'Placa');
+			$crud->display_as('vehiculo', 'Unidad - Placa');
 			$crud->display_as('fecha_localizacion', 'Fec. Geolocalizacón');
 			
 			$crud->set_field_upload('foto','assets/images/agents');
@@ -275,7 +275,7 @@ class Admin extends CI_Controller {
 
 			if($this->userconfig->perfil=='ADMIN'){
 				$crud->set_relation('idsucursal', 'sucursales', 'nombre');
-				$crud->set_relation('vehiculo', 'vehiculos', 'placa');
+				$crud->set_relation('vehiculo', 'vehiculos', '{unidad} - {placa}');
 			}
 			else{
 				$crud->set_relation('idsucursal', 'sucursales', 'nombre','id IN ("'.$this->userconfig->idsucursal.'")');
@@ -401,7 +401,7 @@ class Admin extends CI_Controller {
 				$crud->unset_edit();
 			}
 				
-			$crud->columns('id','idagente','idmotivo','fecha','fecha_fin','idusuario');
+			$crud->columns('id','idagente','unidad','placa','idmotivo','fecha','fecha_fin','idusuario');
 			$crud->fields('idagente','idmotivo','descripcion','idusuario','fecha','fecha_fin');
 			$crud->required_fields('idagente','idmotivo','descripcion','idusuario');
 			
@@ -412,6 +412,8 @@ class Admin extends CI_Controller {
 			$crud->display_as('fecha', 'Fecha sanción');
 			$crud->display_as('fecha_fin', 'Fecha fin sanción');
 
+			$crud->callback_column('unidad',array($this,'callback_unidad_sanction_agent'));
+			$crud->callback_column('placa',array($this,'callback_placa_sanction_agent'));
 
 			//el ultimo usuario que guarda
 			$crud->field_type('idusuario', 'hidden', $this->userconfig->id);

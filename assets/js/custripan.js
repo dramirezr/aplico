@@ -146,9 +146,13 @@ function getTaxiLocation(){
             for(var i in response.agent){
               
                 if(response.agent[i].fecha_localizacion>response.agent[i].datesytem)
-                    estadoagent = 0
+                    estadoagent = ''
                 else
-                    estadoagent = 1
+                    estadoagent = '2'
+
+                if(response.agent[i].fecha_sancion>response.agent[i].datesytem)
+                    estadoagent = '3'
+
                 coordenadas =  new google.maps.LatLng( response.agent[i].latitud, response.agent[i].longitud);
 
                 setTaxiIcon(coordenadas, response.agent[i],estadoagent );
@@ -190,11 +194,9 @@ function deleteOverlays() {
 function setTaxiIcon(coordenadas, agent, estadoagent){
     var popup;
     var icon_taxi
-   
-    if(estadoagent==1)
-        icon_taxi =  app_path + 'assets/images/taxi2.png';
-    else
-        icon_taxi =  app_path + 'assets/images/taxi.png';
+    
+    icon_taxi =  app_path + 'assets/images/taxi'+estadoagent+'.png';
+    
 
     taxiMarker = new google.maps.Marker({
         position:coordenadas,
@@ -207,7 +209,7 @@ function setTaxiIcon(coordenadas, agent, estadoagent){
             if(!popup){
                 popup = new google.maps.InfoWindow();
             }
-            var note = 'Placa : ' + agent.placa + '<br> Taxista : ' + agent.nombre + 
+            var note =  'Unidad : ' + agent.unidad +  '<br> Placa : ' + agent.placa + '<br> Taxista : ' + agent.nombre + 
                         '<br> Telefono : ' + agent.telefono + '<br> Estado : ' + agent.estado_servicio +
                         '<br> Ultima Act. : ' + agent.fecha_localizacion;
             popup.setContent(note);

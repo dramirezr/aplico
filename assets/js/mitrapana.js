@@ -152,25 +152,23 @@ $(document).ready(function() {
                     $.mobile.loading("show");
                     $('#call-confirmation, #confirmation-msg').hide();
                     $('#waiting-msg').show();
-                    address_det = $('input[name="call-address"]').val();
-                    if ($('input[name="call-name"]').val()!='')
-                        address_det = address_det + ' - ' + $('input[name="call-name"]').val();
-                    if ($('input[name="call-phone"]').val()!='')
-                        address_det = address_det + ' - ' + $('input[name="call-phone"]').val();
                     
                     $.ajax({
                         type : "GET",
                         url : server + '/' + lang + '/api/call',        
                         dataType : "json",
                         data : {
-                            hms1 : $('input[name="hms1"]').val(),
-                            address : address_det,
-                            lat : $('input[name="lat"]').val(),
-                            lng : $('input[name="lng"]').val(),
-                            zone : $('input[name="zone"]').val(),
-                            city : $('input[name="city"]').val(),
+                            hms1    : $('input[name="hms1"]').val(),
+                            address : $('input[name="call-address"]').val(),
+                            lat     : $('input[name="lat"]').val(),
+                            lng     : $('input[name="lng"]').val(),
+                            zone    : $('input[name="zone"]').val(),
+                            city    : $('input[name="city"]').val(),
                             country : $('input[name="country"]').val(),
                             state_c : $('input[name="state_c"]').val(),
+                            name    : $('input[name="call-name"]').val(),
+                            phone   : $('input[name="call-phone"]').val(),
+                            cell    : $('input[name="call-phone"]').val(),
                             average : average,
                             uuid    : uuid,
                             idcall  : '-1'
@@ -315,7 +313,7 @@ function getbanner(){
 
 function getUserApp(){
    
-   if(uuid!=''){
+    if(uuid!=''){
        $.ajax({
             type : "GET",
             url : server + '/' + lang + '/api/get_user_app',        
@@ -334,7 +332,7 @@ function getUserApp(){
                 $('#user-email').val(response.user.email);
                 id_user_app = response.user.id;
                 flag_tyc = response.user.tyc;
-                if(response.user.tyc!='S'){
+                if(response.user.tyc=='N'){
                     getTyC();
                 }
             }
@@ -496,6 +494,9 @@ function verifyCall(){
             agentId = response.agent.id
             $('#agent-id').html(response.agent.codigo);
             $('#agent-phone').html(response.agent.telefono);
+            $('#btn-phone').attr('href','tel:'+response.agent.telefono);
+            //$('#btn-phone').text(response.agent.telefono);
+
             $('#confirmation-code').html('<span style="color: red; font-weight:bold;">' + queryId + '</span>');
             $('#agent-placa').html(response.agent.placa);
             $('#agent-unidad').html(response.agent.unidad);
