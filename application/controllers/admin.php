@@ -322,13 +322,14 @@ class Admin extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('solicitud');
 			$crud->set_subject('Solicitudes');
-			$crud->columns('id','ubicacion','pais','departamento','ciudad','fecha_solicitud','estado','idagente','medio','nombre','telefono','celular','idcall','idcliente_e','forma_pago','voucher');
+			$crud->columns('id','ubicacion','pais','departamento','ciudad','fecha_solicitud','estado','idagente','medio','nombre','telefono','celular','idcall','idcliente_e','forma_pago','voucher','valor');
 			$crud->display_as('idagente', 'Taxista');
 			$crud->display_as('id', 'Código');
 			$crud->display_as('departamento', 'Provincia');
 			$crud->set_relation('idagente', 'agente', 'nombre');
 			$crud->display_as('idcall', 'Call Center');
 			$crud->display_as('idcliente_e', 'Cliente corporativo');
+			$crud->display_as('valor', 'Precio servicio');
 
 
 			$crud->set_relation('idcall', 'usuarios', 'nombre');
