@@ -85,17 +85,21 @@ class Agent extends CI_Controller {
 	
 	function delivered_service(){
 		$request_id = $this->input->get_post('request_id');
-		$lat  = $this->input->get_post('lat');
-		$lng  = $this->input->get_post('lng');
-		$pay  = $this->input->get_post('pay');
-		$cust = $this->input->get_post('cust');
-		$voucher = $this->input->get_post('voucher');
+
+		$data['estado']       	= 'E';
+		$data['lat_entrega']  	= $this->input->get_post('lat');
+		$data['lng_entrega']  	= $this->input->get_post('lng');
+		$data['forma_pago']		= $this->input->get_post('pay');
+		$data['idcliente_e'] 	= $this->input->get_post('cust');
+		$data['voucher'] 		= $this->input->get_post('voucher');
+		$data['valor'] 			= $this->input->get_post('price');
+		
 		$id   = $this->input->get_post('id');
 		$id   = $id ? $id : $this->agent->id;
 		
 		$this->load->model('solicitud');
 		
-		$this->solicitud->update($request_id, array('estado' => 'E', 'lat_entrega' => $lat, 'lng_entrega' => $lng, 'forma_pago' => $pay, 'idcliente_e' => $cust, 'voucher' => $voucher));
+		$this->solicitud->update($request_id, $data);
 		$this->agente->update($id, array('estado_servicio' => 'LIBRE'));
 		
 		die(json_encode(array('state' => 'ok')));

@@ -128,6 +128,7 @@ $(document).ready(function() {
         $('#wraper-voucher').hide();
         $('#select-pay').val("E").change();
         $('#code-cust').val('');
+         $('#service-price').val(0);
         $("#show-pay-modal").trigger('click'); 
     });
 
@@ -157,6 +158,12 @@ $(document).ready(function() {
     });
    
     
+    $('#service-price').priceFormat({
+        prefix: '',
+        thousandsSeparator: '',
+        limit: 8,
+        centsLimit: 2
+    });
 
 });
 
@@ -193,7 +200,6 @@ function getSelectCust(){
         if(response.state == 'ok'){
             //$('#select-cust').append('<option value="-1">Todas</option>');
             for(var i in response.result){
-                console.log(response.result[i].nombre);
                 $('#select-cust').append('<option value="'+response.result[i].id+'" >'+response.result[i].nombre+'</option>');
             }
                 
@@ -436,24 +442,23 @@ function cancel_service(){
 }
 
 function service_delivered(){
-    var pay = $('#select-pay').val();
     var cust = -1;
     if ($('#select-pay').val()=='V')
        cust = $('#select-cust').val();
-    var voucher = $('#code-cust').val();
     $.ajax({
         type : "GET",
         url : server + 'agent/delivered_service',        
         dataType : "json",
         data : {
-            request_id : request_id,
-            lat : lat,
-            lng : lng,
-            pay : pay,
-            cust: cust,
-            voucher: voucher,
-            hms1: scode,
-            cachehora : (new Date()).getTime()
+            request_id  : request_id,
+            lat         : lat,
+            lng         : lng,
+            pay         : $('#select-pay').val(),
+            cust        : cust,
+            voucher     : $('#code-cust').val(),
+            price       : $('#service-price').val(),
+            hms1        : scode,
+            cachehora   : (new Date()).getTime()
         }
     }).done(function(response){
         if(response.state=='ok'){  
