@@ -119,7 +119,7 @@
         </div>
         <div data-role="section">
             <div id="btn-entregado-wrap">
-                <input type="button" id="btn-entregado" value="ENTREGADO" data-theme="e" data-icon="check" data-iconpos="top" >
+                <input type="button" id="btn-entregado" value="ENTREGADO" data-theme="e" data-icon="check" data-iconpos="top">
             </div>
         </div>
       
@@ -129,6 +129,8 @@
             </div>
         </div>
 
+
+        <a href="#pay-modal" data-role="button" id="show-pay-modal" data-rel="dialog" data-transition="pop"  style="display: none;">Pay modal</a>
     </div>
 
    
@@ -170,6 +172,31 @@
             <a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn-sos">Pedir ayuda</a>
             <a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn-cancelation">Regresar</a>
         </p>
+</div><!-- /page popup -->
+
+
+
+<div data-role="page" id="pay-modal" data-close-btn="none">
+    <div data-role="header" data-theme="e">
+        <h1>Forma de pago</h1>
+    </div><!-- /header -->
+
+    <div data-role="content" id="pay_content">
+        <select name="select-pay" id="select-pay" data-role="slider" onchange="setPay(this.value)">
+            <option value="E"> Efectivo </option>
+            <option value="V">  Voucher </option>
+        </select>
+        <div id="wraper-voucher">
+            Cliente:
+            <select name="select-cust" id="select-cust"  data-native-menu="true" > </select>
+            Código:
+            <input name="code-cust" id="code-cust" placeholder="código del voucher" value="" type="text">
+        </div>
+    </div>
+    <p>
+        <a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back">Regresar</a>
+        <a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn-save-entrega">Grabar</a>
+    </p>
 </div><!-- /page popup -->
 
 

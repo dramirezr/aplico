@@ -322,13 +322,18 @@ class Admin extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('solicitud');
 			$crud->set_subject('Solicitudes');
-			$crud->columns('id','ubicacion','pais','departamento','ciudad','fecha_solicitud','estado','idagente','medio','idcall');
+			$crud->columns('id','ubicacion','pais','departamento','ciudad','fecha_solicitud','estado','idagente','medio','nombre','telefono','celular','idcall','idcliente_e','forma_pago','voucher');
 			$crud->display_as('idagente', 'Taxista');
 			$crud->display_as('id', 'Código');
 			$crud->display_as('departamento', 'Provincia');
 			$crud->set_relation('idagente', 'agente', 'nombre');
 			$crud->display_as('idcall', 'Call Center');
+			$crud->display_as('idcliente_e', 'Cliente corporativo');
+
+
 			$crud->set_relation('idcall', 'usuarios', 'nombre');
+			$crud->set_relation('idcliente_e', 'cliente_e', 'nombre');
+			
 			
 
 			$crud->order_by('id','asc');
@@ -590,6 +595,41 @@ class Admin extends CI_Controller {
 			$output = $crud->render();
 			
 			$output -> op = 'user_app_management';
+
+			$this->_admin_output($output);
+		}			
+	}
+
+	
+	function customers_management()
+	{
+		if(($this->userconfig->perfil=='ADMIN')){
+			$crud = new grocery_CRUD();
+			$crud->set_theme('datatables');
+			$crud->set_table('cliente_e');
+			$crud->set_subject('clientes corporativos');
+
+			$crud->columns('idsucursal','nombre','consecutivo_ini','consecutivo_fin','activo');
+			$crud->fields('idsucursal','nombre','consecutivo_ini','consecutivo_fin','activo');
+			$crud->display_as('nombre', 'Cliente');
+			$crud->display_as('consecutivo_ini', 'Código inicial');
+			$crud->display_as('consecutivo_fin', 'Código final');
+			$crud->display_as('idsucursal', 'Sucursal');
+
+			if($this->userconfig->perfil=='ADMIN')
+				$crud->set_relation('idsucursal', 'sucursales', 'nombre');
+			else
+				$crud->set_relation('idsucursal', 'sucursales', 'nombre','id IN ("'.$this->userconfig->idsucursal.'")');			
+			
+			
+			if($this->userconfig->perfil<>'ADMIN')
+				$crud->where(array('cliente_e.id >' => '0', 'idsucursal =' => $this->userconfig->idsucursal));
+			else	
+				$crud->where('cliente_e.id >', 0);
+
+			$output = $crud->render();
+			
+			$output -> op = 'customers_management';
 
 			$this->_admin_output($output);
 		}			

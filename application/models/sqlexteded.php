@@ -98,5 +98,15 @@ class Sqlexteded extends CI_Model {
 			return null;
 		return $result;		
 	}
+
+	function get_all_cliente_e($idsucursal){
+		$sql = 	" SELECT * ";
+		$sql .= " FROM cliente_e ";
+ 		$sql .= " where id>0 and idsucursal = $idsucursal "; 
+		$result = $this->db->query($sql)->result();
+		if(!$result)
+			return null;
+		return $result; 
+	}
 		
 }

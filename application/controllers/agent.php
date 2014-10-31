@@ -85,14 +85,17 @@ class Agent extends CI_Controller {
 	
 	function delivered_service(){
 		$request_id = $this->input->get_post('request_id');
-		$lat = $this->input->get_post('lat');
-		$lng = $this->input->get_post('lng');
-		$id = $this->input->get_post('id');
-		$id = $id ? $id : $this->agent->id;
+		$lat  = $this->input->get_post('lat');
+		$lng  = $this->input->get_post('lng');
+		$pay  = $this->input->get_post('pay');
+		$cust = $this->input->get_post('cust');
+		$voucher = $this->input->get_post('voucher');
+		$id   = $this->input->get_post('id');
+		$id   = $id ? $id : $this->agent->id;
 		
 		$this->load->model('solicitud');
 		
-		$this->solicitud->update($request_id, array('estado' => 'E', 'lat_entrega' => $lat, 'lng_entrega' => $lng));
+		$this->solicitud->update($request_id, array('estado' => 'E', 'lat_entrega' => $lat, 'lng_entrega' => $lng, 'forma_pago' => $pay, 'idcliente_e' => $cust, 'voucher' => $voucher));
 		$this->agente->update($id, array('estado_servicio' => 'LIBRE'));
 		
 		die(json_encode(array('state' => 'ok')));
@@ -201,7 +204,7 @@ class Agent extends CI_Controller {
 	}
 	
 
-function verify_service_status(){
+	function verify_service_status(){
 		$this->load->model('solicitud');
 		$this->lang->load('dashboard');
 
@@ -215,6 +218,16 @@ function verify_service_status(){
 		
 		die(json_encode(array('state' => 1,  'arribo' =>$inquiry->id)));
 	}
+
+
+	function get_all_cust(){
+		$this->load->model('sqlexteded');
+		$result = $this->sqlexteded->get_all_cliente_e($this->agent->idsucursal);
+		die(json_encode(array('state' => 'ok', 'result' => $result)) );
+
+	}
+
+
 
 } 
  

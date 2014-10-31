@@ -125,9 +125,19 @@ $(document).ready(function() {
 
     $('#btn-entregado').click(function(e){
         e.preventDefault();
-        //play_sound('alerta'); 
-        service_delivered();
+        $('#wraper-voucher').hide();
+        $('#select-pay').val("E").change();
+        $('#code-cust').val('');
+        $("#show-pay-modal").trigger('click'); 
     });
+
+    $('#btn-save-entrega').click(function(e){
+        e.preventDefault();
+        service_delivered();
+        $("#pay-modal").dialog('close');
+    });
+
+
     
     $('#btn-llego').click(function(e){
         e.preventDefault();
@@ -137,7 +147,6 @@ $(document).ready(function() {
     
     $('#btn-sos').click(function(e){
         e.preventDefault();
-        //play_sound('alerta'); 
         help_me();
     });
     
@@ -147,6 +156,7 @@ $(document).ready(function() {
         get_address(lat,lng);
     });
    
+    
 
 });
 
@@ -163,7 +173,34 @@ $(document).on('pagebeforeshow', '#maps-modal', function(){
 
  });
 
+function setPay(pay){
+    if(pay=='V')
+        $('#wraper-voucher').show();
+    else
+        $('#wraper-voucher').hide();
+}
 
+function getSelectCust(){
+    $('option', '#select-cust').remove();
+    $("option","#select-cust" ).empty();
+
+    $.ajax({
+            type : "GET",
+            url : server + 'agent/get_all_cust' ,        
+            dataType : "json",
+            data : {}
+    }).done(function(response){
+        if(response.state == 'ok'){
+            //$('#select-cust').append('<option value="-1">Todas</option>');
+            for(var i in response.result){
+                console.log(response.result[i].nombre);
+                $('#select-cust').append('<option value="'+response.result[i].id+'" >'+response.result[i].nombre+'</option>');
+            }
+                
+        }
+    });
+       
+}
 
  function checkAudioCompat() {
        var myAudio = document.createElement('audio');
@@ -225,7 +262,9 @@ function login(id, key){
             verifyServiceDemonId = setInterval(verifyService, verification_interval);
             placa = user.placa;
             $('#text-sos').html('El vehiculo '+user.placa+' solicita ayuda en : ');
-            //$('#service-addr').val('');
+            
+            //mirar si se puede cargar solo una vez, o se necesita estar actualizando.
+            getSelectCust();
             
         }else{
             alert(response.msg);
@@ -397,7 +436,11 @@ function cancel_service(){
 }
 
 function service_delivered(){
-
+    var pay = $('#select-pay').val();
+    var cust = -1;
+    if ($('#select-pay').val()=='V')
+       cust = $('#select-cust').val();
+    var voucher = $('#code-cust').val();
     $.ajax({
         type : "GET",
         url : server + 'agent/delivered_service',        
@@ -406,6 +449,9 @@ function service_delivered(){
             request_id : request_id,
             lat : lat,
             lng : lng,
+            pay : pay,
+            cust: cust,
+            voucher: voucher,
             hms1: scode,
             cachehora : (new Date()).getTime()
         }

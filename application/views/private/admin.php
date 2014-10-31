@@ -73,8 +73,8 @@ a:hover
 		<a href='<?php echo site_url('admin/show_agent_map') ?>'>Seguimiento Vehiculos</a> |
 		<a href='<?php echo site_url('admin/banner_management') ?>'>Publicidad</a> |
 		<a href='<?php echo site_url('admin/user_app_management') ?>'>Usuarios apps</a> |
-		
-		
+		<a href='<?php echo site_url('admin/customers_management') ?>'>Clientes corporativos</a> |
+
 	<?php 
 	}else
 	if($this->userconfig->perfil=='CALL'){ ?>

@@ -355,7 +355,7 @@ class Api extends CI_Controller {
 	}
 
 	function get_all_units(){
-		$idsucursal 				= $this->input->get_post('idsucursal');
+		$idsucursal 			= $this->input->get_post('idsucursal');
 		$this->load->model('sqlexteded');
 		$userconfig 		= $this->session->userdata('userconfig');
 		$cust_id 			= $userconfig->id;
@@ -365,6 +365,8 @@ class Api extends CI_Controller {
 				
 		die(json_encode(array('state' => 'ok', 'result' => $result)));
 	}
+
+
 
 		
 }
