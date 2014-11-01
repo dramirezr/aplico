@@ -35,8 +35,16 @@ var page_state  = 'dashboard';
 var id_user_app = -1;
 var flag_tyc  = 'S';
 
+var demonId;
+var queryId;
+var verifyServiceStatus;
+var taxiLocationDemonId;
+var agentId;
+var taxiMarker;
+var userMarker;
 
 window.onpopstate = function(event) {
+ 
  if (window.history && window.history.pushState) {
     $(window).on('popstate', function() {
       var hashLocation = location.hash;
@@ -53,9 +61,6 @@ window.onpopstate = function(event) {
   }
 };
 
-$(document).keypress(function(e){
-//  alert('tecla:'+e.keyCode)
-});
 
 $(document).ready(function() {
     //ocultar publidad
@@ -68,7 +73,7 @@ $(document).ready(function() {
 
     $('#waiting-msg, #agent-wrapper, #agent-call2-wrapper').hide();
     
-  //  localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
+    localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
 
     $('#call-address').change(function(e){
         $('#address').html($(this).val());
@@ -76,12 +81,7 @@ $(document).ready(function() {
     
     $('#calling-agent').click(function (e){
         e.preventDefault();
-        
-        //TODO: LLamar para android
     });
-    
-    
-
     
     $('#agent-confirmation').click(function(e){
         $.ajax({
@@ -105,43 +105,85 @@ $(document).ready(function() {
     });
     
 
-    function cancel_service(){
-        page_state  = 'dashboard';       
-        if(!queryId){
-            reset_modal();
-            return true;
-        }
-            
-        $.mobile.loading("hide");
-        clearInterval(demonId);
-        clearInterval(verifyServiceStatus);
-        
-        reset_modal();
-        
-        if(taxiMarker){
-            taxiMarker.setMap(null);
-            taxiMarker = null;
-        }
-                
-        $.ajax({
-            type : "GET",
-            url : server + '/' + lang + '/api/request_cancel',           
-            dataType : "json",
-            data : {
-                queryId : queryId
-            }
-        }).done(function(response){});
-
-    }
-
-
-    function trim(myString)
-    {
-        return myString.replace(/^\s+/g,'').replace(/\s+$/g,'')
-    }
-    
     $('#call-confirmation').click(function(e){
+       e.preventDefault();
        
+       call_confirmation();
+    });
+    
+    $('#btn-localizame').click(function(e){
+        e.preventDefault();
+        setUserIcon(latitudOriginal, longitudOriginal);
+    });    
+    
+    $('#agent-call').click(function(e){
+        $('#call-name').val($('#user-name').val());
+        $('#call-phone').val($('#user-phone').val());
+        $('#call-address').val($('#address').val()); 
+        clearInterval(taxiLocationDemonId);
+    });
+
+     
+    $('#show-taxi').click(function(e){
+        if(directionsDisplay != null) { 
+            directionsDisplay.setMap(null);
+            directionsDisplay = null; 
+        }
+        $('#agent-call-wrapper').hide();
+        $('#agent-call2-wrapper').show();
+        
+        clearInterval(taxiLocationDemonId);
+        getTaxiLocation();
+        taxiLocationDemonId = setInterval(getTaxiLocation, verification_interval);
+        getTaxiLocation
+    });
+
+    $('#btn-address-search').click(function(e){
+        e.preventDefault();
+        address_search();
+    });
+
+    
+    $('#btn_tyc_acept').click(function(e){
+        e.preventDefault();
+        $('#tyc-wrapper').hide();
+        $("#btn_user_back").closest('.ui-btn').hide();
+        $('#user-wrapper').show();
+    });
+
+    $('#btn_user_save').click(function(e){
+        e.preventDefault();
+        $("#user-modal").dialog('close');
+        save_user_app();
+        if (flag_tyc=='N'){
+            flag_tyc='S';
+            localizame(); 
+        }
+        $('#tyc-wrapper').hide();
+        $('#user-wrapper').show();
+        $("#btn_user_back").closest('.ui-btn').show();
+    });
+
+    $('#btn_banner_close').click(function(e){
+        e.preventDefault();
+        $('#banner-wrapper').hide();
+    });
+
+
+    $('#tyc-wrapper').hide();
+    $('#user-wrapper').show();
+    
+    
+    getbanner();
+    
+
+    getUserApp();
+});
+
+
+
+function call_confirmation(){
+
         if ($('input[name="address"]').val()!=''){  
 
             if (trim($('input[name="call-address"]').val())!=trim(formatted_addr)) {  
@@ -195,85 +237,10 @@ $(document).ready(function() {
       }else{
         alert(msg_nomenclature_empty);
       }
-    });
-    
-    $('#btn-localizame').click(function(e){
-        e.preventDefault();
-        setUserIcon(latitudOriginal, longitudOriginal);
-    });    
-    
-    $('#agent-call').click(function(e){
-        $('#call-name').val($('#user-name').val());
-        $('#call-phone').val($('#user-phone').val());
-        $('#call-address').val($('#address').val()); 
-        clearInterval(taxiLocationDemonId);
-    });
 
-     
-    $('#show-taxi').click(function(e){
-        if(directionsDisplay != null) { 
-            directionsDisplay.setMap(null);
-            directionsDisplay = null; 
-        }
-        $('#agent-call-wrapper').hide();
-        $('#agent-call2-wrapper').show();
-        
-        clearInterval(taxiLocationDemonId);
-        getTaxiLocation();
-        taxiLocationDemonId = setInterval(getTaxiLocation, verification_interval);
-        getTaxiLocation
-    });
-
-    $('#btn-address-search').click(function(e){
-        e.preventDefault();
-        address_search();
-    });
+}
 
     
-    $('#btn_tyc_acept').click(function(e){
-        e.preventDefault();
-        $('#tyc-wrapper').hide();
-        $("#btn_user_back").closest('.ui-btn').hide();
-        $('#user-wrapper').show();
-    });
-
-    $('#btn_user_save').click(function(e){
-        e.preventDefault();
-        $('#tyc-wrapper').hide();
-        $('#user-wrapper').show();
-        $("#user-modal").dialog('close');
-        $("#btn_user_back").closest('.ui-btn').show();
-        save_user_app();
-        if (flag_tyc=='N'){
-            flag_tyc='S';
-            localizame(); 
-        }
-    });
-
-    $('#btn_banner_close').click(function(e){
-        e.preventDefault();
-        $('#banner-wrapper').hide();
-    });
-
-
-    $('#tyc-wrapper').hide();
-    $('#user-wrapper').show();
-    getUserApp();
-    getbanner();
-    localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
-    
-});
-
-
-
-    
-var demonId;
-var queryId;
-var verifyServiceStatus;
-var taxiLocationDemonId;
-var agentId;
-var taxiMarker;
-var userMarker;
 
 function play_sound(element) {
         document.getElementById(element).play();
@@ -356,7 +323,7 @@ function getTyC(){
             $('#user-wrapper').hide();
             $('#tyc-wrapper').show();
             $("#show-user").trigger('click');
-
+            
         }
     });
 }
@@ -382,6 +349,42 @@ function save_user_app(){
     });
     
 }
+
+function cancel_service(){
+        page_state  = 'dashboard';       
+        if(!queryId){
+            reset_modal();
+            return true;
+        }
+            
+        $.mobile.loading("hide");
+        clearInterval(demonId);
+        clearInterval(verifyServiceStatus);
+        
+        reset_modal();
+        
+        if(taxiMarker){
+            taxiMarker.setMap(null);
+            taxiMarker = null;
+        }
+                
+        $.ajax({
+            type : "GET",
+            url : server + '/' + lang + '/api/request_cancel',           
+            dataType : "json",
+            data : {
+                queryId : queryId
+            }
+        }).done(function(response){});
+
+}
+
+
+function trim(myString)
+{
+    return myString.replace(/^\s+/g,'').replace(/\s+$/g,'')
+}
+    
 
 function getTaxiLocation(){
        $.ajax({
@@ -743,7 +746,7 @@ function codeLatLng(lat, lng) {
                       ruta = addr.long_name;
                     if (addr.types[0] == 'street_number') 
                       calle = addr.long_name;
-                    console.log('address: '+addr.types[0]+' - '+addr.long_name)
+                    //console.log('address: '+addr.types[0]+' - '+addr.long_name)
                 }
                 
                 formatted_addr = sector.long_name + ', ' + results[0].formatted_address;
@@ -765,6 +768,7 @@ function codeLatLng(lat, lng) {
                 $('#address').val(msg_address_not_found);
             }
             
+
         } else {
             //$('#address').val("Fallo en las Appis de Google : "+ status);
         }
