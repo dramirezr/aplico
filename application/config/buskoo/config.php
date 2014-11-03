@@ -368,10 +368,12 @@ $config['app_users_download'] = 'buskoo/TaxiBuskoo.apk';
 $config['app_agent_download'] = 'buskoo/TaxiBuskoo_Agente.apk';
 
 $config['max_verification_attemps'] = 10;
-$config['verification_interval'] = 8000; //In milliseconds
+$config['verification_interval'] 	= 8000; //In milliseconds
  
 $config['agent_verification_interval'] = 8000; //In milliseconds
 $config['agent_updatelocation_interval'] = 8000; //In milliseconds
+$config['agent_message_inverval'] 			= 3600000; //cada hora  
+
 $config['distance_call'] = 1000.5; //In kilometros
 $config['distance_call_sos'] = 1000.5; //In kilometros
 

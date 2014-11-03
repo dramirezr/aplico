@@ -108,5 +108,15 @@ class Sqlexteded extends CI_Model {
 			return null;
 		return $result; 
 	}
+
+	function get_message($idsucursal){
+		$sql = 	" SELECT msj_texto ";
+		$sql .= " FROM sucursales ";
+ 		$sql .= " where id=$idsucursal and msj_activo = 'S' "; 
+		$result = $this->db->query($sql)->result();
+		if(!$result)
+			return null;
+		return $result[0]; 
+	}
 		
 }

@@ -13,7 +13,7 @@ class Dashboard extends CI_Controller {
 		$data['version'] = $this->input->get_post('version');
 		
 		if ($this->input->get_post('uuid')!=''){
-			$data['average'] = "USER";
+			$data['average'] = "APP";
 			$this->load->view('public/dashboard',$data);
 		}
 		else{
@@ -32,6 +32,19 @@ class Dashboard extends CI_Controller {
 		$data['platform'] = '';
 		$data['version'] = '';
 		$data['average'] = "WEB";
+		$this->load->view('public/dashboard',$data);
+
+	}
+
+	public function windows(){
+		// load language file
+		$this->lang->load('dashboard');
+		$data['id_user'] = "windows";
+		$data['uuid'] = $this->input->get_post('uuid');
+		$data['model'] = $this->input->get_post('model');
+		$data['platform'] = $this->input->get_post('platform');
+		$data['version'] = $this->input->get_post('version');
+		$data['average'] = "PC";
 		$this->load->view('public/dashboard',$data);
 
 	}

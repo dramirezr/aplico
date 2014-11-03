@@ -127,6 +127,7 @@ class Api extends CI_Controller {
 				'code' => $scode,
 				'verification_interval' => ci_config('agent_verification_interval'),
 				'updatelocation_interval' => ci_config('agent_updatelocation_interval'),
+				'message_interval' => ci_config('agent_message_inverval'),
 				'app_name' => ci_config('app_name'),
 				'app_icon' => ci_config('app_icon'),
 				'copyright' => ci_config('copyright')

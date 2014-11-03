@@ -373,6 +373,8 @@ $config['verification_interval'] = 8000; //In milliseconds
  
 $config['agent_verification_interval'] = 8000; //In milliseconds
 $config['agent_updatelocation_interval'] = 8000; //In milliseconds
+$config['agent_message_inverval'] 		 = 60000; //cada minuto  
+
 $config['distance_call'] = 1000.5; //In kilometros
 $config['distance_call_sos'] = 3; //In kilometros
 

@@ -43,6 +43,9 @@ var agentId;
 var taxiMarker;
 var userMarker;
 
+//window.oncontextmenu = function(){return false};
+
+
 window.onpopstate = function(event) {
  
  if (window.history && window.history.pushState) {
@@ -63,17 +66,26 @@ window.onpopstate = function(event) {
 
 
 $(document).ready(function() {
+    $(this).bind("contextmenu", function(e) {
+             e.preventDefault();
+    });
+ 
     //ocultar publidad
     $('#banner-wrapper').hide();
-    if (average=='WEB'){
+    if ((average=='WEB')){
         $("#btn-data-user").closest('.ui-btn').hide();
         //$("#btn-localizame1").closest('.ui-btn').show();
     }
 
-
+   
     $('#waiting-msg, #agent-wrapper, #agent-call2-wrapper').hide();
     
     localizame(); /*Cuando cargue la pÃ¡gina, cargamos nuestra posiciÃ³n*/ 
+
+    if ((average=='PC')){
+        $("#btn-localizame").closest('.ui-btn').hide();
+        address_search();
+    }
 
     $('#call-address').change(function(e){
         $('#address').html($(this).val());

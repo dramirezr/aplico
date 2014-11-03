@@ -9,8 +9,10 @@ var scode = null;
 var user = null;
 var localizationDemonId;
 var updateLocationDemonId;
+var messageDemonId;
 var verification_interval = null;
 var updatelocation_interval = null;
+var message_interval         = null;
 var verifyServiceDemonId;
 var verifyServiceStateDemonId;
 var WaitVeryServiceDemonid;
@@ -55,6 +57,7 @@ window.onpopstate = function(event) {
   localStorage.setItem('history-changes-count', ++count);
 };
 */
+
 window.onpopstate = function(event) {
  if (window.history && window.history.pushState) {
     $(window).on('popstate', function() {
@@ -78,6 +81,13 @@ window.onpopstate = function(event) {
 };
 
 $(document).ready(function() {
+
+    $(this).bind("contextmenu", function(e) {
+             e.preventDefault();
+    });   
+    
+    $('#msg-marquee').hide();
+    
 
     $.mobile.loading( "show" );
     
@@ -208,6 +218,25 @@ function getSelectCust(){
        
 }
 
+function getMessage(){
+    
+    $.ajax({
+            type : "GET",
+            url : server + 'agent/get_message' ,        
+            dataType : "json",
+            data : {}
+    }).done(function(response){
+        if(response.state == 'ok'){
+            //$('#msg-marquee').val(response.message);
+            
+            $('#msg-marquee').html("<MARQUEE BGCOLOR='#ccc'>"+response.message+"</MARQUEE>");
+            $('#msg-marquee').show();           
+        }else
+            $('#msg-marquee').hide();
+    });
+       
+}
+
  function checkAudioCompat() {
        var myAudio = document.createElement('audio');
       if (myAudio.canPlayType) {
@@ -237,6 +266,7 @@ function play_sound(element) {
 function login(id, key){
     clearInterval(localizationDemonId);
     clearInterval(verifyServiceDemonId);
+    clearInterval(messageDemonId);
     
     resetSrvAddrBg();
 
@@ -266,12 +296,15 @@ function login(id, key){
             localizationDemonId = setInterval(localizame, verification_interval);
             updateLocationDemonId = setInterval(updateLocation, verification_interval);
             verifyServiceDemonId = setInterval(verifyService, verification_interval);
+
             placa = user.placa;
             $('#text-sos').html('El vehiculo '+user.placa+' solicita ayuda en : ');
             
             //mirar si se puede cargar solo una vez, o se necesita estar actualizando.
             getSelectCust();
-            
+           
+            messageDemonId = setInterval(getMessage, message_interval);
+
         }else{
             alert(response.msg);
         }
@@ -626,7 +659,7 @@ function get_sos(){
         },
         
     }).done(function(response){
-       if(response.state == 'ok'){
+        if(response.state == 'ok'){
             if((response.fecha_sos!=fecha_sos)){
                 fecha_sos = response.fecha_sos;
                 //play_sound('yes'); 
@@ -767,9 +800,10 @@ function init(){
     }).done(function(response){
         $.mobile.loading( "hide" );
         if(response.state == 'ok'){
-            scode = response.code;
-            verification_interval = response.verification_interval;
+            scode                   = response.code;
+            verification_interval   = response.verification_interval;
             updatelocation_interval = response.updatelocation_interval;
+            message_interval        = response.message_interval;
             $('#app_name').html(response.app_name);
             $('#app_icon').attr('src', "assets/images/" + response.app_icon) ;
             $('#copyright').html(response.copyright);

@@ -37,7 +37,7 @@
  		var platform = '<?=$platform?>';
  		var version = '<?=$version?>';
  	</script>
-
+ 	
  	<script src="<?=base_url()?>assets/js/mitrapana.js"></script>
 
 </head>
@@ -57,7 +57,6 @@
     	<div id="agent-call2-wrapper">
     		<a id="agent-call2" data-role="button" data-theme="b" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.showtaxi')?></a>
     	</div>   
-
     	<?= form_open('api/call', array('id' => 'call-form', 'class' => '')) ?>
 			<input id="lat" name="lat" type="hidden" value="">
 			<input id="lng" name="lng" type="hidden" value="">
@@ -226,3 +225,29 @@
 
 </body>
 </html>
+
+    	<!-- <div>
+    		<a href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-role="button">Open panel</a>
+			<div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
+		    <button data-theme="a" data-icon="back" data-mini="true">Back</button>
+		    <button data-theme="a" data-icon="grid" data-mini="true">Menu</button>
+		    <button data-theme="a" data-icon="search" data-mini="true">Search</button>
+			</div>
+
+    	</div>
+
+    	#popupPanel-popup {
+    right: 0 !important;
+    left: auto !important;
+}
+#popupPanel {
+    width: 200px;
+    border: 1px solid #000;
+    border-right: none;
+    background: rgba(0,0,0,.5);
+    margin: -1px 0;
+}
+#popupPanel .ui-btn {
+    margin: 2em 15px;
+}
+ -->

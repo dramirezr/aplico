@@ -141,10 +141,10 @@ class Agent extends CI_Controller {
 	}
 
 	function get_sos(){
-		$id = $this->input->get_post('id');	
-		$id = $id ? $id : $this->agent->id;
-		$lat = $this->input->get_post('lat');
-		$lng = $this->input->get_post('lng');
+		$id 	= $this->input->get_post('id');	
+		$id 	= $id ? $id : $this->agent->id;
+		$lat 	= $this->input->get_post('lat');
+		$lng 	= $this->input->get_post('lng');
 
 		$request = $this->agente->get_sos($id,$lat,$lng);
 		
@@ -232,6 +232,16 @@ class Agent extends CI_Controller {
 	}
 
 
+	function get_message(){
+		$this->load->model('sqlexteded');
+		$result = $this->sqlexteded->get_message($this->agent->idsucursal);
+		
+		if(!$result){
+			die(json_encode(array('state' => '')));
+		}
+		
+		die(json_encode(array('state' => 'ok', 'message' => $result->msj_texto )) );
+	}
 
 } 
  

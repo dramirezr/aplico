@@ -45,6 +45,61 @@ class Admin extends CI_Controller {
 					$this->show_agent_map();
 	}	
 	
+
+function service_agent()
+	{
+		$filtro = $this->input->get('fechaini');
+		if ($filtro!=''){
+			$fi = $this->input->get('fechaini');
+			$ff = $this->input->get('fechafin');
+		}else{
+			$fi = date('Y-m-01 00:00:00');
+    		$ultimodia = date("d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
+    		$ff = date('Y').'-'.date('m').'-'.$ultimodia.' 23:59:59';
+		}
+
+		$this->load->model('sqlexteded');
+		$service = $this->sqlexteded->getService_agent($fi,$ff);
+
+		//echo "<pre>";
+		//print_r($service);
+		//echo "<pre>";
+		$output = '<br><br><table border="0">
+			<tr><th><h3>Listado de solicitudes por taxista</h3></th></tr>
+			<tr><th></th></tr>
+		<tbody>';	  
+		$idsuc 	= 0;
+		$cont 	= 0;
+		//$output = '<table border="1"><tr><th align="center">listado de solicitudes por sucursal</th></tr>';
+		foreach ($service as $row)
+		{
+			if ($row->idsucursal!=$idsuc){
+				if($cont>0)
+					$output .= '<tr><tr><th colspan="2" ></th><th align="right"><hr>'.$cont.'</th></tr>';
+				$output .= '<tr><td><h3>'.$row->sucursal.'</h3></td></tr>';
+				$output .= '<tr><th>Cédula</th><th>Taxista</th><th>Solicitudes</th></tr>';
+
+				$idsuc = $row->idsucursal;
+				$cont 	= 0;
+			}
+			$output .= '<tr>';
+			$output .= '<td>'. $row->cedula.'</td>';
+			$output .= '<td>'. $row->taxista.'</td>';
+			$output .= '<td align="right">'. $row->solicitudes.'</td>';
+			$output .= '</tr>';
+			$cont 	= $cont + $row->solicitudes;
+
+		}
+		if($cont>0)
+			$output .= '<tr><tr><th colspan="2" ></th><th align="right"><hr>'.$cont.'</th></tr>';
+		$output .= '</tbody></table>';	
+		
+	    
+		$this->load->view('private/admin.php',(object)array('output' => $output , 'js_files' => array() , 'css_files' => array() , 'op' => 'service_agent','fechaini' => $fi,'fechafin' => $ff  ));
+	}
+
+
+
 	function encrypt_password_callback($post_array) {
 
 		if(!empty($post_array['clave']))
@@ -636,58 +691,35 @@ class Admin extends CI_Controller {
 		}			
 	}
 
-	function service_agent()
+	function message_management()
 	{
-		$filtro = $this->input->get('fechaini');
-		if ($filtro!=''){
-			$fi = $this->input->get('fechaini');
-			$ff = $this->input->get('fechafin');
-		}else{
-			$fi = date('Y-m-01 00:00:00');
-    		$ultimodia = date("d",(mktime(0,0,0,date('m')+1,1,date('Y'))-1));
-    		$ff = date('Y').'-'.date('m').'-'.$ultimodia.' 23:59:59';
-		}
+		if(($this->userconfig->perfil=='ADMIN')){
+			$crud = new grocery_CRUD();
+			$crud->set_theme('datatables');
+			$crud->set_table('sucursales');
+			$crud->set_subject('Mensaje');
 
-		$this->load->model('sqlexteded');
-		$service = $this->sqlexteded->getService_agent($fi,$ff);
+			$crud->unset_delete();
+			$crud->unset_add();
+			$crud->columns('nombre','msj_texto','msj_activo');
+			$crud->fields('nombre','msj_texto','msj_activo');
+			$crud->display_as('nombre', 'Sucursal');
+			$crud->display_as('msj_texto', 'Mensaje');
+			$crud->display_as('msj_activo', 'activo');
+			$crud->field_type('nombre', 'readonly');
+			
+			if($this->userconfig->perfil<>'ADMIN')
+				$crud->where('id =', $this->userconfig->idsucursal);			
 
-		//echo "<pre>";
-		//print_r($service);
-		//echo "<pre>";
-		$output = '<br><br><table border="0">
-			<tr><th><h3>Listado de solicitudes por taxista</h3></th></tr>
-			<tr><th></th></tr>
-		<tbody>';	  
-		$idsuc 	= 0;
-		$cont 	= 0;
-		//$output = '<table border="1"><tr><th align="center">listado de solicitudes por sucursal</th></tr>';
-		foreach ($service as $row)
-		{
-			if ($row->idsucursal!=$idsuc){
-				if($cont>0)
-					$output .= '<tr><tr><th colspan="2" ></th><th align="right"><hr>'.$cont.'</th></tr>';
-				$output .= '<tr><td><h3>'.$row->sucursal.'</h3></td></tr>';
-				$output .= '<tr><th>Cédula</th><th>Taxista</th><th>Solicitudes</th></tr>';
+			$output = $crud->render();
+			
+			$output -> op = 'message_management';
 
-				$idsuc = $row->idsucursal;
-				$cont 	= 0;
-			}
-			$output .= '<tr>';
-			$output .= '<td>'. $row->cedula.'</td>';
-			$output .= '<td>'. $row->taxista.'</td>';
-			$output .= '<td align="right">'. $row->solicitudes.'</td>';
-			$output .= '</tr>';
-			$cont 	= $cont + $row->solicitudes;
-
-		}
-		if($cont>0)
-			$output .= '<tr><tr><th colspan="2" ></th><th align="right"><hr>'.$cont.'</th></tr>';
-		$output .= '</tbody></table>';	
-		
-	    
-		$this->load->view('private/admin.php',(object)array('output' => $output , 'js_files' => array() , 'css_files' => array() , 'op' => 'service_agent','fechaini' => $fi,'fechafin' => $ff  ));
+			$this->_admin_output($output);
+		}			
 	}
 
+	
 
 	function show_agent_map()
 	{

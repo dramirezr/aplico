@@ -12,6 +12,10 @@
     <script src="<?=base_url()?>assets/js/jquery-1.10.2.min.js"></script>
     <script src="<?=base_url()?>assets/js/jquery.mobile-1.3.2.min.js"></script>
 
+    <script language="Javascript">
+        document.oncontextmenu = function(){return false}
+    </script>
+
 	<title><?= $this->config->item('app_name') ?></title>
 
 

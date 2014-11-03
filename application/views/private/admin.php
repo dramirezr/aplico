@@ -74,6 +74,8 @@ a:hover
 		<a href='<?php echo site_url('admin/banner_management') ?>'>Publicidad</a> |
 		<a href='<?php echo site_url('admin/user_app_management') ?>'>Usuarios apps</a> |
 		<a href='<?php echo site_url('admin/customers_management') ?>'>Clientes corporativos</a> |
+		<a href='<?php echo site_url('admin/message_management') ?>'>Mensaje</a> |
+		
 
 	<?php 
 	}else
@@ -85,6 +87,7 @@ a:hover
 		<a href='<?php echo site_url('admin/agent_management')?>'>Taxitas</a> |
 		<a href='<?php echo site_url('admin/sanction_management') ?>'>Sanciones</a> |
 		<a href='<?php echo site_url('admin/show_agent_map') ?>'>Seguimiento Vehiculos</a> |
+		<a href='<?php echo site_url('admin/message_management') ?>'>Mensaje</a> |
 
 	<?php 	
 	}else
