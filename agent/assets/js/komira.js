@@ -302,7 +302,7 @@ function login(id, key){
             
             //mirar si se puede cargar solo una vez, o se necesita estar actualizando.
             getSelectCust();
-           
+            getMessage();
             messageDemonId = setInterval(getMessage, message_interval);
 
         }else{
