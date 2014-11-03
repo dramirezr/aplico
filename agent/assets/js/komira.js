@@ -138,7 +138,7 @@ $(document).ready(function() {
         $('#wraper-voucher').hide();
         $('#select-pay').val("E").change();
         $('#code-cust').val('');
-         $('#service-price').val(0);
+        $('#service-price').val(0);
         $("#show-pay-modal").trigger('click'); 
     });
 
@@ -172,7 +172,8 @@ $(document).ready(function() {
         prefix: '',
         thousandsSeparator: '',
         limit: 8,
-        centsLimit: 2
+        centsLimit: 2,
+
     });
 
 });

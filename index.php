@@ -17,7 +17,7 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
- 	//define('ENVIRONMENT', 'production');
+ 	//define('ENVIRONNT', 'productio);
 	//define('ENVIRONMENT', 'testing');
 	//define('ENVIRONMENT', 'development');
 	//define('ENVIRONMENT', 'mitaxijj');

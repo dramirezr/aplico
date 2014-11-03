@@ -175,11 +175,11 @@
 	            </tr>
 	            <tr>
 	            <td ><label for="user-phone"><?=lang('dashboard.user_phone')?>:</label></td>
-	            <td ><input name="user-phone" id="user-phone" placeholder="<?=lang('dashboard.user_phone')?>:" value="" type="text"></td>
+	            <td ><input name="user-phone" id="user-phone" placeholder="<?=lang('dashboard.user_phone')?>:" value="" type="tel"></td>
 	            </tr>
 	            <tr>
 	            <td ><label for="user-email"><?=lang('dashboard.user_email')?>:</label></td>
-	            <td ><input name="user-email" id="user-email" placeholder="<?=lang('dashboard.user_email')?>" value="" type="text"></td>
+	            <td ><input name="user-email" id="user-email" placeholder="<?=lang('dashboard.user_email')?>" value="" type="email"></td>
 	            </tr>
 	            </tbody>
         	</table>
