@@ -56,6 +56,7 @@ window.onpopstate = function(event) {
       
       if (hashName !== '') {
         var hash = window.location.hash;
+
         if ((hash === '') && (page_state==='call')) {
           history.go(1); 
         }
@@ -65,9 +66,12 @@ window.onpopstate = function(event) {
 };
 
 
+    
+//window.onload = getUserApp();
+
 $(document).ready(function() {
     $(this).bind("contextmenu", function(e) {
-             e.preventDefault();
+        e.preventDefault();
     });
  
     //ocultar publidad
@@ -76,7 +80,6 @@ $(document).ready(function() {
         $("#btn-data-user").closest('.ui-btn').hide();
         //$("#btn-localizame1").closest('.ui-btn').show();
     }
-
    
     $('#waiting-msg, #agent-wrapper, #agent-call2-wrapper').hide();
     
@@ -84,7 +87,7 @@ $(document).ready(function() {
 
     if ((average=='PC')){
         $("#btn-localizame").closest('.ui-btn').hide();
-        address_search();
+        //address_search();
     }
 
     $('#call-address').change(function(e){
@@ -115,7 +118,6 @@ $(document).ready(function() {
             cancel_service();
         }
     });
-    
 
     $('#call-confirmation').click(function(e){
        e.preventDefault();
@@ -128,13 +130,6 @@ $(document).ready(function() {
         setUserIcon(latitudOriginal, longitudOriginal);
     });    
     
-    $('#agent-call').click(function(e){
-        $('#call-name').val($('#user-name').val());
-        $('#call-phone').val($('#user-phone').val());
-        $('#call-address').val($('#address').val()); 
-        clearInterval(taxiLocationDemonId);
-    });
-
      
     $('#show-taxi').click(function(e){
         if(directionsDisplay != null) { 
@@ -155,41 +150,43 @@ $(document).ready(function() {
         address_search();
     });
 
-    
-    $('#btn_tyc_acept').click(function(e){
-        e.preventDefault();
-        $('#tyc-wrapper').hide();
-        $("#btn_user_back").closest('.ui-btn').hide();
-        $('#user-wrapper').show();
-    });
-
     $('#btn_user_save').click(function(e){
         e.preventDefault();
+        $('#i-agree-wrapper').hide();
         $("#user-modal").dialog('close');
         save_user_app();
-        if (flag_tyc=='N'){
-            flag_tyc='S';
-            localizame(); 
-        }
-        $('#tyc-wrapper').hide();
-        $('#user-wrapper').show();
-        $("#btn_user_back").closest('.ui-btn').show();
     });
 
     $('#btn_banner_close').click(function(e){
         e.preventDefault();
         $('#banner-wrapper').hide();
     });
+    
+    $('#ck-i-agree').click(function(e){
+        e.preventDefault();
+        if (this.checked)
+            $('#btn_user_save-wrapper').show();
+        else
+            $('#btn_user_save-wrapper').hide();
+    });
+
+    $('#agent-call').click(function(e){
+        $('#call-name').val($('#user-name').val());
+        $('#call-phone').val($('#user-phone').val());
+        $('#call-address').val($('#address').val()); 
+        clearInterval(taxiLocationDemonId);
+        if (flag_tyc=='N')
+            $("#show-user").trigger('click');
+        else
+            $("#show-call").trigger('click');
+    });
 
 
-    $('#tyc-wrapper').hide();
-    $('#user-wrapper').show();
-    
-    
+   console.log('flag_tyc:'+flag_tyc);
+    $('#i-agree-wrapper').hide(); 
     getbanner();
-    
-
     getUserApp();
+    
 });
 
 
@@ -311,7 +308,12 @@ function getUserApp(){
                 $('#user-email').val(response.user.email);
                 id_user_app = response.user.id;
                 flag_tyc = response.user.tyc;
+                console.log('flag_tyc:'+flag_tyc);
                 if(response.user.tyc=='N'){
+                    $('#i-agree-wrapper').show();  
+                    //$('#agent-call-wrapper').hide(); 
+                    $('#btn_user_save-wrapper').hide(); 
+                    //$("#show-user").trigger('click');
                     getTyC();
                 }
             }
@@ -332,16 +334,15 @@ function getTyC(){
     }).done(function(response){
         if(response.state == 'ok'){
             $('#tyc-msj').html(response.result.terminos);
-            $('#user-wrapper').hide();
-            $('#tyc-wrapper').show();
-            $("#show-user").trigger('click');
-            
-        }
+         }
     });
 }
 
 function save_user_app(){
-   $.ajax({
+    $('#call-name').val($('#user-name').val());
+    $('#call-phone').val($('#user-phone').val());
+    $('#call-address').val($('#address').val()); 
+    $.ajax({
         type        : "GET",
         url         : server + '/' + lang + '/api/save_user_app',        
         dataType    : "json",
@@ -356,7 +357,11 @@ function save_user_app(){
         }
     }).done(function(response){
         if(response.state == 'ok'){
-            
+            $('#i-agree-wrapper').hide();   
+            if (flag_tyc=='N'){
+                flag_tyc='S';
+                $("#show-call").trigger('click');
+            }
         }
     });
     

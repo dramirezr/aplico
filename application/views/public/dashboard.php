@@ -52,7 +52,7 @@
     	-->
         <h3><?= $this->config->item('app_name') ?></h3>
         <div id="agent-call-wrapper">
-    		<a id="agent-call" data-role="button" data-theme="a" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.calltaxi')?></a>
+    		<a id="agent-call" data-role="button" data-theme="a" href="#" class="ui-btn-right"><?=lang('dashboard.calltaxi')?></a>
     	</div>
     	<div id="agent-call2-wrapper">
     		<a id="agent-call2" data-role="button" data-theme="b" href="#call-modal" class="ui-btn-right" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.showtaxi')?></a>
@@ -100,6 +100,7 @@
 
     <div id="sound_"></div>    
     <a href="#user-modal" data-role="button" id="show-user" style="display: none;" data-rel="dialog" data-transition="pop">Show user</a>
+    <a href="#call-modal" data-role="button" id="show-call" style="display: none;" data-rel="dialog" data-transition="pop">Show call</a>
     
 </div>
 
@@ -117,7 +118,7 @@
 			</div>	
 			<div id="waiting-msg"><h1><?=lang('dashboard.searching')?></h1></div>
 		</div><!-- /content -->
-		
+
 		<p>
 			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="call-cancelation"><?=lang('dashboard.cancel')?></a>
 		    <a href="#" data-role="button" data-mini="true" data-inline="true" data-icon="check" data-theme="b" id="call-confirmation"><?=lang('dashboard.confirm')?></a>
@@ -161,7 +162,7 @@
 	</div>
 </div><!-- /page popup -->
 
-<div data-role="page" id="user-modal" data-close-btn="none">
+<div data-role="page" id="user-modal" >
 	<div id="user-wrapper">
 		<div data-role="header" data-theme="e">
 			<h1><?=lang('dashboard.personal_data')?></h1>
@@ -183,33 +184,41 @@
 	            </tr>
 	            </tbody>
         	</table>
-    	</div><!-- /content -->
-		
-		<p>
-			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_user_back"><?=lang('dashboard.back')?></a>
-			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_user_save"><?=lang('dashboard.save')?></a>
-		</p>
-	</div>
 
-	<div id="tyc-wrapper">
-		<div data-role="header" data-theme="e">
-			<h1><?=lang('dashboard.tyc_msj')?></h1>
-		</div><!-- /header -->
-	
-		<div data-role="content" data-theme="d">	
-			<div>
-			<label id='tyc-msj'></label>
+        	<div id="i-agree-wrapper" data-role="fieldcontain">
+ 				<a id="show-tyc"   href="#tyc-modal" data-rel="dialog" data-transition="pop" ><?=lang('dashboard.agree_terms')?></a>
+ 				<fieldset data-role="controlgroup">
+    				<input type="checkbox" name="ck-i-agree" id="ck-i-agree"  />
+					<label for="ck-i-agree"><?=lang('dashboard.i_agree')?></label>
+				</fieldset>
 			</div>
+
     	</div><!-- /content -->
-		
 		<p>
-			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_tyc_exit"><?=lang('dashboard.exit')?></a>
-			<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_tyc_acept"><?=lang('dashboard.tyc_acept')?></a>
+			<div id="btn_user_save-wrapper">
+				<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_user_back"><?=lang('dashboard.back')?></a>
+				<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_user_save"><?=lang('dashboard.save')?></a>
+			</div>
 		</p>
 	</div>
 
 </div><!-- /page popup -->
 
+<div data-role="page" id="tyc-modal" >
+	<div data-role="header" data-theme="e">
+		<h1><?=lang('dashboard.tyc_msj')?></h1>
+	</div><!-- /header -->
+	
+	<div data-role="content" data-theme="d">	
+		<div>
+			<label id='tyc-msj'></label>
+		</div>
+   	</div><!-- /content -->
+		
+	<p>
+		<a href="#" data-role="button" data-mini="true" data-inline="true" data-rel="back" id="btn_tyc_exit"><?=lang('dashboard.back')?></a>
+	</p>
+</div><!-- /page popup -->
 
 
 

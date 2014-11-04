@@ -56,6 +56,8 @@ $lang['dashboard.exit'] = 'Exit';
 $lang['dashboard.exit_banner'] = 'Exit banner';
 
 
+$lang['dashboard.i_agree'] = 'I agree';
+$lang['dashboard.agree_terms'] = 'Agree to the terms';
 
 
 

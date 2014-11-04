@@ -55,6 +55,9 @@ $lang['dashboard.tyc_acept'] = 'Acepto';
 $lang['dashboard.exit'] = 'Salir';
 $lang['dashboard.exit_banner'] = 'Cerrar publicidad';
 
+$lang['dashboard.i_agree'] = 'Estoy de acuerdo';
+$lang['dashboard.agree_terms'] = 'De acuerdo a los términos';
+
 
 $lang['login.userlogin'] = 'Ingreso';
 $lang['login.usercode'] = 'Código';
