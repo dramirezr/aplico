@@ -172,7 +172,7 @@ $(document).ready(function() {
         prefix: '',
         thousandsSeparator: '',
         limit: 8,
-        centsLimit: 2,
+        centsLimit: 2
 
     });
 
