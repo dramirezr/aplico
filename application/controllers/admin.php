@@ -648,6 +648,8 @@ function service_agent()
 			$crud->display_as('fecha_log', 'Ultimo ingreso');
 			$crud->display_as('tyc', 'Acepto tyc?');
 
+			$crud->where('id >', 0);
+
 			$output = $crud->render();
 			
 			$output -> op = 'user_app_management';

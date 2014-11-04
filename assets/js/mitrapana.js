@@ -76,7 +76,7 @@ $(document).ready(function() {
  
     //ocultar publidad
     $('#banner-wrapper').hide();
-    if ((average=='WEB')){
+    if ((average=='WEB') || (uuid=='') || (uuid=='undefined') || (uuid=='indefinido')){
         $("#btn-data-user").closest('.ui-btn').hide();
         //$("#btn-localizame1").closest('.ui-btn').show();
     }
