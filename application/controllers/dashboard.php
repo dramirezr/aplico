@@ -11,16 +11,9 @@ class Dashboard extends CI_Controller {
 		$data['model'] = $this->input->get_post('model');
 		$data['platform'] = $this->input->get_post('platform');
 		$data['version'] = $this->input->get_post('version');
-		
-		if ($this->input->get_post('uuid')!=''){
-			$data['average'] = "APP";
-			$this->load->view('public/dashboard',$data);
-		}
-		else{
-			$data['average'] = "WEB";
-			$this->load->view('public/dashboardweb',$data);
-		}
-
+		$uuid = $this->input->get_post('uuid');
+		$data['average'] = "APP";
+		$this->load->view('public/dashboard',$data);
 	}
 
 	public function web(){
@@ -32,9 +25,21 @@ class Dashboard extends CI_Controller {
 		$data['platform'] = '';
 		$data['version'] = '';
 		$data['average'] = "WEB";
-		$this->load->view('public/dashboard',$data);
-
+		$this->load->view('public/dashboardweb',$data);
 	}
+
+	public function web_dashboard(){
+		// load language file
+		$this->lang->load('dashboard');
+		$data['id_user'] = "user";
+		$data['uuid'] = '';
+		$data['model'] = '';
+		$data['platform'] = '';
+		$data['version'] = '';
+		$data['average'] = "WEB";
+		$this->load->view('public/dashboard',$data);
+	}
+
 
 	public function windows(){
 		// load language file

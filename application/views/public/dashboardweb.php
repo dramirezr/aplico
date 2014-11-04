@@ -31,7 +31,7 @@
 
     <div data-role="content" class="padding-0" align="center">
     	<div id="phone-iframe-v" style="background:url(<?=base_url()?>assets/images/phone.png)">
-			<iframe src="<?=base_url()?>es/dashboard/web/" scrolling="no" ></iframe>
+			<iframe src="<?=base_url()?>es/dashboard/web_dashboard/" scrolling="no" ></iframe>
     	</div>
     </div>
   
