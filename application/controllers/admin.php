@@ -643,7 +643,7 @@ function service_agent()
 			$crud->unset_edit();
 			$crud->unset_add();
 
-			$crud->columns('fecha','uuid','nombre','telefono','email','plataforma','version','modelo','fecha_log','tyc');
+			$crud->columns('fecha','nombre','telefono','email','plataforma','version','modelo','fecha_log','tyc');
 			$crud->display_as('fecha', 'Fecha crecación');
 			$crud->display_as('fecha_log', 'Ultimo ingreso');
 			$crud->display_as('tyc', 'Acepto tyc?');
