@@ -734,7 +734,7 @@ function cargarMapa() {
 
 var calle = '';
 var ruta = '';
-var sector = null;
+var sector = '';
 var ciudad = '';
 var pais = '';
 var depto = ''; 
@@ -775,8 +775,9 @@ function codeLatLng(lat, lng) {
                 }
 
                 $('#address').val(formatted_addr);
-               // $('#show-address').html(formatted_addr);
-                $('#zone').val(sector.long_name);
+                //--------------------------------            
+                //$('#zone').val(sector.long_name);
+                $('#zone').val(formatted_addr);
                 $('#city').val(ciudad);
                 $('#state_c').val(depto);
                 $('#country').val(pais);
