@@ -222,7 +222,8 @@ function call_confirmation(){
                             cell    : $('input[name="call-phone"]').val(),
                             average : average,
                             uuid    : uuid,
-                            idcall  : '-1'
+                            idcall  : '-1',
+                            cachehora   : (new Date()).getTime()
                         }
                     }).done(function(response){
                         if(response.queryId > 0){
