@@ -70,6 +70,8 @@ class Sqlexteded extends CI_Model {
 		$sql .= " FROM sucursales ";
  		if ($perfil!='ADMIN')
 			$sql .= " where id = $idsucursal "; 
+
+		$sql .= " order by nombre ";
 		$result = $this->db->query($sql)->result();
 		if(!$result)
 			return null;
@@ -92,7 +94,7 @@ class Sqlexteded extends CI_Model {
 			$sql .= " where v.propietario = $id and v.id=a.vehiculo"; 
 		if ($perfil=='CALL')
 			$sql .= " where v.idsucursal = $idsucursal and v.id=a.vehiculo"; 
-		
+		$sql .= " order by v.unidad "; 
 		$result = $this->db->query($sql)->result();
 		if(!count($result))
 			return null;

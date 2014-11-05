@@ -677,7 +677,7 @@ function address_search() {
 function cargarMapa() {
     var latlon = new google.maps.LatLng(latitud,longitud); /* Creamos un punto con nuestras coordenadas */
     var myOptions = {
-        zoom: 15,
+        zoom: 17,
         center: latlon, /* Definimos la posicion del mapa con el punto */
         navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, 
         mapTypeControl: true, 
