@@ -161,6 +161,7 @@ class Api extends CI_Controller {
 		$vehiculo = $this->vehiculos->get_by_id($agente->vehiculo);
 		$agente->clave = NULL;
 		$agente->placa = $vehiculo->placa;
+		$agente->unidad = $vehiculo->unidad;
 		
 		$this->session->set_userdata('agente', $agente);
 		

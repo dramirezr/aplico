@@ -26,6 +26,7 @@ var switchBgDemon = null;
 var lat_user = null;
 var lng_user = null;
 var placa = null;
+var unidad = null;
 var fecha_sos = null;
 var page_state  = 'do-login';
 var styles = [
@@ -299,7 +300,8 @@ function login(id, key){
             verifyServiceDemonId = setInterval(verifyService, verification_interval);
 
             placa = user.placa;
-            $('#text-sos').html('El vehiculo '+user.placa+' solicita ayuda en : ');
+            unidad = user.unidad;
+            $('#text-sos').html('La unidad '+user.unidad+', con placa '+ user.placa +' solicita ayuda en : ');
             
             //mirar si se puede cargar solo una vez, o se necesita estar actualizando.
             getSelectCust();
@@ -779,7 +781,7 @@ function get_address(lat, lng) {
                 
             
 //                $('#address').val(formatted_addr);
-                $('#text-sos').html('El vehiculo '+placa+' solicita ayuda en '+formatted_addr);
+                $('#text-sos').html('La unidad '+unidad+', con placa '+placa+' solicita ayuda en '+formatted_addr);
                 
     
             } else {
