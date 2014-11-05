@@ -95,6 +95,7 @@
 	        			<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="c" data-inline="true">Buscar por dirección</a>
 	        			<a href="#" id='btn-add'  align="left" data-role="button" data-icon="plus" data-iconpos="notext" data-theme="c" data-inline="true">Adiccionar</a>
 	        			<a href="#" id='btn-save'  align="left" data-role="button" data-icon="check" data-iconpos="notext" data-theme="c" data-inline="true">Grabar</a>
+	        			<a href="#" id='btn-del'  align="left" data-role="button" data-icon="delete" data-iconpos="notext" data-theme="c" data-inline="true">Borrar</a>
 	            	</td>
 	            	<td >
 	                	

@@ -22,9 +22,15 @@ class Cliente_loc extends CI_Model {
 	}
 
 
-	function update($id, $data){
+	function update($id){
 		return $this->db->update('cliente_loc', $data, array('id' => $id));
 	}
+
+	function delete($id){
+		$this->db->where('id',$id);
+        return $this->db->delete('cliente_loc');
+	}
+
 
 	function get_by_telefono($telefono){
 		

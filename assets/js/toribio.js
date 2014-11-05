@@ -58,6 +58,11 @@ $(document).ready(function() {
         saveClientLoc();
     });
 
+    $('#btn-del').click(function (e){
+        e.preventDefault();
+        deleteClientLoc();
+    });
+
 
     $('#btn-back').click(function(e){
         e.preventDefault();
@@ -244,6 +249,39 @@ function resetCall(){
     }
 }
 
+
+function deleteClientLoc(){
+    
+    if ($('#idlocation').val()!=''){  
+        if (confirm('Esta seguro que desea borrar la ubicación ' + $('#address').val() + '?'))
+        {
+
+            $.ajax({
+                type : "GET",
+                url  : server + '/' + lang + '/api/deleteClientLoc',        
+                dataType : "json",
+                data : {
+                    id      : $('input[name="idlocation"]').val()
+                }
+            }).done(function(response){
+                if(response.state == 'ok'){
+                        
+                    alert('Ubicación del usuario se borró con exito.');
+                    
+                    resetCall(); 
+                    getSelectCustLocation();
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown){
+                    alert('Error al intentar borrar la ubicación, por favor intente de nuevo. '+errorThrown);
+            }); 
+        }
+        
+    }else{
+            alert("Debe seleccionar primero una ubicación del cliente.");
+            $('#phone-client').focus();
+    }
+
+};
 
 function saveClientLoc(){
  	if ($('input[name="phone-client"]').val()!=''){  

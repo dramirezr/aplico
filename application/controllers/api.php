@@ -243,6 +243,16 @@ class Api extends CI_Controller {
 		
 	}
 
+	function deleteClientLoc(){
+		$this->load->model('cliente_loc');
+
+		$id = $this->input->get_post('id');
+		$this->cliente_loc->delete($id);	
+
+		die(json_encode(array('state' => 'ok')) );
+		
+	}
+
 	function get_user_app(){
 		$uuid = $this->input->get_post('uuid');
 

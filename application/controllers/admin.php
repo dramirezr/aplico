@@ -695,7 +695,7 @@ function service_agent()
 
 	function message_management()
 	{
-		if(($this->userconfig->perfil=='ADMIN')){
+		if(($this->userconfig->perfil=='ADMIN')or($this->userconfig->perfil=='CALL')){
 			$crud = new grocery_CRUD();
 			$crud->set_theme('datatables');
 			$crud->set_table('sucursales');
