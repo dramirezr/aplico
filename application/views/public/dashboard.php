@@ -111,7 +111,7 @@
 			<h1><?=lang('dashboard.callconfirm.title')?></h1>
 		</div><!-- /header -->
 			<div data-role="content" data-theme="d">	
-				<p><?=lang('dashboard.callconfirm.msg')?>?</p>
+				<p><?=lang('dashboard.callconfirm.msg')?></p>
 			    <div class="ui-grid-a">
 			      <div class="ui-block-a">
 			        <input name="call-name" id="call-name" placeholder="<?=lang('dashboard.user_name')?>" value="" type="text">
@@ -129,7 +129,7 @@
 			    <input name="address-alterna" id="address-alterna" placeholder="<?=lang('dashboard.callconfirm.address-alternating')?>" value="" type="text">
 
 
-				<div id="confirmation-msg"><p><?=lang('dashboard.callconfirm.content')?>?</div>	
+				<!--<div id="confirmation-msg"><?=lang('dashboard.callconfirm.content')?>?</div>-->	
 
 			<div id="waiting-msg"><h1><?=lang('dashboard.searching')?></h1></div>
 		</div><!-- /content -->
