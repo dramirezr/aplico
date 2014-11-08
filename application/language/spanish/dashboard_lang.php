@@ -10,8 +10,8 @@ $lang['dashboard.unidad'] = 'Unidad';
 
 $lang['dashboard.callconfirm.title'] = 'Confirmar llamada';
 $lang['dashboard.callconfirm.content'] = 'Seguro desea llamar un servicio a esta ubicación';
-$lang['dashboard.callconfirm.msg'] = 'Estos datos serán enviados al taxista, ud. puede cambiarlos si lo desea.';
-$lang['dashboard.callconfirm.you_addrees'] = 'Su ubicación:';
+$lang['dashboard.callconfirm.msg'] = 'Tus datos:';
+$lang['dashboard.callconfirm.you_addrees'] = 'Tu ubicación:';
 $lang['dashboard.callconfirm.numbrer'] = 'Ingrese aquí el número';
 $lang['dashboard.callconfirm.address-alternating'] = 'Dirección alterna';
 
@@ -51,8 +51,8 @@ $lang['dashboard.your_data'] = 'Tus datos';
 $lang['dashboard.back'] = 'Regresar';
 $lang['dashboard.save'] = 'Grabar datos';
 $lang['dashboard.your_data'] = 'Tus datos';
-$lang['dashboard.user_name'] = 'Nombre';
-$lang['dashboard.user_phone'] = 'Teléfono';
+$lang['dashboard.user_name'] = 'Su nombre';
+$lang['dashboard.user_phone'] = 'Su teléfono';
 $lang['dashboard.user_email'] = 'E-mail';
 $lang['dashboard.tyc_msj'] = 'Terminos y condiciones';
 $lang['dashboard.tyc_acept'] = 'Acepto';

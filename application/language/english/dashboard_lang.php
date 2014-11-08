@@ -9,7 +9,7 @@ $lang['dashboard.unidad'] = 'Unit';
 
 $lang['dashboard.callconfirm.title'] = 'Call Confirmation';
 $lang['dashboard.callconfirm.content'] = 'Are you sure call a service at this location';
-$lang['dashboard.callconfirm.msg'] = 'These data will be sent to the driver, you. They can be altered if desired.';
+$lang['dashboard.callconfirm.msg'] = 'Your data:';
 $lang['dashboard.callconfirm.you_addrees'] = 'Location:';
 $lang['dashboard.callconfirm.numbrer'] = 'Enter here the number';
 $lang['dashboard.callconfirm.address-alternating'] = 'Alternating address';
