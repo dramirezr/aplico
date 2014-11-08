@@ -111,11 +111,26 @@
 			<h1><?=lang('dashboard.callconfirm.title')?></h1>
 		</div><!-- /header -->
 			<div data-role="content" data-theme="d">	
-				<input name="call-name" id="call-name" placeholder="<?=lang('dashboard.user_name')?>" value="" type="text">
-				<input name="call-phone" id="call-phone" placeholder="<?=lang('dashboard.user_phone')?>" value="" type="text">
-				<div id="confirmation-msg"><p><?=lang('dashboard.callconfirm.content')?>: 
-				<input name="call-address" id="call-address" value="" type="text">
-			</div>	
+				<p><?=lang('dashboard.callconfirm.msg')?>?</p>
+			    <div class="ui-grid-a">
+			      <div class="ui-block-a">
+			        <input name="call-name" id="call-name" placeholder="<?=lang('dashboard.user_name')?>" value="" type="text">
+			      </div>
+			      <div class="ui-block-b">
+			       <input name="call-phone" id="call-phone" placeholder="<?=lang('dashboard.user_phone')?>" value="" type="text">        
+			      </div>
+			    </div>
+
+				<p><?=lang('dashboard.callconfirm.you_addrees')?></p>
+				<input name="address-calle" id="address-calle" value="" type="text">
+				<div class="ui-grid-a"><div class="ui-block-b">
+				    <input name="address-numero" id="address-numero" placeholder="<?=lang('dashboard.callconfirm.numbrer')?>" value="" type="text">       
+				</div></div>
+			    <input name="address-alterna" id="address-alterna" placeholder="<?=lang('dashboard.callconfirm.address-alternating')?>" value="" type="text">
+
+
+				<div id="confirmation-msg"><p><?=lang('dashboard.callconfirm.content')?>?</div>	
+
 			<div id="waiting-msg"><h1><?=lang('dashboard.searching')?></h1></div>
 		</div><!-- /content -->
 

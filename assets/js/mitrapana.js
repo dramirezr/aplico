@@ -90,8 +90,10 @@ $(document).ready(function() {
         //address_search();
     }
 
-    $('#call-address').change(function(e){
-        $('#address').html($(this).val());
+    $('#address-calle, #address-numero, #address-alterna').change(function(e){
+        var address = trim($('input[name="address-calle"]').val()) +' '+ trim($('input[name="address-numero"]').val()) +' ' + trim($('input[name="address-alterna"]').val());
+        $('#address').html(address);
+
     });
     
     $('#calling-agent').click(function (e){
@@ -173,7 +175,8 @@ $(document).ready(function() {
     $('#agent-call').click(function(e){
         $('#call-name').val($('#user-name').val());
         $('#call-phone').val($('#user-phone').val());
-        $('#call-address').val($('#address').val()); 
+       // $('#address-numero').focus();
+         
         clearInterval(taxiLocationDemonId);
         if (flag_tyc=='N')
             $("#show-user").trigger('click');
@@ -182,7 +185,7 @@ $(document).ready(function() {
     });
 
 
-   console.log('flag_tyc:'+flag_tyc);
+   
     $('#i-agree-wrapper').hide(); 
     getbanner();
     getUserApp();
@@ -192,10 +195,10 @@ $(document).ready(function() {
 
 
 function call_confirmation(){
-
+        var address = trim($('input[name="address-calle"]').val()) +' '+ trim($('input[name="address-numero"]').val()) +' ' + trim($('input[name="address-alterna"]').val());
         if ($('input[name="address"]').val()!=''){  
 
-            if (trim($('input[name="call-address"]').val())!=trim(formatted_addr)) {  
+            if (trim($('input[name="address-numero"]').val())!= '') {  
        
                 if ( ($('input[name="lat"]').val()!='') && ($('input[name="lat"]').val()!='0') ){   
                
@@ -210,7 +213,7 @@ function call_confirmation(){
                         dataType : "json",
                         data : {
                             hms1    : $('input[name="hms1"]').val(),
-                            address : $('input[name="call-address"]').val(),
+                            address : address,
                             lat     : $('input[name="lat"]').val(),
                             lng     : $('input[name="lng"]').val(),
                             zone    : $('input[name="zone"]').val(),
@@ -342,7 +345,7 @@ function getTyC(){
 function save_user_app(){
     $('#call-name').val($('#user-name').val());
     $('#call-phone').val($('#user-phone').val());
-    $('#call-address').val($('#address').val()); 
+    //$('#call-address').val($('#address').val()); 
     $.ajax({
         type        : "GET",
         url         : server + '/' + lang + '/api/save_user_app',        
@@ -771,8 +774,15 @@ function codeLatLng(lat, lng) {
                 var guion = formatted_addr.indexOf("-");
                 if (guion>0) {
                     formatted_addr = formatted_addr.substring(0, guion) + ' - ';
+                    $('#address-calle').val(formatted_addr);
+                    $('#address-numero').val('');
+                    $('#address-alterna').val('');
+
                 } else{
                     formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
+                    $('#address-calle').val(sector.long_name + ', ' + results[0].address_components[1].long_name);
+                    $('#address-numero').val('');
+                    $('#address-alterna').val(results[0].address_components[0].long_name);
                 }
 
                 $('#address').val(formatted_addr);

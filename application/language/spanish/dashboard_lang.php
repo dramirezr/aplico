@@ -10,6 +10,12 @@ $lang['dashboard.unidad'] = 'Unidad';
 
 $lang['dashboard.callconfirm.title'] = 'Confirmar llamada';
 $lang['dashboard.callconfirm.content'] = 'Seguro desea llamar un servicio a esta ubicación';
+$lang['dashboard.callconfirm.msg'] = 'Estos datos serán enviados al taxista, ud. puede cambiarlos si lo desea.';
+$lang['dashboard.callconfirm.you_addrees'] = 'Su ubicación:';
+$lang['dashboard.callconfirm.numbrer'] = 'Ingrese aquí el número';
+$lang['dashboard.callconfirm.address-alternating'] = 'Dirección alterna';
+
+
 
 $lang['dashboard.cancel'] = 'Cancelar servicio';
 $lang['dashboard.confirm'] = 'Aceptar';
@@ -17,7 +23,6 @@ $lang['dashboard.cancel_service'] = 'Esta seguro que desea cancelar su servicio 
 
 
 $lang['dashboard.error.attempts'] = 'No hay servicios disponibles en la zona, intenta en unos minutos';
-$lang['dashboard.error_attempts'] = 'No hay servicios disponibles en la zona, intenta en unos minutos';
 $lang['dashboard.searching'] = 'Buscando....';
 $lang['dashboard.search'] = 'Buscar';
 $lang['dashboard.assinged'] = 'Asignado!';
