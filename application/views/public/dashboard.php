@@ -67,7 +67,7 @@
             <div data-role="fieldcontain">
             	<table border=0 width="100%"><tbody>
         		<tr><td >
-        			<?=lang('dashboard.callconfirm.you_addrees')?>
+        			<?=lang('dashboard.enter_address')?>
                 	<input name="address" id="address" value="" type="text" data-mini="true" onkeydown="return validarEnter(event)">
             	</td><td >
                 	<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="a" data-inline="true"><?=lang('dashboard.search')?></a>
@@ -108,10 +108,10 @@
 <div data-role="page" id="call-modal" data-close-btn="none">
 	<div id="confirm-wrapper">
 		<div data-role="header" data-theme="e">
-			<h1><?=lang('dashboard.callconfirm.title')?></h1>
+			<h3><?=lang('dashboard.callconfirm.title')?></h3>
 		</div><!-- /header -->
 			<div data-role="content" data-theme="d">	
-				<?=lang('dashboard.callconfirm.msg')?>
+				<!--<p><?=lang('dashboard.callconfirm.msg')?></p>-->	
 			    <div class="ui-grid-a">
 			      <div class="ui-block-a">
 			        <input name="call-name" id="call-name" placeholder="<?=lang('dashboard.user_name')?>" value="" type="text">

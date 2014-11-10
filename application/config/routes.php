@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "dashboard/web";
+$route['default_controller'] = "dashboard";
 $route['404_override'] = '';
 
 // example: '/en/about' -> use controller 'about'

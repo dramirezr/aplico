@@ -11,7 +11,7 @@ $lang['dashboard.unidad'] = 'Unidad';
 $lang['dashboard.callconfirm.title'] = 'Confirmar llamada';
 $lang['dashboard.callconfirm.content'] = 'Seguro desea llamar un servicio a esta ubicación';
 $lang['dashboard.callconfirm.msg'] = 'Tus datos:';
-$lang['dashboard.callconfirm.you_addrees'] = 'Tu ubicación:';
+$lang['dashboard.callconfirm.you_addrees'] = 'Confirma tu dirección:';
 $lang['dashboard.callconfirm.numbrer'] = 'Ingrese aquí el número';
 $lang['dashboard.callconfirm.address-alternating'] = 'Dirección alterna';
 
@@ -43,7 +43,8 @@ $lang['dashboard.error_share_position'] = 'No has aceptado compartir tu posició
 $lang['dashboard.error_current_position'] = 'No se puede obtener la posición actual.';
 $lang['dashboard.error_exceeded_timeout'] = 'Hemos superado el tiempo de espera. Vuelve a intentarlo.';
 
-$lang['dashboard.enter_address'] = 'Ingresa aquí la nomenclatura de tu dirección:';
+//$lang['dashboard.enter_address'] = 'Ingresa aquí la nomenclatura de tu dirección:';
+$lang['dashboard.enter_address'] = 'Tu ubicación:';
 
 $lang['dashboard.personal_data'] = 'Datos personales:';
 $lang['dashboard.your_data'] = 'Tus datos';

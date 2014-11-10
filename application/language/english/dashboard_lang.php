@@ -10,7 +10,7 @@ $lang['dashboard.unidad'] = 'Unit';
 $lang['dashboard.callconfirm.title'] = 'Call Confirmation';
 $lang['dashboard.callconfirm.content'] = 'Are you sure call a service at this location';
 $lang['dashboard.callconfirm.msg'] = 'Your data:';
-$lang['dashboard.callconfirm.you_addrees'] = 'Location:';
+$lang['dashboard.callconfirm.you_addrees'] = 'confirm your address:';
 $lang['dashboard.callconfirm.numbrer'] = 'Enter here the number';
 $lang['dashboard.callconfirm.address-alternating'] = 'Alternating address';
 
@@ -41,7 +41,7 @@ $lang['dashboard.error_share_position'] = 'You have not agreed to share your pos
 $lang['dashboard.error_current_position'] = 'Unable to get the current position.';
 $lang['dashboard.error_exceeded_timeout'] = 'We have exceeded the timeout. Please try again.';
 
-$lang['dashboard.enter_address'] = 'Enter here the postcode of your address:';
+$lang['dashboard.enter_address'] = 'Location:';
 
 $lang['dashboard.personal_data'] = 'Personal data:';
 $lang['dashboard.your_data'] = 'Your data';
