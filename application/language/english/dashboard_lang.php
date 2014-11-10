@@ -7,7 +7,7 @@ $lang['dashboard.confimationcode'] = 'Confirmation code';
 $lang['dashboard.agentcode2'] = 'Plate';
 $lang['dashboard.unidad'] = 'Unit';
 
-$lang['dashboard.callconfirm.title'] = 'Call Confirmation';
+$lang['dashboard.callconfirm.title'] = 'Your personal data';
 $lang['dashboard.callconfirm.content'] = 'Are you sure call a service at this location';
 $lang['dashboard.callconfirm.msg'] = 'Your data:';
 $lang['dashboard.callconfirm.you_addrees'] = 'confirm your address:';

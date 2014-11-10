@@ -8,7 +8,7 @@ $lang['dashboard.agentcode2'] = 'Placa';
 $lang['dashboard.unidad'] = 'Unidad';
 
 
-$lang['dashboard.callconfirm.title'] = 'Confirmar llamada';
+$lang['dashboard.callconfirm.title'] = 'Confirma tus datos';
 $lang['dashboard.callconfirm.content'] = 'Seguro desea llamar un servicio a esta ubicación';
 $lang['dashboard.callconfirm.msg'] = 'Tus datos:';
 $lang['dashboard.callconfirm.you_addrees'] = 'Confirma tu dirección:';

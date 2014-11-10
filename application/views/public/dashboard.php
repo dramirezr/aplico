@@ -107,8 +107,8 @@
 <!-- Start of third page: #popup -->
 <div data-role="page" id="call-modal" data-close-btn="none">
 	<div id="confirm-wrapper">
-		<div data-role="header" data-theme="e">
-			<h3><?=lang('dashboard.callconfirm.title')?></h3>
+		<div data-role="header" data-theme="e" align="center">
+			<b><?=lang('dashboard.callconfirm.title')?></b>
 		</div><!-- /header -->
 			<div data-role="content" data-theme="d">	
 				<!--<p><?=lang('dashboard.callconfirm.msg')?></p>-->	
@@ -121,7 +121,7 @@
 			      </div>
 			    </div>
 
-				<?=lang('dashboard.callconfirm.you_addrees')?>
+				<!--<?=lang('dashboard.callconfirm.you_addrees')?>-->
 				<input name="address-calle" id="address-calle" value="" type="text">
 				<div class="ui-grid-a"><div class="ui-block-b">
 				    <input name="address-numero" id="address-numero" placeholder="<?=lang('dashboard.callconfirm.numbrer')?>" value="" type="text">       
