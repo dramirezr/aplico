@@ -67,7 +67,7 @@
             <div data-role="fieldcontain">
             	<table border=0 width="100%"><tbody>
         		<tr><td >
-        			<?=lang('dashboard.enter_address')?>
+        			<?=lang('dashboard.callconfirm.you_addrees')?>
                 	<input name="address" id="address" value="" type="text" data-mini="true" onkeydown="return validarEnter(event)">
             	</td><td >
                 	<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="a" data-inline="true"><?=lang('dashboard.search')?></a>
@@ -111,7 +111,7 @@
 			<h1><?=lang('dashboard.callconfirm.title')?></h1>
 		</div><!-- /header -->
 			<div data-role="content" data-theme="d">	
-				<p><?=lang('dashboard.callconfirm.msg')?></p>
+				<?=lang('dashboard.callconfirm.msg')?>
 			    <div class="ui-grid-a">
 			      <div class="ui-block-a">
 			        <input name="call-name" id="call-name" placeholder="<?=lang('dashboard.user_name')?>" value="" type="text">
@@ -121,7 +121,7 @@
 			      </div>
 			    </div>
 
-				<p><?=lang('dashboard.callconfirm.you_addrees')?></p>
+				<?=lang('dashboard.callconfirm.you_addrees')?>
 				<input name="address-calle" id="address-calle" value="" type="text">
 				<div class="ui-grid-a"><div class="ui-block-b">
 				    <input name="address-numero" id="address-numero" placeholder="<?=lang('dashboard.callconfirm.numbrer')?>" value="" type="text">       
