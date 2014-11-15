@@ -378,6 +378,52 @@ class Api extends CI_Controller {
 		die(json_encode(array('state' => 'ok', 'result' => $result)));
 	}
 
+	function send_sms(){
+		
+		$idagent = $this->input->get_post('idagent');
+		
+		$this->load->model('sqlexteded');
+		$agente  = $this->sqlexteded->get_agent_id($idagent);
+		$mensaje1 = 'Gracias por utilizar el sevicio de taxis JJ, en '.
+					$this->input->get_post('time').' la unidad '.$agente->unidad.
+					' de placa '.$agente->placa.
+					' y conductor '.$agente->nombre.
+					' con movil '.$agente->telefono.' lo estará recogiendo.';
+					
+		$mensaje2 = 'Solicitud de seevicio en '.
+					$this->input->get_post('address').', '.
+					$this->input->get_post('name').', '.
+					$this->input->get_post('phone').', '.
+					$this->input->get_post('cell');
+		//sms usuario 
+
+		$userconfig 			= $this->session->userdata('userconfig');
+		$data['idsucursal'] 	= $userconfig->idsucursal;
+		$data['fecha'] 			= date("Y-m-d H:i:s");
+		$data['enviado'] 		= 'N';
+		$data['descripcion'] 	= $mensaje1;
+		$data['telefono'] 		= $this->input->get_post('cell');
+		if((($this->input->get_post('destination')=='USER')  or 
+			($this->input->get_post('destination')=='ALL') ) and 
+			($this->input->get_post('cell')!=''))
+			$idsms_u = $this->sqlexteded->create_sms($data);
+		else
+			$idsms_u = 0;
+
+		//sms taxista 
+		$data['descripcion'] 	= $mensaje2;
+		$data['telefono'] 		= $agente->telefono;
+		if( (($this->input->get_post('destination')=='AGENT') or
+			($this->input->get_post('destination')=='ALL') ) and 
+			($agente->telefono!=''))
+			$idsms_a = $this->sqlexteded->create_sms($data);
+		else
+			$idsms_a = 0;
+
+		die(json_encode(array('state' => 'ok', 'idu' => $idsms_u, 'ida' => $idsms_a)));
+
+	}
+
 
 
 		

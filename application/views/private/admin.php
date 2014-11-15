@@ -32,6 +32,10 @@ a:hover
  
 	<title><?= $this->config->item('app_name') ?></title>
 
+	<?php if ( ($op<>"show_agent_map") && ($op<>"callService") ) 
+		{
+    ?>
+
 	<link type="text/css" rel="stylesheet" href="<?=base_url()?>assets/grocery_crud/css/jquery_plugins/jquery.ui.datetime.css" />
 	<link type="text/css" rel="stylesheet" href="<?=base_url()?>assets/grocery_crud/css/jquery_plugins/jquery-ui-timepicker-addon.css" />
 	<script src="<?=base_url()?>assets/grocery_crud/js/jquery_plugins/jquery-ui-timepicker-addon.min.js"></script>
@@ -39,6 +43,10 @@ a:hover
 	<script src="<?=base_url()?>assets/grocery_crud/js/jquery_plugins/ui/i18n/timepicker/jquery-ui-timepicker-es.js"></script>
 	<script src="<?=base_url()?>assets/grocery_crud/js/jquery_plugins/config/jquery-ui-timepicker-addon.config.js"></script>
 	
+	<?php 
+		}
+    ?>
+
 	<link type="text/css" rel="stylesheet" href="<?=base_url()?>assets/css/menu.css" />
 	<script src="<?=base_url()?>assets/js/menu.js"></script>
 	
@@ -154,15 +162,16 @@ a:hover
 
     </div>
 
-    <script type="text/javascript">
-//var js_date_format = 'dd/mm/yy';
+<script type="text/javascript">
+	//var js_date_format = 'dd/mm/yy';
 
-<?php 	if( ($op=="banner_management")  ){ ?>
-	var js_date_format = 'dd/mm/yy';
-<?php }else { ?>
-	var js_date_format = 'yy/mm/dd';
-<?php } ?>
+	<?php 	if( ($op=="banner_management")  ){ ?>
+		var js_date_format = 'dd/mm/yy';
+	<?php }else { ?>
+		var js_date_format = 'yy/mm/dd';
+	<?php } ?>
 </script>
+
 
 </body>
 </html>

@@ -111,6 +111,19 @@ class Sqlexteded extends CI_Model {
 		return $result; 
 	}
 
+
+	function get_agent_id($id){
+		$sql  = " SELECT a.nombre, a.telefono, v.unidad, v.placa";
+		$sql .= " FROM agente a, vehiculos v ";
+		$sql .= " WHERE a.id=$id and a.vehiculo = v.id ";
+		
+		$result = $this->db->query($sql)->result();
+		if(!$result)
+			return null;
+		return $result[0]; 
+	}
+
+
 	function get_message($idsucursal){
 		$sql = 	" SELECT msj_texto ";
 		$sql .= " FROM sucursales ";
@@ -119,6 +132,30 @@ class Sqlexteded extends CI_Model {
 		if(!$result)
 			return null;
 		return $result[0]; 
+	}
+
+	function create_sms($data){
+		if(!$this->db->insert('sms', $data))
+			return false;
+		return $this->db->insert_id(); 
+	}
+
+	function get_sms(){
+		//$result = $this->db->get_where('sms', array('enviado' => 'N'))->result();
+
+		$sql = 	" SELECT * ";
+		$sql .= " FROM sms ";
+ 		$sql .= " WHERE enviado = 'N' ";
+ 		$sql .= " ORDER BY id LIMIT 1 ";
+		$result = $this->db->query($sql)->result();
+
+		if(!count($result))
+			return null;
+		return $result;		
+	}
+
+	function set_sms_enviado($id, $data){
+		return $this->db->update('sms', $data, array('id' => $id));
 	}
 		
 }

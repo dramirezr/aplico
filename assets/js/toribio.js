@@ -37,13 +37,16 @@ var page_state  = 'dashboard';
 
 var markersArray = [];
 
-$(document).keypress(function(e){
-  if (e.which === 49) {
+//$(document).keypress(function(e){
+ // if (e.which === 49) {
   	//hola();
-  }
-});
+//  }
+//});
 
 $(document).ready(function() {
+    
+   get_all_units('-1');
+   
 
 	$('#btn-add').click(function (e){
         e.preventDefault();
@@ -84,8 +87,6 @@ $(document).ready(function() {
     
     $('#calling-agent').click(function (e){
         e.preventDefault();
-        
-        //TODO: LLamar para android
     });
     
     $('#agent-confirmation').click(function(e){
@@ -212,10 +213,71 @@ $(document).ready(function() {
         address_search();
     });
 
-    
+    $('#btn-send-sms').click(function(e){
+        e.preventDefault();
+        send_sms($('#select-unidad').val(),$('#time-agent').val(),'ALL');
+    });
+
+    $('#select-unidad').click(function(e){
+        e.preventDefault();
+        $('#time-agent').val('');
+    });
+
 });
 
 
+function send_sms(idagent,arrival_time,destination){
+    if ((idagent>0)&&(!arrival_time=='')){  
+        $.ajax({
+            type : "GET",
+            url : server + '/' + lang + '/api/send_sms' ,        
+            dataType : "json",
+            data : {
+                idagent : idagent,
+                time    : arrival_time,
+                address : $('#address').val(),
+                name    : $('#name-client').val(),
+                phone   : $('#phone-client').val(),
+                cell    : $('#cell-client').val(),
+                destination : destination,
+                cachehora : (new Date()).getTime()
+            }
+        }).done(function(response){
+            if(response.state == 'ok'){
+                alert('Mensaje enviado con exito.');
+            }else
+                alert('ERROR al enviar le mensaje. Por favor intentelo de nuevo.');
+
+        });
+    }else{
+        alert('Para poder enviar el mensaje debe seleccionar la unidad y el tiempo de llegada. Por favor intente de nuevo');
+    }
+  
+}
+
+
+function get_all_units(idsucursal){
+    $('option', '#select-unidad').remove();
+    $("option","#select-unidad" ).empty();
+
+    $.ajax({
+            type : "GET",
+            url : server + '/' + lang + '/api/get_all_units' ,        
+            dataType : "json",
+            data : {
+                idsucursal : idsucursal
+            }
+    }).done(function(response){
+        if(response.state == 'ok'){
+            $('#select-unidad').append('<option value="-1">Unidades</option>');
+            for(var i in response.result){
+                $('#select-unidad').append('<option value="'+response.result[i].id+'" >'+response.result[i].unidad+' '+response.result[i].nombre+'</option>');
+            }
+          
+        }
+    });
+  
+}
 
 function searchUserTelephone(e) {
     if (window.event) {
@@ -617,6 +679,9 @@ function verifyCall(){
 
             clearInterval(demonId);
             verifyServiceStatus = setInterval(verifyServiceState, verification_interval);
+            
+            send_sms(response.agent.id,'5 min.','USER');
+            
         }
     });
 }

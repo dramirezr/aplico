@@ -11,14 +11,12 @@
 	<title><?= $this->config->item('app_name') ?></title>
 
 	<link rel="stylesheet" href="<?=base_url()?>assets/css/app.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
-	
-	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
-    
+  	<link rel="stylesheet" href="<?=base_url()?>assets/css/jquery.mobile-1.3.2.min.css" />
+ 
+    <script src="<?=base_url()?>assets/js/jquery-1.10.2.min.js"></script>
+    <script src="<?=base_url()?>assets/js/jquery.mobile-1.3.2.min.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
-    
-    
+
   	<script>
  		var lang = '<?=current_lang()?>';
  		var verification_interval = <?=ci_config('verification_interval')?>;
@@ -42,7 +40,7 @@
 
  	</script>
 
- 	<script src="<?=base_url()?>assets/js/toribio.js"></script>
+ 	<script src="<?=base_url()?>assets/js/toribio.js"> </script>
 </head>
  
 <body>
@@ -90,20 +88,33 @@
 	            <hr>
             	<table border=0 width="100%"><tbody>
             	<tr>
-	        		<td >
+	        		<td width="75%">
 	        			<input name="address" id="address" value="" type="text" data-mini="true" onkeydown="return validarEnter(event)">
-	        			<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="c" data-inline="true">Buscar por dirección</a>
+	        		</td>
+	            	<td width="25%">
+						<a href="#" id='btn-address-search'  align="left" data-role="button" data-icon="search" data-iconpos="notext" data-theme="c" data-inline="true">Buscar por dirección</a>
 	        			<a href="#" id='btn-add'  align="left" data-role="button" data-icon="plus" data-iconpos="notext" data-theme="c" data-inline="true">Adiccionar</a>
 	        			<a href="#" id='btn-save'  align="left" data-role="button" data-icon="check" data-iconpos="notext" data-theme="c" data-inline="true">Grabar</a>
-	        			<a href="#" id='btn-del'  align="left" data-role="button" data-icon="delete" data-iconpos="notext" data-theme="c" data-inline="true">Borrar</a>
+	        			<a href="#" id='btn-del'  align="left" data-role="button" data-icon="delete" data-iconpos="notext" data-theme="c" data-inline="true">Borrar</a>	                	
+			   		</td>
+	               
+	            </tr>
+	            </tbody></table>
+
+	            <table border=0 width="100%"><tbody>
+	            <tr>
+	        		<td width="75%">
+						<select name="select-unidad" id="select-unidad"  data-native-menu="true"  > 
+		                    <option value="-1">Unidades</option>
+		                </select>
+		                <input name="time-agent" id="time-agent" value="" type="text" data-mini="true" placeholder="Tiempo de llegada">
 	            	</td>
-	            	<td >
-	                	
-	                </td>
-	                <td >
-	                	
+	            	
+	                <td  width="25%">
+	                	<a id="btn-send-sms" data-role="button" data-theme="a" href="#" >Enviar SMS</a>
 	                </td>
 	            </tr>
+
                 </tbody></table>
             </div>    		
     	 </form>        
@@ -170,6 +181,8 @@
  -->
 <audio id="pito" src="<?=base_url()?>assets/audio/pito.mp3" preload="auto"></audio>
 <audio id="yes" src="<?=base_url()?>assets/audio/yes.mp3" preload="auto"></audio>
+
+
 
 </body>
 </html>
