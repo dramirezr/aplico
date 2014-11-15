@@ -12,7 +12,7 @@ $lang['dashboard.callconfirm.title'] = 'Confirma tus datos';
 $lang['dashboard.callconfirm.content'] = 'Seguro desea llamar un servicio a esta ubicación';
 $lang['dashboard.callconfirm.msg'] = 'Tus datos:';
 $lang['dashboard.callconfirm.you_addrees'] = 'Confirma tu dirección:';
-$lang['dashboard.callconfirm.numbrer'] = 'Ingrese aquí el número';
+$lang['dashboard.callconfirm.number'] = 'Nomenclara';
 $lang['dashboard.callconfirm.address-alternating'] = 'Dirección alterna';
 
 

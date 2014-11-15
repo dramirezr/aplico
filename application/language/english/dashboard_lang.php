@@ -11,7 +11,7 @@ $lang['dashboard.callconfirm.title'] = 'Your personal data';
 $lang['dashboard.callconfirm.content'] = 'Are you sure call a service at this location';
 $lang['dashboard.callconfirm.msg'] = 'Your data:';
 $lang['dashboard.callconfirm.you_addrees'] = 'confirm your address:';
-$lang['dashboard.callconfirm.numbrer'] = 'Enter here the number';
+$lang['dashboard.callconfirm.number'] = 'Number';
 $lang['dashboard.callconfirm.address-alternating'] = 'Alternating address';
 
 
