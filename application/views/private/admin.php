@@ -94,9 +94,10 @@ a:hover
 		<a href='<?php echo site_url('admin/user_managervehicle')?>'>Dueños de Taxis</a> |
 		<a href='<?php echo site_url('admin/vehicle_management')?>'>Vehiculos</a> |
 		<a href='<?php echo site_url('admin/agent_management')?>'>Taxitas</a> |
-		<a href='<?php echo site_url('admin/sanction_management') ?>'>Sanciones</a> |
-		-->
 		<a href='<?php echo site_url('admin/message_management') ?>'>Mensaje</a> |
+		
+		-->
+		<a href='<?php echo site_url('admin/sanction_management') ?>'>Sanciones</a> |
 		<a href='<?php echo site_url('admin/show_agent_map') ?>'>Seguimiento Vehiculos</a> |
 		
 
