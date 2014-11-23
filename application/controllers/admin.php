@@ -617,7 +617,7 @@ function service_agent()
 			$crud->set_table('publicidad');
 			$crud->set_subject('Publicidad');
 			$crud->columns('descripcion','fecha_activo');
-			$crud->fields('descripcion','contenido','imagen','url','fecha_activo');
+			$crud->fields('descripcion','imagen','fecha_activo');
 			$crud->required_fields('descripcion','fecha_activo');
 			$crud->set_field_upload('imagen','assets/images/banner');
 			

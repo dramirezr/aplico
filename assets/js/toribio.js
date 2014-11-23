@@ -244,7 +244,7 @@ function send_sms(idagent,arrival_time,destination){
             }
         }).done(function(response){
             if(response.state == 'ok'){
-                alert('Mensaje enviado con exito.');
+                alert('Enviado menasje...');
             }else
                 alert('ERROR al enviar le mensaje. Por favor intentelo de nuevo.');
 
