@@ -375,9 +375,10 @@ function verifyService(){
             }else{
                 if(response.state == 'agent_sanction'){
                   $('#service-addr').val('Uste esta sancionado hasta : ' + response.date_santion );  
-                }else{
-                    $('#service-addr').val('');  
                 }
+                //else{
+                    //$('#service-addr').val('');  
+                //}
 
             }
         },
@@ -415,9 +416,9 @@ function switchServiceAddrBg(){
 function switchToFree(){
     request_id = null;
     
-    $('#service-addr').html('');
-    $('#verificacion-cod').html('');      
-    $('#user-data').html('');
+    //$('#service-addr').html('');
+    //$('#verificacion-cod').html('');      
+    //$('#user-data').html('');
 
     $("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
     $('#current-position').show();

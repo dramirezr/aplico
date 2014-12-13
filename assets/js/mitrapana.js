@@ -312,7 +312,7 @@ function getUserApp(){
                 $('#user-email').val(response.user.email);
                 id_user_app = response.user.id;
                 flag_tyc = response.user.tyc;
-                console.log('flag_tyc:'+flag_tyc);
+                
                 if(response.user.tyc=='N'){
                     $('#i-agree-wrapper').show();  
                     //$('#agent-call-wrapper').hide(); 
@@ -705,17 +705,40 @@ function cargarMapa() {
     });
 
    /*
-   google.maps.event.addListener(map, "center_changed", function() {
+    google.maps.event.addListener(map, "drag", function() {
+        userMarker.setPosition(map.getCenter());
+    });
+
+    google.maps.event.addListener(map, "dragend", function(evento) {
+       
         var posicion = map.getCenter();
-        console.log(posicion.lng());
         userMarker.setPosition(posicion);
+         
+        latitud = posicion.lat();
+        longitud = posicion.lng();
+            
         codeLatLng(posicion.lat(), posicion.lng());
        
-       // console.log(coorMarcador);
+        //console.log('solto: '+posicion.lat()+' - '+ posicion.lng());
         $('#lat').val(posicion.lat());
         $('#lng').val(posicion.lng());
+    }); 
+
+    //evento sobre map ‘mouseover’ ( al entrar en el mapa )
+    google.maps.event.addListener(userMarker, 'mouseover', function()
+    {
+        //map.setCenter(marcador.getPosition());
+        map.setZoom(20);
     });
+    //evento sobre map ‘mouseout’ ( al salir  mapa )
+    google.maps.event.addListener(userMarker, 'mouseout', function()
+    {
+        //map.setCenter(pos_original);
+        map.setZoom(17);
+    });
+    
     */
+
     google.maps.event.addListener(userMarker, "dragend", function(evento) {
        
         latitud = evento.latLng.lat();
@@ -728,11 +751,11 @@ function cargarMapa() {
         $('#lng').val(evento.latLng.lng());
     }); 
 
-    /* 
+     
     google.maps.event.addListener(taxiMarker, 'click', function() {
         console.log('entrooooo..');
     });
-    */
+
 
 }
 
