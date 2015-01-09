@@ -702,6 +702,17 @@ function cargarMapa() {
         icon : server + '/assets/images/male.png'
     });
 
+   
+    google.maps.event.addListener(userMarker, "dragend", function(evento) {
+        latitud = evento.latLng.lat();
+        longitud = evento.latLng.lng();
+        $('#lat').val(evento.latLng.lat());
+        $('#lng').val(evento.latLng.lng());
+
+        codeLatLng(evento.latLng.lat(), evento.latLng.lng());
+    }); 
+
+
    /*
     google.maps.event.addListener(map, "drag", function() {
         userMarker.setPosition(map.getCenter());
@@ -737,22 +748,9 @@ function cargarMapa() {
     
     */
 
-    google.maps.event.addListener(userMarker, "dragend", function(evento) {
-       
-        latitud = evento.latLng.lat();
-        longitud = evento.latLng.lng();
-            
-        codeLatLng(evento.latLng.lat(), evento.latLng.lng());
-       
-       // console.log(coorMarcador);
-        $('#lat').val(evento.latLng.lat());
-        $('#lng').val(evento.latLng.lng());
-    }); 
-
-     
-    google.maps.event.addListener(taxiMarker, 'click', function() {
-        console.log('entrooooo..');
-    });
+   // google.maps.event.addListener(taxiMarker, 'click', function() {
+     //   console.log('entrooooo..');
+   // });
 
 
 }
