@@ -798,6 +798,7 @@ function codeLatLng(lat, lng) {
                     $('#address-calle').val(formatted_addr);
                     $('#address-numero').val('');
                     $('#address-alterna').val('');
+                     $('#address-reference').val('');
 
                 } else{
                     formatted_addr = sector.long_name + ', ' + results[0].address_components[1].long_name + ' # ' +results[0].address_components[0].long_name;
