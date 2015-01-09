@@ -357,8 +357,8 @@ function verifyService(){
                     user_data += ' - '+'<a href="tel:'+response.phone+'">'+response.phone+'</a>';  
                 if ((response.phone!='')&&(response.phone!=response.cell))
                     user_data += ' - '+'<a href="tel:'+response.cell+'" >'+response.cell+'</a>';  ;  
-                
-                $('#service-addr').val(response.sector);
+                //ojo, muestra la ubicacion completa del usuario. trae problemas de canivalismo. la opcion correcta es response.sector
+                $('#service-addr').val(response.ubicacion);
                 $('#btn-aplico-wrap').show();
                 $('#btn-cancelar-wrap').show();
             

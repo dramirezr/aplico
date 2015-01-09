@@ -13,6 +13,8 @@ $lang['dashboard.callconfirm.msg'] = 'Your data:';
 $lang['dashboard.callconfirm.you_addrees'] = 'confirm your address:';
 $lang['dashboard.callconfirm.number'] = 'Number';
 $lang['dashboard.callconfirm.address-alternating'] = 'Alternating address';
+$lang['dashboard.callconfirm.address-reference'] = 'Reference';
+
 
 
 $lang['dashboard.cancel'] = 'Cancel service';

@@ -2,8 +2,6 @@ var http = location.protocol;
 var slashes = http.concat("//");
 var server = slashes.concat(window.location.hostname);
 
-var directionsService = new google.maps.DirectionsService();
-
 var styles = [
                   {
                         "featureType": "poi",
@@ -195,7 +193,7 @@ $(document).ready(function() {
 
 
 function call_confirmation(){
-        var address = trim($('input[name="address-calle"]').val()) +' '+ trim($('input[name="address-numero"]').val()) +' ' + trim($('input[name="address-alterna"]').val());
+        var address = trim($('input[name="address-calle"]').val()) +' '+ trim($('input[name="address-numero"]').val()) +' ' + trim($('input[name="address-alterna"]').val())+' ' + trim($('input[name="address-reference"]').val());
         if ($('input[name="address"]').val()!=''){  
 
             if (trim($('input[name="address-numero"]').val())!= '') {  

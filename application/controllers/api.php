@@ -330,9 +330,12 @@ class Api extends CI_Controller {
 
 		$id 					= $this->input->get_post('id');
 		$data['uuid'] 			= $this->input->get_post('uuid');
-		$data['nombre'] 		= $this->db->escape(trim($this->input->get_post('name')));
-		$data['telefono'] 		= $this->db->escape(trim($this->input->get_post('phone')));
-		$data['email'] 			= $this->db->escape(trim($this->input->get_post('email')));
+		$data['nombre'] 		= $this->input->get_post('name',true);
+		$data['telefono'] 		= $this->input->get_post('phone',true);
+		$data['email'] 			= $this->input->get_post('email',true);
+		//$data['nombre'] 		= $this->db->escape(trim($this->input->get_post('name')));
+		//$data['telefono'] 		= $this->db->escape(trim($this->input->get_post('phone')));
+		//$data['email'] 			= $this->db->escape(trim($this->input->get_post('email')));
 		//$data['modelo'] 		= $this->input->get_post('model');
 		//$data['plataforma'] 	= $this->input->get_post('platform');
 		//$data['version'] 		= $this->input->get_post('version');

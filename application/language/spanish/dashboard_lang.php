@@ -14,6 +14,7 @@ $lang['dashboard.callconfirm.msg'] = 'Tus datos:';
 $lang['dashboard.callconfirm.you_addrees'] = 'Confirma tu dirección:';
 $lang['dashboard.callconfirm.number'] = 'Nomenclatura';
 $lang['dashboard.callconfirm.address-alternating'] = 'Dirección alterna';
+$lang['dashboard.callconfirm.address-reference'] = 'Referencia';
 
 
 

@@ -123,10 +123,17 @@
 
 				<!--<?=lang('dashboard.callconfirm.you_addrees')?>-->
 				<input name="address-calle" id="address-calle" value="" type="text">
-				<div class="ui-grid-a"><div class="ui-block-b">
-				    <input name="address-numero" id="address-numero" placeholder="<?=lang('dashboard.callconfirm.number')?>" value="" type="text">       
-				</div></div>
-			    <input name="address-alterna" id="address-alterna" placeholder="<?=lang('dashboard.callconfirm.address-alternating')?>" value="" type="text">
+				
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+			        	<input name="address-numero" id="address-numero" placeholder="<?=lang('dashboard.callconfirm.number')?>" value="" type="text">       
+			      	</div>
+			      	<div class="ui-block-b">
+			       		<input name="address-alterna" id="address-alterna" placeholder="<?=lang('dashboard.callconfirm.address-alternating')?>" value="" type="text">
+			      	</div>
+				</div>
+			    
+			    <input name="address-reference" id="address-reference" placeholder="<?=lang('dashboard.callconfirm.address-reference')?>" value="" type="text">
 
 
 				<!--<div id="confirmation-msg"><?=lang('dashboard.callconfirm.content')?>?</div>-->	

@@ -245,7 +245,7 @@ $config['encryption_key'] = 'qazxsw21';
 |
 */
 $config['sess_cookie_name']		= 'cisession';
-$config['sess_expiration']		= 7200;
+$config['sess_expiration']		= 86400; //24 horas
 $config['sess_expire_on_close']	= FALSE;
 $config['sess_encrypt_cookie']	= FALSE;
 $config['sess_use_database']	= TRUE;
@@ -368,10 +368,10 @@ $config['app_users_download'] = 'mitaxijj/MiTaxiJJ.apk';
 $config['app_agent_download'] = 'mitaxijj/MiTaxiJJAgente.apk';
 
 $config['max_verification_attemps'] = 10;
-$config['verification_interval'] = 8000; //In milliseconds
+$config['verification_interval'] = 15000; //In milliseconds
  
-$config['agent_verification_interval'] = 8000; //In milliseconds
-$config['agent_updatelocation_interval'] = 8000; //In milliseconds
+$config['agent_verification_interval'] = 15000; //In milliseconds
+$config['agent_updatelocation_interval'] = 15000; //In milliseconds
 $config['agent_message_inverval'] 			= 3600000; //cada hora  
 
 
