@@ -170,6 +170,37 @@ class Api extends CI_Controller {
 		die(json_encode(array('state' => 'ok', 'data' => $agente)));
 		
 	}
+
+	function relogin(){
+		
+		$username = $this->input->get_post('username'); 
+		$password = $this->input->get_post('password');
+		 
+		$this->load->model('agente');
+		$this->load->model('vehiculos');
+		$this->lang->load('dashboard');
+		
+		if(!$agente = $this->agente->get_for_login($username, $password)){
+			die(json_encode(array('state' => 'error', 'msg' => lang('login.error.noauth'))));
+		}
+		 
+		//arranca el agente en estado del servicio libre y estado pendiente
+		$idagente = $agente->id;
+		$this->agente->update($idagente, array('estado_servicio' => 'LIBRE','estado' => 'P'));
+
+		//Create the session
+		$vehiculo = $this->vehiculos->get_by_id($agente->vehiculo);
+		$agente->clave = NULL;
+		$agente->placa = $vehiculo->placa;
+		$agente->unidad = $vehiculo->unidad;
+		
+		$this->session->set_userdata('agente', $agente);
+		
+		$session_data = $this->session->all_userdata();
+		
+		die(json_encode(array('state' => 'ok')));
+		
+	}
 	
 	function get_taxi_location(){
 		$this->load->model('agente');

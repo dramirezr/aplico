@@ -263,13 +263,13 @@ function play_sound(element) {
     document.getElementById(element).play();
 }
 
-
+// url : server + 'agent/switch_to_free',  
 
 function login(id, key){
     clearInterval(localizationDemonId);
     clearInterval(verifyServiceDemonId);
     clearInterval(messageDemonId);
-    
+   
     resetSrvAddrBg();
 
     $.ajax({
@@ -313,6 +313,30 @@ function login(id, key){
         }
     });     
 }
+
+
+function relogin(id, key){
+    
+    $.ajax({
+        type : "GET",
+        url : server + 'api/relogin',        
+        dataType : "json",
+        data : {
+            username : id,
+            password : key,
+            hms1: scode,
+            cachehora : (new Date()).getTime()
+        }
+    }).done(function(response){
+        
+        if(response.state=='ok'){
+            
+            //
+        }
+    });     
+}
+
+
 
 function arrival_confirmation(){
     $.ajax({
@@ -616,10 +640,11 @@ function updateLocation(){
          $('#current-position').parent().css('background-color', '#FFFFFF');
          $('#current-position').css('color', 'red');
          $('#current-position').val('Latitud: ' + lat + ' Longitud: ' + lng);
-         login(username, password);
+         //-------------------------------login(username, password);
+         relogin(username, password);
       }); 
      //verificar mensaje de ayuda de otros agentes.
-     get_sos();
+     //get_sos();
 }
 
 
