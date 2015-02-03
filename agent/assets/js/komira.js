@@ -523,7 +523,7 @@ function service_delivered(){
         }
     }).done(function(response){
         if(response.state=='ok'){  
-            $('#service-addr').html('');
+            $('#service-addr').val('');  
             $('#verificacion-cod').html('');      
             $('#user-data').html('');
             switchToFree();
