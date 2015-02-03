@@ -117,6 +117,7 @@ $(document).ready(function() {
         play_sound('pito'); 
         username = $('#username').val();
         password = $('#password').val();
+        $('#service-addr').val('');
         login(username, password);
     });
     
@@ -440,9 +441,9 @@ function switchServiceAddrBg(){
 function switchToFree(){
     request_id = null;
     
-    //$('#service-addr').html('');
-    //$('#verificacion-cod').html('');      
-    //$('#user-data').html('');
+    $('#service-addr').val('');
+    $('#verificacion-cod').html('');      
+    $('#user-data').html('');
 
     $("#btn-aplico-wrap, #btn-entregado-wrap, #btn-cancelar-wrap, #btn-llego-wrap").hide();
     $('#current-position').show();
@@ -473,7 +474,7 @@ function WaitVeryService(){
 
 function cancel_service(){ 
     
-    $('#service-addr').html('');
+    $('#service-addr').val('');
     $('#verificacion-cod').html('');
     $('#user-data').html('');
     
@@ -528,7 +529,9 @@ function service_delivered(){
             $('#user-data').html('');
             switchToFree();
         }
-    });  
+    }).fail(function(jqXHR, textStatus, errorThrown){
+         alert("No tienen conexión a internet, por favor intente de nuevo.");
+      });  
 
     
 }
